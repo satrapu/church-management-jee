@@ -4,7 +4,6 @@
 *.jar
 *.war
 *.ear
-/church-management-jee/target/
-/church-management-jee/nb-configuration.xml
-/church-management/target/
 /target/
+nb-configuration.xml
+faces-config.NavData

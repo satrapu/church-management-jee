@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:my="http://java.sun.com/jsf/composite/components"
+                template="#{context_path}/resources/templates/page.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="title">#{personHome.managed ? msg['pages.admin.persons.edit.title']: msg['pages.admin.persons.add.title']}</ui:define>
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="id"
+                         value="#{personHome.id}"
+                         converter="#{entityIdConverter}"/>
+            <f:event type="preRenderView"
+                     listener="#{personHome.beginConversation}" />
+        </f:metadata>
+        <h:form>
+            <h:panelGrid rendered="#{personHome.managed}"
+                         columns="2">
+                <h:outputLabel for="id">
+                    #{msg['entities.person.fields.id']}
+                </h:outputLabel>
+                <h:outputText id="id" 
+                              value="#{personHome.instance.id}"/>
+                <h:outputText/>
+            </h:panelGrid>
+            <my:inputText componentId="firstName"
+                          required="true"
+                          label="#{msg['entities.person.fields.firstname']}"
+                          value="#{personHome.instance.firstName}"/>
+<!--            <my:inputText componentId="middleName"
+                          required="false"
+                          label="#{msg['entities.person.fields.middlename']}"
+                          value="#{personHome.instance.middleName}"/>-->
+            <my:inputText componentId="lastName"
+                          required="true"
+                          label="#{msg['entities.person.fields.lastname']}"
+                          value="#{personHome.instance.lastName}"/>
+            <div class="requiredFields">#{msg['global.fields.requiredInfo']}</div>
+            <p:separator/>
+            <div class="actions">
+                <p:commandButton action="#{personHome.save}"
+                                 value="#{msg['global.actions.save']}"
+                                 ajax="false"/>
+                <p:commandButton action="#{personHome.cancel}"
+                                 value="#{msg['global.actions.cancel']}"
+                                 ajax="false"
+                                 immediate="true"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

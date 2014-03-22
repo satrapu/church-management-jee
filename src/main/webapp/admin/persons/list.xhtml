@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{context_path}/resources/templates/page.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="title">#{msg['pages.admin.persons.list.title']}</ui:define>
+    <ui:define name="content">
+        <h:form id="list"
+                prependId="false"
+                onsubmit="document.getElementById('list').action = 'j_security_check';">
+            <h:outputText rendered="#{not personList.dataAvailable}"
+                          value="#{msg['global.noRecords']}"/>
+            <p:dataTable value="#{personList.data}"
+                         var="person"
+                         paginator="true"
+                         paginatorPosition="top"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+                         rowsPerPageTemplate="5,10,25,50"
+                         rows="25"
+                         rowKey="#{person.id}"
+                         rendered="#{personList.dataAvailable}"
+                         lazy="true">
+                <p:column>
+                    <f:facet name="header">
+                        #{msg['global.actions']}
+                    </f:facet>
+                    <div class="actions">
+                        <h:link outcome="/admin/persons/edit"
+                                value="#{msg['global.actions.edit']}">
+                            <f:param name="id" 
+                                     value="#{person.id}"/>
+                        </h:link>
+                        <h:link outcome="/admin/persons/remove"
+                                value="#{msg['global.actions.remove']}">
+                            <f:param name="id" 
+                                     value="#{person.id}"/>
+                        </h:link>
+                    </div>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        #{msg['entities.person.fields.id']}
+                    </f:facet>
+                    <h:outputText value="#{person.id}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        #{msg['entities.person.fields.firstname']}
+                    </f:facet>
+                    <h:outputText value="#{person.firstName}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        #{msg['entities.person.fields.lastname']}
+                    </f:facet>
+                    <h:outputText value="#{person.lastName}" />
+                </p:column>
+            </p:dataTable>
+            <p:separator/>
+        </h:form>
+        <h:form>
+            <div class="actions">
+                <p:commandButton action="/admin/persons/edit"
+                                 value="#{msg['pages.admin.persons.list.actions.add']}"
+                                 ajax="false"
+                                 immediate="true"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

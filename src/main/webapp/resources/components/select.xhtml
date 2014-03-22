@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:my="http://java.sun.com/jsf/composite/components"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <composite:interface>
+        <composite:attribute name="componentId" required="true"/>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="label" required="true"/>
+        <composite:attribute name="required" required="false" default="false"/>
+    </composite:interface>
+    <composite:implementation>
+        <my:editorContainer componentId="#{cc.attrs.componentId}"
+                            value="#{cc.attrs.value}"
+                            label="#{cc.attrs.label}"
+                            required="#{cc.attrs.required}">
+            <p:selectOneMenu id="#{cc.attrs.componentId}"
+                             required="#{cc.attrs.required}"
+                             requiredMessage="#{msg['global.fields.required']}"
+                             styleClass="#{not component.valid ? 'invalid' : ''}"
+                             value="#{cc.attrs.value}">
+                <f:selectItem itemLabel="#{msg['global.fields.selectOneValue']}" 
+                              itemValue="" />  
+                <composite:insertChildren />
+                <p:ajax event="change"
+                        immediate="true"
+                        update="#{cc.attrs.componentId}Editor"/>
+            </p:selectOneMenu>
+        </my:editorContainer>
+    </composite:implementation>
+</html>

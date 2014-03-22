@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{context_path}/resources/templates/page.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="title">#{msg['pages.admin.persons.remove.title']}</ui:define>
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="id"
+                         value="#{personHome.id}"
+                         converter="#{entityIdConverter}"/>
+            <f:event type="preRenderView"
+                     listener="#{personHome.beginConversation}" />
+        </f:metadata>
+        <h:form>
+            <h:panelGrid rendered="#{personHome.managed}"
+                         columns="2">
+                <h:outputLabel for="id">
+                    #{msg['entities.person.fields.id']}
+                </h:outputLabel>
+                <h:outputText id="id" 
+                              value="#{personHome.instance.id}"/>
+                <h:outputLabel for="firstName">
+                    #{msg['entities.person.fields.firstname']}
+                </h:outputLabel>
+                <h:outputText id="firstName" 
+                              value="#{personHome.instance.firstName}"/>
+                <h:outputLabel for="lastName">
+                    #{msg['entities.person.fields.lastname']}
+                </h:outputLabel>
+                <h:outputText id="lastName" 
+                              value="#{personHome.instance.lastName}"/>
+            </h:panelGrid>
+            <p:separator/>
+            <div class="actions">
+                <p:commandButton action="#{personHome.remove}"
+                                 value="#{msg['global.actions.remove']}"
+                                 ajax="false"
+                                 rendered="#{personHome.managed}"/>
+                <p:commandButton action="#{personHome.cancel}"
+                                 value="#{msg['global.actions.cancel']}"
+                                 ajax="false"
+                                 immediate="true"/>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
