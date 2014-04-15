@@ -11,7 +11,7 @@
         <f:metadata>
             <f:viewParam name="id"
                          value="#{personHome.id}"
-                         converter="#{entityIdConverter}"/>
+                         converter="entityIdConverter"/>
             <f:event type="preRenderView"
                      listener="#{personHome.beginConversation}" />
         </f:metadata>
@@ -29,10 +29,6 @@
                           required="true"
                           label="#{msg['entities.person.fields.firstname']}"
                           value="#{personHome.instance.firstName}"/>
-<!--            <my:inputText componentId="middleName"
-                          required="false"
-                          label="#{msg['entities.person.fields.middlename']}"
-                          value="#{personHome.instance.middleName}"/>-->
             <my:inputText componentId="lastName"
                           required="true"
                           label="#{msg['entities.person.fields.lastname']}"
