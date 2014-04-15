@@ -8,6 +8,38 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>church-management</name>
+    <description>JEE web application used for managing the assets of a church.</description>
+    <inceptionYear>2014</inceptionYear>
+    <ciManagement>
+        <system>drone.io</system>
+        <url>https://drone.io/github.com/satrapu/church-management-jee</url>
+    </ciManagement>
+    <scm>
+        <connection>scm:git:https://github.com/satrapu/church-management-jee.git</connection>
+        <url>https://github.com/satrapu/church-management-jee</url>
+    </scm>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/satrapu/church-management-jee/issues</url>
+    </issueManagement>
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>satrapu</id>
+            <name>Bogdan Marian</name>
+            <email>bogdan.marian77@gmail.com</email>
+            <timezone>2</timezone>
+            <url>https://www.linkedin.com/in/bmarian</url>
+            <roles>
+                <role>Main commiter</role>
+            </roles>
+        </developer>
+    </developers>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>    
     </properties>
