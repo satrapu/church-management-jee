@@ -66,10 +66,4 @@ public class PersonList {
     public LazyDataModel getData() {
         return data;
     }
-    
-    public boolean isDataAvailable() {
-        boolean result = data.getRowCount() > 0;
-        logger.debug("Is data available: {}", result);
-        return result;
-    }
 }

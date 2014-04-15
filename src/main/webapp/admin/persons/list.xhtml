@@ -10,7 +10,7 @@
         <h:form id="list"
                 prependId="false"
                 onsubmit="document.getElementById('list').action = 'j_security_check';">
-            <h:outputText rendered="#{not personList.dataAvailable}"
+            <h:outputText rendered="#{empty personList.data}"
                           value="#{msg['global.noRecords']}"/>
             <p:dataTable value="#{personList.data}"
                          var="person"
@@ -20,7 +20,7 @@
                          rowsPerPageTemplate="5,10,25,50,100"
                          rows="25"
                          rowKey="#{person.id}"
-                         rendered="#{personList.dataAvailable}"
+                         rendered="#{not empty personList.data}"
                          lazy="true">
                 <p:column>
                     <f:facet name="header">
