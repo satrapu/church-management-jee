@@ -1,4 +1,4 @@
-Church Management 
+Church Management [![Build Status](https://drone.io/github.com/satrapu/church-management-jee/status.png)](https://drone.io/github.com/satrapu/church-management-jee/latest)
 =================
 
 Description
