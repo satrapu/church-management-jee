@@ -35,8 +35,10 @@ public class LoggerProducer {
      * @return A new {@link Logger} instance.
      */
     @Produces
+    @LoggerInstance
     public static Logger produce(InjectionPoint injectionPoint) {
-        return produce(injectionPoint.getBean().getBeanClass());
+        Class<?> clazz = injectionPoint.getMember().getDeclaringClass();
+        return produce(clazz);
     }
 
     /**
