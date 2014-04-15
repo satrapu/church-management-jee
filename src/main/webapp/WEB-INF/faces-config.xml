@@ -12,10 +12,14 @@
             <base-name>ro.satrapu.churchmanagement.ui.messages</base-name>
             <var>msg</var>
         </resource-bundle>
-        <!-- message-bundle is needed in order to customize JSF converters and validators messages -->
+        <!-- 
+        message-bundle XML node is needed in order to localize JSF converters and validators messages 
+        -->
         <message-bundle>ro.satrapu.churchmanagement.ui.messages</message-bundle>
     </application>
-<!--    <factory>
+    <!--    
+    <factory>
         <exception-handler-factory>ro.satrapu.churchmanagement.ui.ExceptionHandlerFactory</exception-handler-factory>
-    </factory>-->
+    </factory>
+    -->
 </faces-config>
