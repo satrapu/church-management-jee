@@ -17,7 +17,7 @@
                          paginator="true"
                          paginatorPosition="top"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
-                         rowsPerPageTemplate="5,10,25,50"
+                         rowsPerPageTemplate="5,10,25,50,100"
                          rows="25"
                          rowKey="#{person.id}"
                          rendered="#{personList.dataAvailable}"
@@ -27,12 +27,12 @@
                         #{msg['global.actions']}
                     </f:facet>
                     <div class="actions">
-                        <h:link outcome="/admin/persons/edit"
+                        <h:link outcome="edit"
                                 value="#{msg['global.actions.edit']}">
                             <f:param name="id" 
                                      value="#{person.id}"/>
                         </h:link>
-                        <h:link outcome="/admin/persons/remove"
+                        <h:link outcome="remove"
                                 value="#{msg['global.actions.remove']}">
                             <f:param name="id" 
                                      value="#{person.id}"/>
@@ -62,7 +62,7 @@
         </h:form>
         <h:form>
             <div class="actions">
-                <p:commandButton action="/admin/persons/edit"
+                <p:commandButton action="edit"
                                  value="#{msg['pages.admin.persons.list.actions.add']}"
                                  ajax="false"
                                  immediate="true"/>
