@@ -8,9 +8,9 @@
     <ui:define name="title">#{msg['pages.admin.persons.remove.title']}</ui:define>
     <ui:define name="content">
         <f:metadata>
-            <f:viewParam name="id"
+            <f:viewParam name="id" 
                          value="#{personHome.id}"
-                         converter="#{entityIdConverter}"/>
+                         converter="entityIdConverter"/>
             <f:event type="preRenderView"
                      listener="#{personHome.beginConversation}" />
         </f:metadata>
