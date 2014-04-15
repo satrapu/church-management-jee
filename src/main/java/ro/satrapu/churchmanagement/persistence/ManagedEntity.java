@@ -32,6 +32,7 @@ import lombok.Setter;
  */
 @MappedSuperclass
 @Data
+@SuppressWarnings("ValidAttributes")
 public abstract class ManagedEntity implements Entity {
 
     private static final long serialVersionUID = 1L;
