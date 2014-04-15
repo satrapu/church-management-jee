@@ -22,6 +22,8 @@ import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.slf4j.Logger;
+import ro.satrapu.churchmanagement.logging.LoggerInstance;
 import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
 
@@ -31,30 +33,43 @@ import ro.satrapu.churchmanagement.persistence.Person;
  */
 @Model
 public class PersonList {
-
+    
     private static final long serialVersionUID = 1L;
+    
     @Inject
-    private PersistenceService persistenceService;
-    private LazyDataModel<Person> data;
+    PersistenceService persistenceService;
+    
+    @Inject
+    @LoggerInstance
+    Logger logger;
+    
+    LazyDataModel<Person> data;
     private static final Class<Person> clazz = Person.class;
-
+    
     @PostConstruct
     public void init() {
         data = new LazyDataModel<Person>() {
-
+            
             @Override
             public List<Person> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters) {
+                logger.debug("Loading a page of {} instances using first record index = {} and page size = {}...",
+                        clazz.getName(), first, pageSize);
                 return persistenceService.fetch(clazz, first, pageSize);
             }
         };
-        data.setRowCount(new Long(persistenceService.count(clazz)).intValue());
+        
+        long count = persistenceService.count(clazz);
+        logger.debug("Found {} records", count);
+        data.setRowCount(new Long(count).intValue());
     }
-
+    
     public LazyDataModel getData() {
         return data;
     }
-
+    
     public boolean isDataAvailable() {
-        return data.getRowCount() > 0;
+        boolean result = data.getRowCount() > 0;
+        logger.debug("Is data available: {}", result);
+        return result;
     }
 }
