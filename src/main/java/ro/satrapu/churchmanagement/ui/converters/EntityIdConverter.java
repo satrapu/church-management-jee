@@ -15,24 +15,35 @@
  */
 package ro.satrapu.churchmanagement.ui.converters;
 
+import java.text.MessageFormat;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.inject.Named;
+import javax.faces.convert.ConverterException;
+import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+import ro.satrapu.churchmanagement.ui.Messages;
 
 /**
  *
  * @author satrapu
  */
-@Named
+@FacesConverter(value = "entityIdConverter")
 public class EntityIdConverter implements Converter {
+
+    @Inject
+    Messages messages;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         try {
-            return Long.parseLong(value);
+            //return Long.parseLong(value);
+            return Long.parseLong("sdsasd");
         } catch (NumberFormatException ex) {
-            return null;
+            String detail = MessageFormat.format(messages.getValueFor("converters.entityIdConverter.conversionFailed"), value);
+            FacesMessage conversionFailedMessage = new FacesMessage(messages.getValueFor("converters.conversionFailed"), detail);
+            throw new ConverterException(conversionFailedMessage, ex);
         }
     }
 
