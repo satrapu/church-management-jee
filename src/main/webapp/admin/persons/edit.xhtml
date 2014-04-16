@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:my="http://java.sun.com/jsf/composite/components"
-                template="#{context_path}/resources/templates/page.xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
+                template="#{context_path}/resources/templates/page.xhtml">
     <ui:define name="title">#{personHome.managed ? msg['pages.admin.persons.edit.title']: msg['pages.admin.persons.add.title']}</ui:define>
     <ui:define name="content">
         <f:metadata>
-            <f:viewParam name="id"
+            <f:viewParam name="id" 
                          value="#{personHome.id}"
                          converter="entityIdConverter"/>
             <f:event type="preRenderView"
@@ -23,7 +23,6 @@
                 </h:outputLabel>
                 <h:outputText id="id" 
                               value="#{personHome.instance.id}"/>
-                <h:outputText/>
             </h:panelGrid>
             <my:inputText componentId="firstName"
                           required="true"
