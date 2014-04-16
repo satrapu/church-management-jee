@@ -38,8 +38,7 @@ public class EntityIdConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         try {
-            //return Long.parseLong(value);
-            return Long.parseLong("sdsasd");
+            return Long.parseLong(value);
         } catch (NumberFormatException ex) {
             String detail = MessageFormat.format(messages.getValueFor("converters.entityIdConverter.conversionFailed"), value);
             FacesMessage conversionFailedMessage = new FacesMessage(messages.getValueFor("converters.conversionFailed"), detail);
