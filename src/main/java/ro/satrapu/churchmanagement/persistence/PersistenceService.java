@@ -116,21 +116,20 @@ public class PersistenceService {
         return entity;
     }
 
-    public <T extends Entity> List<T> fetch(Class<T> entityClass, int firstResult, int maxResults) {
+    public <T extends Entity> List<T> fetch(Class<T> entityClass, int pageIndex, int recordsPerPage) {
         if (entityClass == null) {
             throw new IllegalArgumentException("Cannot fetch entities using null as entity class");
         }
 
-        logger.debug("Fetching maximum {} entities of type {} for page {} ...",
-                maxResults, entityClass.getName(), firstResult + 1);
+        logger.debug("Fetching maximum {} entities of type {} for page #{} ...", recordsPerPage, entityClass.getName(), pageIndex + 1);
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteria = builder.createQuery(entityClass);
         criteria.select(criteria.from(entityClass));
 
         TypedQuery<T> query = entityManager.createQuery(criteria);
-        query.setFirstResult(firstResult);
-        query.setMaxResults(maxResults);
+        query.setFirstResult(pageIndex);
+        query.setMaxResults(recordsPerPage);
 
         List<T> resultList = query.getResultList();
         logger.debug("Found {} entities", resultList.size());
