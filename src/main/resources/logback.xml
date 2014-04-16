@@ -19,18 +19,18 @@ limitations under the License.
     <appender name="Console" 
               class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%-5level %d{HH:mm:ss.SSS} %logger{36} %message%n</pattern>
+            <pattern>%-5level %d{HH:mm:ss.SSS} %logger{0} %message%n</pattern>
         </encoder>
     </appender>
     <appender name="Application" 
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>churchmanagement/logs/application.log</file>
+        <file>logs/churchmanagement.log</file>
         <append>true</append>
         <encoder>
             <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger - %message%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>churchmanagement/logs/old/application-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/old/churchmanagement-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
