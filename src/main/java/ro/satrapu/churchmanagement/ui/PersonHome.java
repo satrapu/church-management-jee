@@ -21,26 +21,34 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ro.satrapu.churchmanagement.logging.LoggerInstance;
 import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
 
 /**
- *
- * @author Satrapu
+ * @see <a href="http://www.andygibson.net/blog/tutorial/pattern-for-conversational-crud-in-java-ee-6"> 
+ * Conversational CRUD in Java EE 6</a> by Andy Gibson.
+ * @author satrapu
  */
 @Named
 @ConversationScoped
 public class PersonHome implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Inject
     PersistenceService persistenceService;
+
     @Inject
     Conversation conversation;
+
     @Inject
     Messages messages;
-    private static final transient Logger logger = LoggerFactory.getLogger(PersonHome.class);
+
+    @Inject
+    @LoggerInstance
+    Logger logger;
+
     private Serializable id;
     private Person instance;
 
@@ -87,8 +95,9 @@ public class PersonHome implements Serializable {
      */
     @SuppressWarnings("unchecked")
     public Person loadInstance() {
-        logger.debug("Loading instance: {} using id: {}", Person.class, getId());
-        return persistenceService.fetch(Person.class, getId());
+        Class<Person> clazz = Person.class;
+        logger.debug("Loading instance of type {} using id {} ...", clazz.getName(), id);
+        return persistenceService.fetch(clazz, id);
     }
 
     /**
@@ -98,7 +107,7 @@ public class PersonHome implements Serializable {
      */
     @SuppressWarnings("unchecked")
     public Person createInstance() {
-        logger.debug("Creating instance: {}", Person.class);
+        logger.debug("Creating entity of type {} ...", Person.class.getName());
         return new Person();
     }
 
@@ -118,22 +127,37 @@ public class PersonHome implements Serializable {
      * @return The operation outcome, if successful; null, otherwise.
      */
     public String save() {
+        boolean hasErrors = true;
+
         if (isManaged()) {
+            Person person = getInstance();
+            
             try {
-                logger.debug("Merging instance: {}", getInstance());
-                persistenceService.merge(getInstance());
-                conversation.end();
+                logger.debug("Merging instance: {} ...", person);
+                persistenceService.merge(person);
+                messages.info("entities.person.actions.update.success");
+                hasErrors = false;
             } catch (Exception e) {
                 logger.error("Could not merge instance", e);
+                messages.error("entities.person.actions.update.failure");
             }
         } else {
+            Person person = getInstance();
+            
             try {
-                logger.debug("Persisting instance: {}", getInstance());
-                persistenceService.persist(getInstance());
-                conversation.end();
+                logger.debug("Persisting instance: {} ...", person);
+                persistenceService.persist(person);
+                messages.info("entities.person.actions.save.success");
+                hasErrors = false;
             } catch (Exception e) {
                 logger.error("Could not persist instance", e);
+                messages.error("entities.person.actions.save.failure");
             }
+        }
+
+        if (!hasErrors) {
+            conversation.end();
+            return "list";
         }
 
         return null;
@@ -145,9 +169,9 @@ public class PersonHome implements Serializable {
      * @return The operation outcome.
      */
     public String cancel() {
-        logger.debug("Cancel editor");
+        logger.debug("Cancelling editing instance ...");
         conversation.end();
-        return null;
+        return "list";
     }
 
     /**
@@ -166,13 +190,22 @@ public class PersonHome implements Serializable {
      * @return The operation outcome, if successful; null, otherwise.
      */
     public String remove() {
-        logger.debug("Removing instance: {}", getInstance());
+        boolean hasErrors = true;
+        Person person = getInstance();
+        logger.debug("Removing instance: {} ...", person);
 
         try {
-            persistenceService.remove(getInstance());
-            conversation.end();
+            persistenceService.remove(person);
+            messages.info("entities.person.actions.remove.success");
+            hasErrors = false;
         } catch (Exception e) {
             logger.error("Could not remove instance", e);
+            messages.error("entities.person.actions.remove.failure");
+        }
+
+        if (!hasErrors) {
+            conversation.end();
+            return "list";
         }
 
         return null;
