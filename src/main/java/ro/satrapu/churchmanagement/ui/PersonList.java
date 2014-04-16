@@ -33,36 +33,35 @@ import ro.satrapu.churchmanagement.persistence.Person;
  */
 @Model
 public class PersonList {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     @Inject
     PersistenceService persistenceService;
-    
+
     @Inject
     @LoggerInstance
     Logger logger;
-    
+
     LazyDataModel<Person> data;
     private static final Class<Person> clazz = Person.class;
-    
+
     @PostConstruct
     public void init() {
         data = new LazyDataModel<Person>() {
-            
+
             @Override
-            public List<Person> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map filters) {
-                logger.debug("Loading a page of {} instances using first record index = {} and page size = {}...",
-                        clazz.getName(), first, pageSize);
-                return persistenceService.fetch(clazz, first, pageSize);
+            public List<Person> load(int currentPageIndex, int recordsPerPage, String sortField, SortOrder sortOrder, Map filters) {
+                logger.debug("Loading page #{} containing maximum {} instances of type {} ...", currentPageIndex + 1, recordsPerPage, clazz.getName());
+                return persistenceService.fetch(clazz, currentPageIndex, recordsPerPage);
             }
         };
-        
+
         long count = persistenceService.count(clazz);
         logger.debug("Found {} records", count);
         data.setRowCount(new Long(count).intValue());
     }
-    
+
     public LazyDataModel getData() {
         return data;
     }
