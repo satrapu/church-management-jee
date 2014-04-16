@@ -3,8 +3,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                template="#{context_path}/resources/templates/page.xhtml"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="#{context_path}/resources/templates/page.xhtml">
     <ui:define name="title">#{msg['pages.admin.persons.remove.title']}</ui:define>
     <ui:define name="content">
         <f:metadata>
@@ -38,7 +38,8 @@
                 <p:commandButton action="#{personHome.remove}"
                                  value="#{msg['global.actions.remove']}"
                                  ajax="false"
-                                 rendered="#{personHome.managed}"/>
+                                 rendered="#{personHome.managed}"
+                                 onclick="return confirm('Are you sure you want to remove this entity?');"/>
                 <p:commandButton action="#{personHome.cancel}"
                                  value="#{msg['global.actions.cancel']}"
                                  ajax="false"
