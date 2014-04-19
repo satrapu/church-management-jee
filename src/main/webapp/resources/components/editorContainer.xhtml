@@ -1,9 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?> 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:composite="http://java.sun.com/jsf/composite"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
     <composite:interface>
         <composite:attribute name="componentId" required="true"/>
         <composite:attribute name="value" required="true"/>
@@ -11,22 +10,11 @@
         <composite:attribute name="required" required="false" default="false"/>
     </composite:interface>
     <composite:implementation>
-        <c:choose>
-            <c:when test="#{cc.attrs.required}">
-                <c:set var="labelValue" value="* #{cc.attrs.label}"/>
-                <c:set var="labelStyleClass" value="required"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="labelValue" value="#{cc.attrs.label}"/>
-                <c:set var="labelStyleClass" value=""/>
-            </c:otherwise>
-        </c:choose>
         <h:panelGrid id="#{cc.attrs.componentId}Editor"
                      columns="3">
-            <h:outputLabel id="#{cc.attrs.componentId}Label"
-                           value="#{labelValue}"
-                           for="#{cc.attrs.componentId}"
-                           styleClass="#{labelStyleClass}"/>
+            <p:outputLabel id="#{cc.attrs.componentId}Label"
+                           value="#{cc.attrs.label}: "
+                           for="#{cc.attrs.componentId}"/>
             <composite:insertChildren/>
             <p:message id="#{cc.attrs.componentId}Message"
                        for="#{cc.attrs.componentId}"

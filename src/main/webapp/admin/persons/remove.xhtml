@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition template="#{context_path}/resources/templates/page.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://java.sun.com/jsf/core"
-                template="#{context_path}/resources/templates/page.xhtml">
+                xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:define name="title">#{msg['pages.admin.persons.remove.title']}</ui:define>
     <ui:define name="content">
         <f:metadata>
@@ -23,12 +23,17 @@
                 <h:outputText id="id" 
                               value="#{personHome.instance.id}"/>
                 <h:outputLabel for="firstName">
-                    #{msg['entities.person.fields.firstname']}
+                    #{msg['entities.person.fields.firstName']}
                 </h:outputLabel>
                 <h:outputText id="firstName" 
                               value="#{personHome.instance.firstName}"/>
+                <h:outputLabel for="middleName">
+                    #{msg['entities.person.fields.middleName']}
+                </h:outputLabel>
+                <h:outputText id="middleName" 
+                              value="#{personHome.instance.middleName}"/>
                 <h:outputLabel for="lastName">
-                    #{msg['entities.person.fields.lastname']}
+                    #{msg['entities.person.fields.lastName']}
                 </h:outputLabel>
                 <h:outputText id="lastName" 
                               value="#{personHome.instance.lastName}"/>

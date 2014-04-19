@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:p="http://primefaces.org/ui"
-                template="#{context_path}/resources/templates/page.xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+<ui:composition template="#{context_path}/resources/templates/page.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:define name="title">#{msg['pages.admin.persons.list.title']}</ui:define>
     <ui:define name="content">
         <h:form id="list"
@@ -47,13 +47,25 @@
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        #{msg['entities.person.fields.firstname']}
+                        #{msg['entities.person.fields.version']}
+                    </f:facet>
+                    <h:outputText value="#{person.version}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        #{msg['entities.person.fields.firstName']}
                     </f:facet>
                     <h:outputText value="#{person.firstName}" />
                 </p:column>
                 <p:column>
                     <f:facet name="header">
-                        #{msg['entities.person.fields.lastname']}
+                        #{msg['entities.person.fields.middleName']}
+                    </f:facet>
+                    <h:outputText value="#{person.middleName}" />
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        #{msg['entities.person.fields.lastName']}
                     </f:facet>
                     <h:outputText value="#{person.lastName}" />
                 </p:column>

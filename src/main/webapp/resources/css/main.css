@@ -106,15 +106,3 @@ label *[class="invalid"] {
     color: #ff0000 !important;
     font-weight: bold;
 }
-
-.required{
-    font-weight: bold;
-}
-
-.requiredFields{
-    padding-top: 5px;
-    padding-bottom: 5px;
-    font-size: 80%;
-    font-style: italic;
-    color: #ff0000;
-}

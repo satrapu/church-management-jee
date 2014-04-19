@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:composite="http://java.sun.com/jsf/composite"
-      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:my="http://java.sun.com/jsf/composite/components"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
     <composite:interface>
         <composite:attribute name="componentId" required="true"/>
         <composite:attribute name="value" required="true"/>
         <composite:attribute name="label" required="true"/>
+        <composite:attribute name="readonly" required="false" default="false"/>
         <composite:attribute name="required" required="false" default="false"/>
     </composite:interface>
     <composite:implementation>
@@ -15,18 +17,27 @@
                             value="#{cc.attrs.value}"
                             label="#{cc.attrs.label}"
                             required="#{cc.attrs.required}">
-            <p:selectOneMenu id="#{cc.attrs.componentId}"
-                             required="#{cc.attrs.required}"
-                             requiredMessage="#{msg['global.fields.required']}"
-                             styleClass="#{not component.valid ? 'invalid' : ''}"
-                             value="#{cc.attrs.value}">
-                <f:selectItem itemLabel="#{msg['global.fields.selectOneValue']}" 
-                              itemValue="" />  
-                <composite:insertChildren />
-                <p:ajax event="change"
-                        immediate="true"
-                        update="#{cc.attrs.componentId}Editor"/>
-            </p:selectOneMenu>
+            <c:choose>
+                <c:when test="#{cc.attrs.readonly}">
+                    <p:outputLabel id="#{cc.attrs.componentId}" 
+                                   value="#{cc.attrs.value}"/>
+                </c:when>
+                <c:otherwise>
+                    <p:selectOneMenu id="#{cc.attrs.componentId}"
+                                     disabled="#{cc.attrs.readonly}"
+                                     required="#{cc.attrs.required}"
+                                     requiredMessage="#{msg['global.fields.required']}"
+                                     styleClass="#{not component.valid ? 'invalid' : ''}"
+                                     value="#{cc.attrs.value}">
+                        <f:selectItem itemLabel="#{msg['global.fields.selectOneValue']}" 
+                                      itemValue="" />  
+                        <composite:insertChildren />
+                        <p:ajax event="change"
+                                immediate="true"
+                                update="#{cc.attrs.componentId}Editor"/>
+                    </p:selectOneMenu>
+                </c:otherwise>
+            </c:choose>
         </my:editorContainer>
     </composite:implementation>
 </html>

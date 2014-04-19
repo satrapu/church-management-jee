@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:composite="http://java.sun.com/jsf/composite"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:my="http://java.sun.com/jsf/composite/components">
+      xmlns:my="http://java.sun.com/jsf/composite/components"
+      xmlns:p="http://primefaces.org/ui">
     <composite:interface>
         <composite:attribute name="componentId" required="true"/>
         <composite:attribute name="value" required="true"/>
         <composite:attribute name="label" required="true"/>
+        <composite:attribute name="readonly" required="false" default="false"/>
         <composite:attribute name="required" required="false" default="false"/>
     </composite:interface>
     <composite:implementation>
@@ -14,15 +16,24 @@
                             value="#{cc.attrs.value}"
                             label="#{cc.attrs.label}"
                             required="#{cc.attrs.required}">
-            <p:inputText id="#{cc.attrs.componentId}"
-                         value="#{cc.attrs.value}"
-                         required="#{cc.attrs.required}"
-                         requiredMessage="#{msg['global.fields.required']}"
-                         styleClass="#{not component.valid ? 'invalid' : ''}">
-                <p:ajax event="blur"
-                        immediate="true"
-                        update="#{cc.attrs.componentId}Editor"/>
-            </p:inputText>
+            <c:choose>
+                <c:when test="#{cc.attrs.readonly}">
+                    <p:outputLabel id="#{cc.attrs.componentId}" 
+                                   value="#{cc.attrs.value}"/>
+                </c:when>
+                <c:otherwise>
+                    <p:inputText id="#{cc.attrs.componentId}"
+                                 value="#{cc.attrs.value}"
+                                 required="#{cc.attrs.required}"
+                                 requiredMessage="#{msg['global.fields.required']}"
+                                 styleClass="#{not component.valid ? 'invalid' : ''}"
+                                 readonly="#{cc.attrs.readonly}">
+                        <p:ajax event="blur"
+                                immediate="true"
+                                update="#{cc.attrs.componentId}Editor"/>
+                    </p:inputText>
+                </c:otherwise>
+            </c:choose>
         </my:editorContainer>
     </composite:implementation>
 </html>
