@@ -7,20 +7,18 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:define name="title">#{msg['pages.admin.persons.list.title']}</ui:define>
     <ui:define name="content">
-        <h:form id="list"
-                prependId="false"
-                onsubmit="document.getElementById('list').action = 'j_security_check';">
-            <h:outputText rendered="#{empty personList.data}"
-                          value="#{msg['global.noRecords']}"/>
+        <h:form>
+            <p:outputLabel rendered="#{personList.data.rowCount == 0}"
+                           value="#{msg['global.noRecords']}"/>
             <p:dataTable value="#{personList.data}"
                          var="person"
+                         rendered="#{personList.data.rowCount > 0}"
                          paginator="true"
                          paginatorPosition="top"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
                          rowsPerPageTemplate="5,10,25,50,100"
                          rows="25"
                          rowKey="#{person.id}"
-                         rendered="#{not empty personList.data}"
                          lazy="true">
                 <p:column>
                     <f:facet name="header">
@@ -71,8 +69,6 @@
                 </p:column>
             </p:dataTable>
             <p:separator/>
-        </h:form>
-        <h:form>
             <div class="actions">
                 <p:commandButton action="edit"
                                  value="#{msg['pages.admin.persons.list.actions.add']}"
