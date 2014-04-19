@@ -17,6 +17,12 @@
         -->
         <message-bundle>ro.satrapu.churchmanagement.ui.messages</message-bundle>
     </application>
+    <lifecycle>
+        <!--
+            Phase listener needed to restore FacesMessage instances when navigating from a page to another.
+        -->
+        <phase-listener>ro.satrapu.churchmanagement.ui.PageNavigationAwareFacesMessages</phase-listener>
+    </lifecycle>
     <!--    
     <factory>
         <exception-handler-factory>ro.satrapu.churchmanagement.ui.ExceptionHandlerFactory</exception-handler-factory>
