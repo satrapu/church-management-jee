@@ -13,7 +13,7 @@
                          value="#{personHome.id}"
                          converter="entityIdConverter"/>
             <f:event type="preRenderView"
-                     listener="#{personHome.beginConversation}" />
+                     listener="#{personHome.beginConversation}"/>
         </f:metadata>
         <h:form id="form">
             <my:inputText componentId="id"
@@ -38,7 +38,8 @@
                                  ajax="false"/>
                 <p:commandButton action="#{personHome.cancel}"
                                  value="#{msg['global.actions.cancel']}"
-                                 ajax="false"/>
+                                 ajax="false"
+                                 immediate="true"/>
             </div>
         </h:form>
     </ui:define>
