@@ -40,8 +40,8 @@ public class EntityIdConverter implements Converter {
         try {
             return Long.parseLong(value);
         } catch (NumberFormatException ex) {
-            String detail = MessageFormat.format(messages.getValueFor("converters.entityIdConverter.conversionFailed"), value);
-            FacesMessage conversionFailedMessage = new FacesMessage(messages.getValueFor("converters.conversionFailed"), detail);
+            String detail = MessageFormat.format(messages.getMessageFor("converters.entityIdConverter.conversionFailed"), value);
+            FacesMessage conversionFailedMessage = new FacesMessage(messages.getMessageFor("converters.conversionFailed"), detail);
             throw new ConverterException(conversionFailedMessage, ex);
         }
     }
