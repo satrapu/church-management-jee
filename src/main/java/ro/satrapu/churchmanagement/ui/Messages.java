@@ -25,74 +25,79 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Helper class used for displaying {@link FacesMessage} instances.
+ * Displays localized {@link FacesMessage} instances.
  *
- * @author Satrapu
+ * @author satrapu
  */
 @Model
 public class Messages {
 
-    static final String MISSING_MESSAGE_KEY_PATTERN = "???{0}???";
-    static final String BUNDLE_NAME = "msg";
-    ResourceBundle bundle;
     private static final Logger logger = LoggerFactory.getLogger(Messages.class);
+    private static final String MISSING_MESSAGE_KEY_PATTERN = "???{0}???";
+    private static final String BUNDLE_NAME = "msg";
+    private ResourceBundle bundle;
 
     @PostConstruct
     public void init() {
-        logger.debug("Messages will be fetched using bundle name: {}", BUNDLE_NAME);
+        logger.debug("Messages will be fetched using bundle name: {} ...", BUNDLE_NAME);
         FacesContext facesContext = FacesContext.getCurrentInstance();
         bundle = facesContext.getApplication().getResourceBundle(facesContext, BUNDLE_NAME);
     }
 
     public void info(String messageKey) {
-        logger.debug("Info message using key: {}", messageKey);
+        logger.debug("Adding info message using key for summary: {} ...", messageKey);
         add(FacesMessage.SEVERITY_INFO, messageKey);
     }
 
     public void warning(String messageKey) {
-        logger.debug("Warning message using key: {}", messageKey);
+        logger.debug("Adding warning message using key for summary: {} ...", messageKey);
         add(FacesMessage.SEVERITY_WARN, messageKey);
     }
 
     public void error(String messageKey) {
-        logger.debug("Error message using key: {}", messageKey);
+        logger.debug("Adding error message using key for summary: {} ...", messageKey);
         add(FacesMessage.SEVERITY_ERROR, messageKey);
     }
 
     public void fatal(String messageKey) {
-        logger.debug("Fatal message using key: {}", messageKey);
+        logger.debug("Adding fatal message using key for summary: {} ...", messageKey);
         add(FacesMessage.SEVERITY_FATAL, messageKey);
     }
 
     public void add(FacesMessage.Severity severity, String summaryMessageKey) {
-        logger.debug("Adding FacesMessage using severity: {} and summary key: {}", severity, summaryMessageKey);
+        logger.debug("Adding FacesMessage using severity: {} and key for summary: {} ...", severity, summaryMessageKey);
         FacesMessage facesMessage = new FacesMessage();
         facesMessage.setSeverity(severity);
-        facesMessage.setSummary(getValueFor(summaryMessageKey));
+        facesMessage.setSummary(getMessageFor(summaryMessageKey));
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
 
     public void add(FacesMessage.Severity severity, String summaryMessageKey, String detailMessageKey) {
-        logger.debug("Adding FacesMessage using severity: {}, summary key: {} and detail key: {}",
-                new Object[]{severity, summaryMessageKey, detailMessageKey});
+        logger.debug("Adding FacesMessage using severity: {}, key for summary: {} and key for detail: {} ...",
+                severity, summaryMessageKey, detailMessageKey);
         FacesMessage facesMessage = new FacesMessage();
         facesMessage.setSeverity(severity);
-        facesMessage.setSummary(getValueFor(summaryMessageKey));
-        facesMessage.setDetail(getValueFor(detailMessageKey));
+        facesMessage.setSummary(getMessageFor(summaryMessageKey));
+        facesMessage.setDetail(getMessageFor(detailMessageKey));
+        add(facesMessage);
+    }
+
+    public void add(FacesMessage facesMessage) {
+        logger.debug("Adding FacesMessage: {} ...", facesMessage);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
     }
 
-    public String getValueFor(String messageKey) {
-        logger.debug("Trying to get message using key: {}", messageKey);
+    public String getMessageFor(String key) {
+        logger.debug("Trying to get message using key: {} ...", key);
         String value;
 
-        if (!bundle.containsKey(messageKey)) {
-            value = MessageFormat.format(MISSING_MESSAGE_KEY_PATTERN, messageKey);
+        if (!bundle.containsKey(key)) {
+            value = MessageFormat.format(MISSING_MESSAGE_KEY_PATTERN, key);
         } else {
-            value = bundle.getString(messageKey);
+            value = bundle.getString(key);
         }
 
-        logger.debug("Found message: {} for key: {}", value, messageKey);
+        logger.debug("Found message: {}", value);
         return value;
     }
 }
