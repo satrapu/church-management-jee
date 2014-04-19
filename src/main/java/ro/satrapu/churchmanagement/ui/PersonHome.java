@@ -16,17 +16,25 @@
 package ro.satrapu.churchmanagement.ui;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
+import java.util.Iterator;
+import java.util.Set;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import org.slf4j.Logger;
 import ro.satrapu.churchmanagement.logging.LoggerInstance;
 import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
 
 /**
- * @see <a href="http://www.andygibson.net/blog/tutorial/pattern-for-conversational-crud-in-java-ee-6"> 
+ * @see <a
+ * href="http://www.andygibson.net/blog/tutorial/pattern-for-conversational-crud-in-java-ee-6">
  * Conversational CRUD in Java EE 6</a> by Andy Gibson.
  * @author satrapu
  */
@@ -35,6 +43,7 @@ import ro.satrapu.churchmanagement.persistence.Person;
 public class PersonHome implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final String LIST_PAGE_URL = "list?faces-redirect=true";
 
     @Inject
     PersistenceService persistenceService;
@@ -129,38 +138,42 @@ public class PersonHome implements Serializable {
     public String save() {
         boolean hasErrors = true;
 
-        if (isManaged()) {
-            Person person = getInstance();
-            
-            try {
-                logger.debug("Merging instance: {} ...", person);
-                persistenceService.merge(person);
-                messages.info("entities.person.actions.update.success");
-                hasErrors = false;
-            } catch (Exception e) {
-                logger.error("Could not merge instance", e);
-                messages.error("entities.person.actions.update.failure");
-            }
+        if (!isValid()) {
+            messages.error("global.fields.invalid");
         } else {
-            Person person = getInstance();
-            
-            try {
-                logger.debug("Persisting instance: {} ...", person);
-                persistenceService.persist(person);
-                messages.info("entities.person.actions.save.success");
-                hasErrors = false;
-            } catch (Exception e) {
-                logger.error("Could not persist instance", e);
-                messages.error("entities.person.actions.save.failure");
+            if (isManaged()) {
+                Person person = getInstance();
+
+                try {
+                    logger.debug("Merging instance: {} ...", person);
+                    persistenceService.merge(person);
+                    messages.info("entities.person.actions.update.success");
+                    hasErrors = false;
+                } catch (Exception e) {
+                    logger.error("Could not merge instance", e);
+                    messages.error("entities.person.actions.update.failure");
+                }
+            } else {
+                Person person = getInstance();
+
+                try {
+                    logger.debug("Persisting instance: {} ...", person);
+                    persistenceService.persist(person);
+                    messages.info("entities.person.actions.save.success");
+                    hasErrors = false;
+                } catch (Exception e) {
+                    logger.error("Could not persist instance", e);
+                    messages.error("entities.person.actions.save.failure");
+                }
             }
         }
 
-        if (!hasErrors) {
+        if (hasErrors) {
+            return null;
+        } else {
             conversation.end();
-            return "list";
+            return LIST_PAGE_URL;
         }
-
-        return null;
     }
 
     /**
@@ -171,7 +184,7 @@ public class PersonHome implements Serializable {
     public String cancel() {
         logger.debug("Cancelling editing instance ...");
         conversation.end();
-        return "list";
+        return LIST_PAGE_URL;
     }
 
     /**
@@ -205,9 +218,36 @@ public class PersonHome implements Serializable {
 
         if (!hasErrors) {
             conversation.end();
-            return "list";
+            return LIST_PAGE_URL;
         }
 
         return null;
+    }
+
+    /**
+     * Checks whether the current edited instance is valid or not.
+     *
+     * @return True, if the instance is valid; false, otherwise.
+     */
+    private boolean isValid() {
+        boolean result = true;
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<Person>> constraintViolations = validator.validate(getInstance());
+
+        if (constraintViolations.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            Iterator<ConstraintViolation<Person>> iterator = constraintViolations.iterator();
+
+            while (iterator.hasNext()) {
+                ConstraintViolation<Person> cv = iterator.next();
+                sb.append(MessageFormat.format("{0}: {1}{2}", cv.getPropertyPath(), cv.getMessage(), System.lineSeparator()));
+                result = false;
+            }
+
+            logger.error("Encountered an invalid Person instance: {}{}", System.lineSeparator(), sb.toString());
+        }
+
+        return result;
     }
 }
