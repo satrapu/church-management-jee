@@ -2,10 +2,25 @@
 <ui:composition xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:form>
+    <h:form id="menuForm">
         <p:menubar>
-            <p:submenu label="#{msg['admin.menu.title']}">
-                <p:menuitem value="#{msg['admin.menu.persons.title']}"
+            <p:menuitem value="#{msg['menu.login.title']}"
+                        url="/faces/login.xhtml"
+                        rendered="#{not loginHome.userAuthenticated}"/>
+            <p:submenu label="#{msg['menu.account.title']}"
+                       rendered="#{loginHome.userAuthenticated}">
+                <p:menuitem value="#{msg['menu.account.password.title']}"
+                            url="/faces/account/password.xhtml"/>
+                <p:menuitem value="#{msg['menu.account.logout.title']}">
+                    <p:commandLink value="#{msg['menu.account.logout.title']}"
+                                   action="#{loginHome.logout}"
+                                   ajax="false"
+                                   immediate="true"/>
+                </p:menuitem>
+            </p:submenu>
+            <p:submenu label="#{msg['menu.admin.title']}"
+                       rendered="#{loginHome.userAuthenticated}">
+                <p:menuitem value="#{msg['menu.admin.persons.title']}"
                             url="/faces/admin/persons/list.xhtml"/>
             </p:submenu>
         </p:menubar>

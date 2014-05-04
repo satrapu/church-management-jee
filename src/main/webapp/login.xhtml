@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="#{context_path}/resources/templates/page.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:my="http://java.sun.com/jsf/composite/components"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="title">#{msg['pages.login.title']}</ui:define>
+    <ui:define name="content">
+        <h:form id="loginForm">
+            <my:inputText componentId="userName"
+                          required="true"
+                          label="#{msg['entities.user.fields.userName']}"
+                          value="#{loginHome.instance.userName}"/>
+            <my:inputText componentId="password"
+                          required="true"
+                          label="#{msg['entities.user.fields.password']}"
+                          value="#{loginHome.instance.password}"/>
+            <p:separator/>
+            <p:outputPanel styleClass="actions">
+                <p:commandButton id="btnLogin"
+                                 action="#{loginHome.login}"
+                                 value="#{msg['global.actions.login']}"
+                                 ajax="false" />
+                <p:commandButton id="btnReset"
+                                 value="#{msg['global.actions.reset']}" 
+                                 update="@all" 
+                                 process="@this" 
+                                 actionListener="#{loginHome.reset}" />  
+            </p:outputPanel>
+        </h:form>
+    </ui:define>
+</ui:composition>

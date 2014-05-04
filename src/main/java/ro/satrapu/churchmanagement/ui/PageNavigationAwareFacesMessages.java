@@ -11,26 +11,27 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
 /**
- * @see <a href="http://stackoverflow.com/questions/11955848/jsf-2-1-redirect-preserving-error-message">StackOverflow</a>.
+ * @see <a
+ * href="http://stackoverflow.com/questions/11955848/jsf-2-1-redirect-preserving-error-message">StackOverflow</a>.
  * Enables messages to be rendered on different pages from which they were set.
  *
- * After each phase where messages may be added, this moves the messages
- * from the page-scoped FacesContext to the session-scoped session map.
+ * After each phase where messages may be added, this moves the messages from
+ * the page-scoped FacesContext to the session-scoped session map.
  *
- * Before messages are rendered, this moves the messages from the
- * session-scoped session map back to the page-scoped FacesContext.
+ * Before messages are rendered, this moves the messages from the session-scoped
+ * session map back to the page-scoped FacesContext.
  *
- * Only global messages, not associated with a particular component, are
- * moved. Component messages cannot be rendered on pages other than the one on
- * which they were added.
+ * Only global messages, not associated with a particular component, are moved.
+ * Component messages cannot be rendered on pages other than the one on which
+ * they were added.
  *
- * To enable multi-page messages support, add a <code>lifecycle</code> block to your
- * faces-config.xml file. That block should contain a single
+ * To enable multi-page messages support, add a <code>lifecycle</code> block to
+ * your faces-config.xml file. That block should contain a single
  * <code>phase-listener</code> block containing the fully-qualified class name
  * of this file.
  *
  * @author Jesse Wilson jesse[AT]odel.on.ca
- * @secondaryAuthor Lincoln Baxter III lincoln[AT]ocpsoft.com 
+ * @secondaryAuthor Lincoln Baxter III lincoln[AT]ocpsoft.com
  */
 public class PageNavigationAwareFacesMessages implements PhaseListener {
 
@@ -51,11 +52,11 @@ public class PageNavigationAwareFacesMessages implements PhaseListener {
     @Override
     public void beforePhase(final PhaseEvent event) {
         FacesContext facesContext = event.getFacesContext();
-        this.saveMessages(facesContext);
+        saveMessages(facesContext);
 
         if (PhaseId.RENDER_RESPONSE.equals(event.getPhaseId())) {
             if (!facesContext.getResponseComplete()) {
-                this.restoreMessages(facesContext);
+                restoreMessages(facesContext);
             }
         }
     }
@@ -67,7 +68,7 @@ public class PageNavigationAwareFacesMessages implements PhaseListener {
     public void afterPhase(final PhaseEvent event) {
         if (!PhaseId.RENDER_RESPONSE.equals(event.getPhaseId())) {
             FacesContext facesContext = event.getFacesContext();
-            this.saveMessages(facesContext);
+            saveMessages(facesContext);
         }
     }
 

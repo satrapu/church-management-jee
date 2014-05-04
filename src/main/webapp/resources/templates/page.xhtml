@@ -7,33 +7,41 @@
     <h:head>
         <meta http-equiv="Content-Type"
               content="text/html; charset=UTF-8" />
-        <h:outputStylesheet name="main.css" library="css"/>
+        <h:outputStylesheet name="main.css" 
+                            library="css"/>
         <title>#{msg['application.title']}</title>
     </h:head>
-    <h:body>
-        <f:view>
-            <p:panel styleClass="pageContainer">
+    <h:body id="body">
+        <f:view id="view">
+            <p:panel id="page" 
+                     styleClass="pageContainer">
                 <f:facet name="header">
-                    <div class="pageHeader">
-                        <h:outputLabel value="#{msg['application.title']}" />
-                    </div>
+                    <p:outputPanel id="header" 
+                                   styleClass="pageHeader">
+                        #{msg['application.title']}
+                    </p:outputPanel>
                 </f:facet>
                 <f:facet name="footer">
-                    <div class="pageFooter">
+                    <p:outputPanel id="footer" 
+                                   styleClass="pageFooter">
                         #{msg['application.poweredBy']}
-                    </div>
+                    </p:outputPanel>
                 </f:facet>
-                <ui:include src="menu.xhtml"/>
+                <p:outputPanel id="menu">
+                    <ui:include src="menu.xhtml"/>
+                </p:outputPanel>
                 <p:messages id="messages"
                             globalOnly="true"
                             showSummary="true"
                             showDetail="false"/>
-                <div class="pageTitle">
+                <p:outputPanel id="title" 
+                               styleClass="pageTitle">
                     <ui:insert name="title"/>
-                </div>
-                <div class="pageContent">
+                </p:outputPanel>
+                <p:outputPanel id="content" 
+                               styleClass="pageContent">
                     <ui:insert name="content"/>
-                </div>
+                </p:outputPanel>
             </p:panel>
         </f:view>
     </h:body>

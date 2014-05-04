@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ro.satrapu.churchmanagement.persistence;
+package ro.satrapu.churchmanagement.security;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
@@ -25,27 +22,20 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
+ * Contains all details needed to authenticate a user.
  *
  * @author satrapu
  */
-@Entity
-@Table(name = "Persons")
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class Person extends ManagedEntity {
+@EqualsAndHashCode
+@ToString
+public class LoginInfo {
 
     @NotNull
     @Size(min = 1, max = 400)
-    @Column(nullable = false, length = 400, name = "FirstName")
-    private String firstName;
-
-    @Size(max = 400)
-    @Column(nullable = true, length = 400, name = "MiddleName")
-    private String middleName;
+    private String userName;
 
     @NotNull
-    @Size(min = 1, max = 400)
-    @Column(nullable = false, length = 400, name = "LastName")
-    private String lastName;
+    @Size(min = 1, max = 100)
+    private String password;
 }
