@@ -28,7 +28,7 @@ import lombok.Setter;
 /**
  * Base class for any JPA entity.
  *
- * @author Satrapu
+ * @author satrapu
  */
 @MappedSuperclass
 @Data

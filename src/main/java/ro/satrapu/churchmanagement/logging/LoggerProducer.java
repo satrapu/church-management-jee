@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Produces {@link org.slf4j.Logger} instances.
  *
- * @author Satrapu
+ * @author satrapu
  */
 public class LoggerProducer {
 

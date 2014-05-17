@@ -17,7 +17,7 @@ package ro.satrapu.churchmanagement.persistence;
 
 /**
  *
- * @author Satrapu
+ * @author satrapu
  */
 public class PersistenceUnits {
 

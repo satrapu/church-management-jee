@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Satrapu
+ * @author satrapu
  */
 public interface Entity extends Serializable {
 

@@ -28,8 +28,9 @@ import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
 
 /**
+ * Displays a list of {@link Person} instances matching a given criteria.
  *
- * @author Satrapu
+ * @author satrapu
  */
 @Model
 public class PersonList {
@@ -52,7 +53,8 @@ public class PersonList {
 
             @Override
             public List<Person> load(int currentPageIndex, int recordsPerPage, String sortField, SortOrder sortOrder, Map filters) {
-                logger.debug("Loading page #{} containing maximum {} instances of type {} ...", currentPageIndex + 1, recordsPerPage, clazz.getName());
+                logger.debug("Loading page #{} containing maximum {} instances of type {} ...", currentPageIndex + 1, recordsPerPage,
+                        clazz.getName());
                 return persistenceService.fetch(clazz, currentPageIndex, recordsPerPage);
             }
         };

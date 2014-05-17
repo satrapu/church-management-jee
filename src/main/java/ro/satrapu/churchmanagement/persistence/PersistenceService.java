@@ -29,7 +29,7 @@ import ro.satrapu.churchmanagement.logging.LoggerInstance;
 
 /**
  *
- * @author Satrapu
+ * @author satrapu
  */
 @Stateless
 public class PersistenceService {
