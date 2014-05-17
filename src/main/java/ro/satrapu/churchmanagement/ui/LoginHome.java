@@ -48,6 +48,10 @@ public class LoginHome implements Serializable {
     @Inject
     transient Messages messages;
 
+    @Inject
+    @FacesContextInstance
+    transient FacesContext facesContext;
+
     private LoginInfo instance;
     private boolean userAuthenticated;
 
@@ -81,7 +85,7 @@ public class LoginHome implements Serializable {
      * @return
      */
     public String logout() {
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        facesContext.getExternalContext().invalidateSession();
         resetLoginInfo();
         userAuthenticated = false;
         messages.info("pages.login.actions.logout.success");
