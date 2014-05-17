@@ -33,7 +33,10 @@ import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
 
 /**
- * @see <a href="http://www.andygibson.net/blog/tutorial/pattern-for-conversational-crud-in-java-ee-6">
+ * Manages a specific {@link Person} instance.
+ *
+ * @see <a
+ * href="http://www.andygibson.net/blog/tutorial/pattern-for-conversational-crud-in-java-ee-6">
  * Conversational CRUD in Java EE 6</a> by Andy Gibson.
  * @author satrapu
  */
@@ -239,8 +242,9 @@ public class PersonHome implements Serializable {
             Iterator<ConstraintViolation<Person>> iterator = constraintViolations.iterator();
 
             while (iterator.hasNext()) {
-                ConstraintViolation<Person> cv = iterator.next();
-                sb.append(MessageFormat.format("{0}: {1}{2}", cv.getPropertyPath(), cv.getMessage(), System.lineSeparator()));
+                ConstraintViolation<Person> constraintViolation = iterator.next();
+                sb.append(MessageFormat.format("{0}: {1}{2}",
+                        constraintViolation.getPropertyPath(), constraintViolation.getMessage(), System.lineSeparator()));
                 result = false;
             }
 
