@@ -18,7 +18,6 @@ package ro.satrapu.churchmanagement.ui;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -35,27 +34,15 @@ public class Messages implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(Messages.class);
     private static final String MESSAGE_KEY_NOT_FOUND = "???{0}???";
-    private static final String BUNDLE_NAME = "msg";
-    private ResourceBundle bundle;
+    
+    @Inject
+    ResourceBundle resourceBundle;
 
     @Inject
     @FacesContextInstance
     FacesContext facesContext;
 
-    @PostConstruct
-    public void init() {
-        logger.debug("Messages will be fetched using bundle name: {} ...", BUNDLE_NAME);
-        bundle = facesContext.getApplication().getResourceBundle(facesContext, BUNDLE_NAME);
-
-        if (bundle == null) {
-            String errorMessage = MessageFormat.format("Could not find bundle using name: {0}.", BUNDLE_NAME);
-            logger.error(errorMessage);
-            throw new RuntimeException(errorMessage);
-        }
-
-        logger.debug("Found bundle with {} pairs", bundle.keySet().size());
-    }
-
+    
     public void info(String messageKey) {
         logger.debug("Adding info message using key for summary: {} ...", messageKey);
         add(FacesMessage.SEVERITY_INFO, messageKey);
@@ -107,10 +94,10 @@ public class Messages implements Serializable {
         logger.debug("Trying to get message using key: {} ...", key);
         String value;
 
-        if (!bundle.containsKey(key)) {
+        if (!resourceBundle.containsKey(key)) {
             value = MessageFormat.format(MESSAGE_KEY_NOT_FOUND, key);
         } else {
-            value = bundle.getString(key);
+            value = resourceBundle.getString(key);
         }
 
         logger.debug("Found message: {}", value);
