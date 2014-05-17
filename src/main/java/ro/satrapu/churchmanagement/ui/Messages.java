@@ -15,12 +15,13 @@
  */
 package ro.satrapu.churchmanagement.ui;
 
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,19 +30,30 @@ import org.slf4j.LoggerFactory;
  *
  * @author satrapu
  */
-@Model
-public class Messages {
+public class Messages implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(Messages.class);
-    private static final String MISSING_MESSAGE_KEY_PATTERN = "???{0}???";
+    private static final String MESSAGE_KEY_NOT_FOUND = "???{0}???";
     private static final String BUNDLE_NAME = "msg";
     private ResourceBundle bundle;
+
+    @Inject
+    @FacesContextInstance
+    FacesContext facesContext;
 
     @PostConstruct
     public void init() {
         logger.debug("Messages will be fetched using bundle name: {} ...", BUNDLE_NAME);
-        FacesContext facesContext = FacesContext.getCurrentInstance();
         bundle = facesContext.getApplication().getResourceBundle(facesContext, BUNDLE_NAME);
+
+        if (bundle == null) {
+            String errorMessage = MessageFormat.format("Could not find bundle using name: {0}.", BUNDLE_NAME);
+            logger.error(errorMessage);
+            throw new RuntimeException(errorMessage);
+        }
+
+        logger.debug("Found bundle with {} pairs", bundle.keySet().size());
     }
 
     public void info(String messageKey) {
@@ -66,25 +78,29 @@ public class Messages {
 
     public void add(FacesMessage.Severity severity, String summaryMessageKey) {
         logger.debug("Adding FacesMessage using severity: {} and key for summary: {} ...", severity, summaryMessageKey);
+
         FacesMessage facesMessage = new FacesMessage();
         facesMessage.setSeverity(severity);
         facesMessage.setSummary(getMessageFor(summaryMessageKey));
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+
+        facesContext.addMessage(null, facesMessage);
     }
 
     public void add(FacesMessage.Severity severity, String summaryMessageKey, String detailMessageKey) {
         logger.debug("Adding FacesMessage using severity: {}, key for summary: {} and key for detail: {} ...",
                 severity, summaryMessageKey, detailMessageKey);
+
         FacesMessage facesMessage = new FacesMessage();
         facesMessage.setSeverity(severity);
         facesMessage.setSummary(getMessageFor(summaryMessageKey));
         facesMessage.setDetail(getMessageFor(detailMessageKey));
+
         add(facesMessage);
     }
 
     public void add(FacesMessage facesMessage) {
         logger.debug("Adding FacesMessage: {} ...", facesMessage);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        facesContext.addMessage(null, facesMessage);
     }
 
     public String getMessageFor(String key) {
@@ -92,7 +108,7 @@ public class Messages {
         String value;
 
         if (!bundle.containsKey(key)) {
-            value = MessageFormat.format(MISSING_MESSAGE_KEY_PATTERN, key);
+            value = MessageFormat.format(MESSAGE_KEY_NOT_FOUND, key);
         } else {
             value = bundle.getString(key);
         }
