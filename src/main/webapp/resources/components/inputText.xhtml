@@ -25,6 +25,7 @@ limitations under the License.
         <composite:attribute name="label" required="true"/>
         <composite:attribute name="readonly" required="false" default="false"/>
         <composite:attribute name="required" required="false" default="false"/>
+        <composite:attribute name="placeholder" required="false"/>
     </composite:interface>
     <composite:implementation>
         <my:editorContainer componentId="#{cc.attrs.componentId}"
@@ -42,7 +43,8 @@ limitations under the License.
                                  required="#{cc.attrs.required}"
                                  requiredMessage="#{msg['global.fields.required']}"
                                  styleClass="#{not component.valid ? 'invalid' : ''}"
-                                 readonly="#{cc.attrs.readonly}">
+                                 readonly="#{cc.attrs.readonly}"
+                                 placeholder="#{cc.attrs.placeholder}">
                         <p:ajax event="blur"
                                 immediate="true"
                                 update="#{cc.attrs.componentId}Editor"/>
