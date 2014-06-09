@@ -15,7 +15,6 @@
  */
 package ro.satrapu.churchmanagement.ui;
 
-import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.faces.context.FacesContext;
@@ -78,7 +77,7 @@ public class LoginHome {
         if (!authenticationFailed && authenticatedUser != null) {
             currentUser.setAuthenticatedUser(authenticatedUser);
             messages.info("pages.login.actions.login.success");
-            return Urls.Secured.HOME;
+            return Urls.addRedirectQueryStringParameter(Urls.Secured.HOME);
         } else {
             messages.error("pages.login.actions.login.failure");
             return null;
