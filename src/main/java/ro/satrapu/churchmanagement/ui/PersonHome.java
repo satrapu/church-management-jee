@@ -35,8 +35,7 @@ import ro.satrapu.churchmanagement.persistence.Person;
 /**
  * Manages a specific {@link Person} instance.
  *
- * @see <a
- * href="http://www.andygibson.net/blog/tutorial/pattern-for-conversational-crud-in-java-ee-6">
+ * @see <a href="http://www.andygibson.net/blog/tutorial/pattern-for-conversational-crud-in-java-ee-6">
  * Conversational CRUD in Java EE 6</a> by Andy Gibson.
  * @author satrapu
  */
@@ -45,7 +44,6 @@ import ro.satrapu.churchmanagement.persistence.Person;
 public class PersonHome implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final String LIST_PAGE_URL = "list?faces-redirect=true";
 
     @Inject
     PersistenceService persistenceService;
@@ -174,7 +172,7 @@ public class PersonHome implements Serializable {
             return null;
         } else {
             conversation.end();
-            return LIST_PAGE_URL;
+            return Urls.Secured.Persons.LIST;
         }
     }
 
@@ -186,7 +184,7 @@ public class PersonHome implements Serializable {
     public String cancel() {
         logger.debug("Cancelling editing instance ...");
         conversation.end();
-        return LIST_PAGE_URL;
+        return Urls.Secured.Persons.LIST;
     }
 
     /**
@@ -220,7 +218,7 @@ public class PersonHome implements Serializable {
 
         if (!hasErrors) {
             conversation.end();
-            return LIST_PAGE_URL;
+            return Urls.Secured.Persons.LIST;
         }
 
         return null;
