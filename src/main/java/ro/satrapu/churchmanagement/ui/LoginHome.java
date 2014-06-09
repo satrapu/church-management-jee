@@ -17,49 +17,46 @@ package ro.satrapu.churchmanagement.ui;
 
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Model;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 import org.slf4j.Logger;
 import ro.satrapu.churchmanagement.logging.LoggerInstance;
-import ro.satrapu.churchmanagement.security.LoginInfo;
-import ro.satrapu.churchmanagement.security.UserAuthenticator;
+import ro.satrapu.churchmanagement.security.AuthenticatedUser;
+import ro.satrapu.churchmanagement.security.AuthenticationDetails;
+import ro.satrapu.churchmanagement.security.Authenticator;
+import ro.satrapu.churchmanagement.security.CurrentUser;
 
 /**
  * Handles user login/logout actions.
  *
  * @author satrapu
  */
-@Named
-@SessionScoped
-public class LoginHome implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    private static final String URL_INDEX = "/index?faces-redirect=true";
+@Model
+public class LoginHome {
 
     @Inject
     @LoggerInstance
     Logger logger;
 
     @Inject
-    transient UserAuthenticator userAuthenticator;
+    Authenticator userAuthenticator;
 
     @Inject
-    transient Messages messages;
+    Messages messages;
 
     @Inject
     @FacesContextInstance
-    transient FacesContext facesContext;
+    FacesContext facesContext;
 
-    private LoginInfo instance;
-    private boolean userAuthenticated;
+    @Inject
+    CurrentUser currentUser;
+
+    private AuthenticationDetails authenticationDetails;
 
     @PostConstruct
     public void init() {
-        instance = new LoginInfo();
-        instance.setUserName("satrapu");
-        instance.setPassword("123456");
+        authenticationDetails = new AuthenticationDetails();
     }
 
     /**
@@ -68,11 +65,20 @@ public class LoginHome implements Serializable {
      * @return
      */
     public String login() {
-        userAuthenticated = userAuthenticator.authenticate(instance);
+        AuthenticatedUser authenticatedUser = null;
+        boolean authenticationFailed = false;
 
-        if (userAuthenticated) {
+        try {
+            authenticatedUser = userAuthenticator.authenticate(authenticationDetails);
+        } catch (Throwable e) {
+            logger.warn("Unable to authenticate user", e);
+            authenticationFailed = true;
+        }
+
+        if (!authenticationFailed && authenticatedUser != null) {
+            currentUser.setAuthenticatedUser(authenticatedUser);
             messages.info("pages.login.actions.login.success");
-            return URL_INDEX;
+            return Urls.Secured.HOME;
         } else {
             messages.error("pages.login.actions.login.failure");
             return null;
@@ -85,11 +91,11 @@ public class LoginHome implements Serializable {
      * @return
      */
     public String logout() {
-        facesContext.getExternalContext().invalidateSession();
         resetLoginInfo();
-        userAuthenticated = false;
+        currentUser.destroy();
+        facesContext.getExternalContext().invalidateSession();
         messages.info("pages.login.actions.logout.success");
-        return URL_INDEX;
+        return Urls.addRedirectQueryStringParameter(Urls.Unsecured.LOGIN);
     }
 
     /**
@@ -100,16 +106,12 @@ public class LoginHome implements Serializable {
         messages.info("pages.login.actions.reset");
     }
 
-    public LoginInfo getInstance() {
-        return instance;
-    }
-
-    public boolean isUserAuthenticated() {
-        return userAuthenticated;
+    public AuthenticationDetails getAuthenticationDetails() {
+        return authenticationDetails;
     }
 
     private void resetLoginInfo() {
-        instance.setUserName(null);
-        instance.setPassword(null);
+        authenticationDetails.setUserName(null);
+        authenticationDetails.setPassword(null);
     }
 }

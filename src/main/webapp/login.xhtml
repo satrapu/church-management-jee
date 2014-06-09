@@ -23,14 +23,16 @@ limitations under the License.
     <ui:define name="title">#{msg['pages.login.title']}</ui:define>
     <ui:define name="content">
         <h:form id="loginForm">
-            <my:inputText componentId="userName"
+            <my:inputText componentId="identifier"
                           required="true"
-                          label="#{msg['entities.user.fields.userName']}"
-                          value="#{loginHome.instance.userName}"/>
-            <my:inputText componentId="password"
-                          required="true"
-                          label="#{msg['entities.user.fields.password']}"
-                          value="#{loginHome.instance.password}"/>
+                          label="#{msg['pages.login.userName.label']}"
+                          value="#{loginHome.authenticationDetails.userName}"
+                          placeholder="#{msg['pages.login.userName.placeholder']}"/>
+            <my:password componentId="token"
+                         required="true"
+                         label="#{msg['pages.login.password.label']}"
+                         value="#{loginHome.authenticationDetails.password}"
+                         placeholder="#{msg['pages.login.password.placeholder']}"/>
             <p:separator/>
             <p:outputPanel styleClass="actions">
                 <p:commandButton id="btnLogin"
