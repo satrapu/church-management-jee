@@ -13,66 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-body {
-    background-color: #ffffff;
-    font-size: 12px;
-    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    color: #000000;  
-    margin: 10px;
-}
-
-h1 {
-    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    border-bottom: 1px solid #AFAFAF; 
-    font-size:  16px;
-    font-weight: bold;
-    margin: 0px;
-    padding: 0px;
-    color: #D20005;
-}
-
-a:link, a:visited {
-    color: #045491;
-    font-weight : bold;
-    text-decoration: none;
-}
-
-a:link:hover, a:visited:hover  {
-    color: #045491;
-    font-weight : bold;
-    text-decoration : underline;
-}
-
-.pageContainer{
+.page{
     width: 99%;
 }
 
-.pageHeader{
+.page .header{
+    font-size: 150%;
     font-weight: bold;
-    font-size: 200% !important;
 }
 
-.pageMenu{
-}
-
-.pageTitle{
-    font-weight: bold;
-    font-size: 120%;
-    padding-bottom: 15px;
-    padding-top: 5px;
-}
-
-.pageContent{
-}
-
-.pageFooter{
+.page .footer{
     text-align: center;
-    font-size: 80%;
+    font-size: 75%;
     font-style: italic;
 }
 
-.appWelcome{
-    padding: 10px;
+.page .title{
+    font-size: 125%;
+    font-weight: bold;
+}
+
+.page .menu{
+}
+
+.page .messages{
+}
+
+.page .content{
+}
+
+.page .welcome{
+    font-size: 125%;
     font-weight: bold;
 }
 
@@ -82,42 +53,4 @@ a:link:hover, a:visited:hover  {
 
 .actions a{
     margin-right: 5px;
-}
-
-.error-title{
-    font-weight: bold;
-    color: #ff0000;
-}
-
-.error-container{
-    width: 99%; 
-    height: 500px;
-    font-size: 10%;
-}
-
-.editor{
-}
-
-.editor .label {
-    float: left;
-    width: 120px;
-}
-
-.editor .control{
-}
-
-.invalid {
-    border-color: #ff0000 !important;
-    border-width: 2px !important;
-}
-
-/*satrapu March 22nd, 2014 - added this class to highlight PrimeFaces calendar containing invalid value*/
-*[class="invalid"] input {
-    border-color: #ff0000 !important;
-    border-width: 2px !important;
-}
-
-label *[class="invalid"] {
-    color: #ff0000 !important;
-    font-weight: bold;
 }
