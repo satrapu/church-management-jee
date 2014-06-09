@@ -5,5 +5,8 @@
 *.war
 *.ear
 /target/
+/.idea/
+/church-management.iml
 nb-configuration.xml
+nbactions.xml
 faces-config.NavData
