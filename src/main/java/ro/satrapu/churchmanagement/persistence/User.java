@@ -34,6 +34,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class User extends ManagedEntity {
 
+    private static final long serialVersionUID = 1L;
+
     @NotNull
     @Size(min = 1, max = 400)
     @Column(nullable = false, length = 400, name = "UserName")
