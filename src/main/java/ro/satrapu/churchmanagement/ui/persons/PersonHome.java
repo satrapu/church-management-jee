@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ro.satrapu.churchmanagement.ui;
+package ro.satrapu.churchmanagement.ui.persons;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -31,6 +31,8 @@ import org.slf4j.Logger;
 import ro.satrapu.churchmanagement.logging.LoggerInstance;
 import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
+import ro.satrapu.churchmanagement.ui.messages.Messages;
+import ro.satrapu.churchmanagement.ui.Urls;
 
 /**
  * Manages a specific {@link Person} instance.

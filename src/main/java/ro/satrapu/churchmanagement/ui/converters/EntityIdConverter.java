@@ -23,7 +23,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
-import ro.satrapu.churchmanagement.ui.Messages;
+import ro.satrapu.churchmanagement.ui.messages.Messages;
 
 /**
  *

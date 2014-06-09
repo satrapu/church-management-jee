@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ro.satrapu.churchmanagement.ui;
+package ro.satrapu.churchmanagement.ui.login;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
@@ -25,6 +25,9 @@ import ro.satrapu.churchmanagement.security.AuthenticatedUser;
 import ro.satrapu.churchmanagement.security.AuthenticationDetails;
 import ro.satrapu.churchmanagement.security.Authenticator;
 import ro.satrapu.churchmanagement.security.CurrentUser;
+import ro.satrapu.churchmanagement.ui.FacesContextInstance;
+import ro.satrapu.churchmanagement.ui.messages.Messages;
+import ro.satrapu.churchmanagement.ui.Urls;
 
 /**
  * Handles user login/logout actions.

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ro.satrapu.churchmanagement.ui;
+package ro.satrapu.churchmanagement.ui.messages;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ro.satrapu.churchmanagement.ui.FacesContextInstance;
 
 /**
  * Displays localized {@link FacesMessage} instances.
