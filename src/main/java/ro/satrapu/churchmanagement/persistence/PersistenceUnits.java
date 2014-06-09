@@ -16,14 +16,14 @@
 package ro.satrapu.churchmanagement.persistence;
 
 /**
+ * Contains the names of the persistence units used by this application.
  *
  * @author satrapu
  */
 public class PersistenceUnits {
 
     /**
-     * Represents the name of the persistence unit managing Church Management
-     * application data.
+     * Represents the name of the persistence unit managing Church Management application data.
      */
     public static final String CHURCH_MANAGEMENT = "churchmanagement";
 }
