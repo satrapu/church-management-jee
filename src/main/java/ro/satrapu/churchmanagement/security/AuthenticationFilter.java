@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ro.satrapu.churchmanagement.ui;
+package ro.satrapu.churchmanagement.security;
 
 import java.io.IOException;
 import javax.inject.Inject;
@@ -26,7 +26,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import ro.satrapu.churchmanagement.security.CurrentUser;
+import ro.satrapu.churchmanagement.ui.Urls;
 
 /**
  * A {@link Filter} implementation which ensures that only authenticated users
