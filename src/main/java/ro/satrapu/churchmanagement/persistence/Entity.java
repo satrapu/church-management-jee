@@ -18,6 +18,7 @@ package ro.satrapu.churchmanagement.persistence;
 import java.io.Serializable;
 
 /**
+ * Represents a persistent entity.
  *
  * @author satrapu
  */
@@ -26,8 +27,7 @@ public interface Entity extends Serializable {
     /**
      * Gets the entity identifier.
      *
-     * @return A non-null value if the entity was already persisted; null,
-     * otherwise.
+     * @return A non-null value if the entity was already persisted; null, otherwise.
      */
     public Serializable getId();
 
