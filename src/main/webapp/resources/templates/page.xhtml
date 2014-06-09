@@ -26,35 +26,33 @@ limitations under the License.
                             library="css"/>
         <title>#{msg['application.title']}</title>
     </h:head>
-    <h:body id="body">
-        <f:view id="view">
-            <p:panel id="page" 
-                     styleClass="pageContainer">
+    <h:body>
+        <f:view>
+            <p:panel styleClass="page">
                 <f:facet name="header">
-                    <p:outputPanel id="header" 
-                                   styleClass="pageHeader">
+                    <p:outputPanel styleClass="header">
                         #{msg['application.title']}
                     </p:outputPanel>
                 </f:facet>
                 <f:facet name="footer">
-                    <p:outputPanel id="footer" 
-                                   styleClass="pageFooter">
+                    <p:outputPanel styleClass="footer">
                         #{msg['application.poweredBy']}
                     </p:outputPanel>
                 </f:facet>
-                <p:outputPanel id="menu">
+                <p:outputPanel styleClass="menu">
                     <ui:include src="menu.xhtml"/>
                 </p:outputPanel>
-                <p:messages id="messages"
-                            globalOnly="true"
-                            showSummary="true"
-                            showDetail="false"/>
-                <p:outputPanel id="title" 
-                               styleClass="pageTitle">
-                    <ui:insert name="title"/>
+                <p:outputPanel styleClass="messages">
+                    <p:messages id="messages"
+                                globalOnly="true"
+                                showSummary="true"
+                                showDetail="false" />
                 </p:outputPanel>
-                <p:outputPanel id="content" 
-                               styleClass="pageContent">
+                <p:outputPanel styleClass="title">
+                    <ui:insert name="title"/>
+                    <hr/>
+                </p:outputPanel>
+                <p:outputPanel styleClass="content">
                     <ui:insert name="content"/>
                 </p:outputPanel>
             </p:panel>
