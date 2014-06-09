@@ -42,11 +42,6 @@
 .page .content{
 }
 
-.page .welcome{
-    font-size: 125%;
-    font-weight: bold;
-}
-
 .actions button{
     margin-right: 5px;
 }
@@ -54,3 +49,12 @@
 .actions a{
     margin-right: 5px;
 }
+
+/* home page - start */
+.page .home .welcome{
+    font-weight: bold;
+}
+
+.page .home .description{
+}
+/* home page - end */

@@ -16,11 +16,19 @@ limitations under the License.
 -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                template="/resources/templates/page.xhtml">
-    <ui:define name="title"/>
+                template="/resources/templates/page.xhtml"
+		xmlns:p="http://primefaces.org/ui">
+    <ui:define name="title">
+	#{msg['pages.home.title']}
+    </ui:define>
     <ui:define name="content">
-        <div class="welcome">
-            #{msg['pages.home.welcome']}, #{currentUser.name}!
-        </div>
+	<p:outputPanel styleClass="home">
+	    <p class="welcome">
+		#{msg['pages.home.welcome']}, #{currentUser.name}!
+	    </p>
+	    <p class="description">
+		#{msg['pages.home.description']}
+	    </p>
+	</p:outputPanel>
     </ui:define>
 </ui:composition>
