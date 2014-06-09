@@ -19,8 +19,8 @@ limitations under the License.
                 template="/resources/templates/page.xhtml">
     <ui:define name="title"/>
     <ui:define name="content">
-        <div class="appWelcome">
-            Welcome, #{currentUser.name}!
+        <div class="welcome">
+            #{msg['pages.home.welcome']}, #{currentUser.name}!
         </div>
     </ui:define>
 </ui:composition>
