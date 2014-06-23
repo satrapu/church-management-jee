@@ -82,6 +82,12 @@ limitations under the License.
                     </f:facet>
                     <h:outputText value="#{person.lastName}" />
                 </p:column>
+		<p:column>
+                    <f:facet name="header">
+                        #{msg['entities.person.fields.emailAddress']}
+                    </f:facet>
+                    <h:outputText value="#{person.emailAddress.value}" />
+                </p:column>
             </p:dataTable>
             <p:separator/>
             <div class="actions">

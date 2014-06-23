@@ -16,6 +16,7 @@
 package ro.satrapu.churchmanagement.persistence;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -37,6 +38,14 @@ public class Person extends ManagedEntity {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Creates a new instance of {@link Person} class.
+     */
+    public Person() {
+	super();
+	emailAddress = new EmailAddress();
+    }
+
     @NotNull
     @Size(min = 1, max = 400)
     @Column(nullable = false, length = 400, name = "FirstName")
@@ -50,4 +59,8 @@ public class Person extends ManagedEntity {
     @Size(min = 1, max = 400)
     @Column(nullable = false, length = 400, name = "LastName")
     private String lastName;
+
+    @NotNull
+    @Embedded
+    private EmailAddress emailAddress;
 }

@@ -46,6 +46,10 @@ limitations under the License.
                           required="true"
                           label="#{msg['entities.person.fields.lastName']}"
                           value="#{personHome.instance.lastName}"/>
+	    <my:inputText componentId="emailAddress"
+                          required="true"
+                          label="#{msg['entities.person.fields.emailAddress']}"
+                          value="#{personHome.instance.emailAddress.value}"/>
             <p:separator/>
             <div class="actions">
                 <p:commandButton action="#{personHome.save}"
