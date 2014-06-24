@@ -16,35 +16,32 @@ limitations under the License.
 -->
 <ui:composition template="#{context_path}/resources/templates/page.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:my="http://java.sun.com/jsf/composite/components"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:define name="title">#{msg['pages.login.title']}</ui:define>
     <ui:define name="content">
-        <h:form id="loginForm">
-            <my:inputText componentId="identifier"
-                          required="true"
-                          label="#{msg['pages.login.userName.label']}"
-                          value="#{loginHome.authenticationDetails.userName}"
-                          placeholder="#{msg['pages.login.userName.placeholder']}"/>
-            <my:password componentId="token"
-                         required="true"
-                         label="#{msg['pages.login.password.label']}"
-                         value="#{loginHome.authenticationDetails.password}"
-                         placeholder="#{msg['pages.login.password.placeholder']}"/>
-            <p:separator/>
-            <p:outputPanel styleClass="actions">
-                <p:commandButton id="btnLogin"
-                                 action="#{loginHome.login}"
-                                 value="#{msg['global.actions.login']}"
-                                 ajax="false" />
-                <p:commandButton id="btnReset"
-                                 value="#{msg['global.actions.reset']}" 
-                                 update="@all" 
-                                 process="@this" 
-                                 actionListener="#{loginHome.reset}" />  
-            </p:outputPanel>
-        </h:form>
+	<my:inputText componentId="userName"
+		      required="true"
+		      label="#{msg['pages.login.userName.label']}"
+		      value="#{loginHome.authenticationDetails.userName}"
+		      placeholder="#{msg['pages.login.userName.placeholder']}"/>
+	<my:password componentId="password"
+		     required="true"
+		     label="#{msg['pages.login.password.label']}"
+		     value="#{loginHome.authenticationDetails.password}"
+		     placeholder="#{msg['pages.login.password.placeholder']}"/>
+	<p:separator/>
+	<p:outputPanel styleClass="actions">
+	    <p:commandButton id="btnLogin"
+			     action="#{loginHome.login}"
+			     value="#{msg['global.actions.login']}"
+			     ajax="false" />
+	    <p:commandButton id="btnReset"
+			     value="#{msg['global.actions.reset']}" 
+			     update="@all" 
+			     process="@this" 
+			     actionListener="#{loginHome.reset}" />  
+	</p:outputPanel>
     </ui:define>
 </ui:composition>
