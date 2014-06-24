@@ -22,80 +22,78 @@ limitations under the License.
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:define name="title">#{msg['pages.admin.persons.list.title']}</ui:define>
     <ui:define name="content">
-        <h:form>
-            <p:outputLabel rendered="#{personList.data.rowCount == 0}"
-                           value="#{msg['global.noRecords']}"/>
-            <p:dataTable value="#{personList.data}"
-                         var="person"
-                         rendered="#{personList.data.rowCount > 0}"
-                         paginator="true"
-                         paginatorPosition="top"
-                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
-                         rowsPerPageTemplate="5,10,25,50,100"
-                         rows="25"
-                         rowKey="#{person.id}"
-                         lazy="true">
-                <p:column>
-                    <f:facet name="header">
-                        #{msg['global.actions']}
-                    </f:facet>
-                    <div class="actions">
-                        <h:link outcome="edit"
-                                value="#{msg['global.actions.edit']}">
-                            <f:param name="id" 
-                                     value="#{person.id}"/>
-                        </h:link>
-                        <h:link outcome="remove"
-                                value="#{msg['global.actions.remove']}">
-                            <f:param name="id" 
-                                     value="#{person.id}"/>
-                        </h:link>
-                    </div>
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        #{msg['entities.person.fields.id']}
-                    </f:facet>
-                    <h:outputText value="#{person.id}" />
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        #{msg['entities.person.fields.version']}
-                    </f:facet>
-                    <h:outputText value="#{person.version}" />
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        #{msg['entities.person.fields.firstName']}
-                    </f:facet>
-                    <h:outputText value="#{person.firstName}" />
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        #{msg['entities.person.fields.middleName']}
-                    </f:facet>
-                    <h:outputText value="#{person.middleName}" />
-                </p:column>
-                <p:column>
-                    <f:facet name="header">
-                        #{msg['entities.person.fields.lastName']}
-                    </f:facet>
-                    <h:outputText value="#{person.lastName}" />
-                </p:column>
-		<p:column>
-                    <f:facet name="header">
-                        #{msg['entities.person.fields.emailAddress']}
-                    </f:facet>
-                    <h:outputText value="#{person.emailAddress.value}" />
-                </p:column>
-            </p:dataTable>
-            <p:separator/>
-            <div class="actions">
-                <p:commandButton action="edit"
-                                 value="#{msg['pages.admin.persons.list.actions.add']}"
-                                 ajax="false"
-                                 immediate="true"/>
-            </div>
-        </h:form>
+	<p:outputLabel rendered="#{personList.data.rowCount == 0}"
+		       value="#{msg['global.noRecords']}"/>
+	<p:dataTable value="#{personList.data}"
+		     var="person"
+		     rendered="#{personList.data.rowCount > 0}"
+		     paginator="true"
+		     paginatorPosition="top"
+		     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
+		     rowsPerPageTemplate="5,10,25,50,100"
+		     rows="25"
+		     rowKey="#{person.id}"
+		     lazy="true">
+	    <p:column>
+		<f:facet name="header">
+		    #{msg['global.actions']}
+		</f:facet>
+		<div class="actions">
+		    <h:link outcome="edit"
+			    value="#{msg['global.actions.edit']}">
+			<f:param name="id" 
+				 value="#{person.id}"/>
+		    </h:link>
+		    <h:link outcome="remove"
+			    value="#{msg['global.actions.remove']}">
+			<f:param name="id" 
+				 value="#{person.id}"/>
+		    </h:link>
+		</div>
+	    </p:column>
+	    <p:column>
+		<f:facet name="header">
+		    #{msg['entities.person.fields.id']}
+		</f:facet>
+		<h:outputText value="#{person.id}" />
+	    </p:column>
+	    <p:column>
+		<f:facet name="header">
+		    #{msg['entities.person.fields.version']}
+		</f:facet>
+		<h:outputText value="#{person.version}" />
+	    </p:column>
+	    <p:column>
+		<f:facet name="header">
+		    #{msg['entities.person.fields.firstName']}
+		</f:facet>
+		<h:outputText value="#{person.firstName}" />
+	    </p:column>
+	    <p:column>
+		<f:facet name="header">
+		    #{msg['entities.person.fields.middleName']}
+		</f:facet>
+		<h:outputText value="#{person.middleName}" />
+	    </p:column>
+	    <p:column>
+		<f:facet name="header">
+		    #{msg['entities.person.fields.lastName']}
+		</f:facet>
+		<h:outputText value="#{person.lastName}" />
+	    </p:column>
+	    <p:column>
+		<f:facet name="header">
+		    #{msg['entities.person.fields.emailAddress']}
+		</f:facet>
+		<h:outputText value="#{person.emailAddress.value}" />
+	    </p:column>
+	</p:dataTable>
+	<p:separator/>
+	<div class="actions">
+	    <p:commandButton action="edit"
+			     value="#{msg['pages.admin.persons.list.actions.add']}"
+			     ajax="false"
+			     immediate="true"/>
+	</div>
     </ui:define>
 </ui:composition>
