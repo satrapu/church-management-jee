@@ -15,8 +15,12 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
@@ -28,13 +32,26 @@ import lombok.ToString;
  * @author satrapu
  */
 @javax.persistence.Entity
-@Table(name = "Users")
+@Table(name = "Users", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"EmailAddress"}, name = "UK_Users_EmailAddress")
+})
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class User extends ManagedEntity {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Creates a new instance of {@link User} class.
+     */
+    public User() {
+	super();
+	firstName = new NamePart();
+	middleName = new NamePart();
+	lastName = new NamePart();
+	emailAddress = new EmailAddress();
+    }
 
     @NotNull
     @Size(min = 1, max = 400)
@@ -45,4 +62,34 @@ public class User extends ManagedEntity {
     @Size(min = 1, max = 100)
     @Column(nullable = false, length = 100, name = "Password")
     private String password;
+
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(nullable = false, length = 100, name = "Salt")
+    private String salt;
+
+    @NotNull
+    @Embedded
+    @AttributeOverrides(value = {
+	@AttributeOverride(name = "value", column = @Column(name = "FirstName", nullable = false, length = NamePart.MAX_LENGTH))})
+    private NamePart firstName;
+
+    @Embedded
+    @AttributeOverrides(value = {
+	@AttributeOverride(name = "value", column = @Column(name = "MiddleName", nullable = true, length = NamePart.MAX_LENGTH))})
+    private NamePart middleName;
+
+    @NotNull
+    @Embedded
+    @AttributeOverrides(value = {
+	@AttributeOverride(name = "value", column = @Column(name = "LastName", nullable = false, length = NamePart.MAX_LENGTH))
+    })
+    private NamePart lastName;
+
+    @NotNull
+    @Embedded
+    @AttributeOverrides(value = {
+	@AttributeOverride(name = "value", column = @Column(name = "EmailAddress", nullable = false, length = EmailAddress.MAX_LENGTH))
+    })
+    private EmailAddress emailAddress;
 }
