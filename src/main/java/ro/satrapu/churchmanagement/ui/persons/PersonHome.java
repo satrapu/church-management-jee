@@ -127,7 +127,7 @@ public class PersonHome implements Serializable {
      * @return True, if the entity is managed; false, otherwise.
      */
     public boolean isManaged() {
-	return persistenceService.isManaged(getInstance());
+	return getInstance().getId() != null;
     }
 
     /**
@@ -162,7 +162,6 @@ public class PersonHome implements Serializable {
 		    messages.info("entities.person.actions.save.success");
 		    hasErrors = false;
 		} catch (Exception e) {
-		    persistenceService.detach(person);
 		    logger.error("Could not persist instance", e);
 		    messages.error("entities.person.actions.save.failure");
 		}
