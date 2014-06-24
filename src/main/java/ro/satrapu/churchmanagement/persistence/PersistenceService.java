@@ -72,6 +72,24 @@ public class PersistenceService {
 	return mergedEntity;
     }
 
+    public <T extends Entity> void detach(T entity) {
+	if (entity == null) {
+	    throw new IllegalArgumentException("Cannot detach null entity");
+	}
+
+	logger.debug("Detaching entity of type {} ...", entity.getClass().getName());
+	entityManager.detach(entity);
+    }
+
+    public <T extends Entity> boolean isManaged(T entity) {
+	if (entity == null) {
+	    return false;
+	}
+
+	logger.debug("Checking whether entity of type {} is managed or not ...", entity.getClass().getName());
+	return entityManager.contains(entity);
+    }
+
     public <T extends Entity> List<T> fetch(Class<T> entityClass) {
 	if (entityClass == null) {
 	    throw new IllegalArgumentException("Cannot fetch entities by using null as entity class");
