@@ -51,15 +51,27 @@ limitations under the License.
             </h:panelGrid>
             <p:separator/>
             <div class="actions">
-                <p:commandButton action="#{personHome.remove}"
+		<p:commandButton action="#{personHome.remove}"
                                  value="#{msg['global.actions.remove']}"
-                                 ajax="false"
-                                 rendered="#{personHome.managed}"
-                                 onclick="return confirm('#{msg['pages.admin.persons.remove.confirmation']}');"/>
+                                 rendered="#{personHome.managed}">
+		    <p:confirm header="#{msg['pages.admin.persons.remove.title']}" 
+			       message="#{msg['pages.admin.persons.remove.confirmation']}" 
+			       icon="ui-icon-alert" />
+		</p:commandButton>
                 <p:commandButton action="#{personHome.cancel}"
                                  value="#{msg['global.actions.cancel']}"
                                  ajax="false"
                                  immediate="true"/>
+		<p:confirmDialog global="true">
+		    <p:commandButton value="#{msg['global.actions.yes']}" 
+				     type="button" 
+				     styleClass="ui-confirmdialog-yes" 
+				     icon="ui-icon-check" />
+		    <p:commandButton value="#{msg['global.actions.no']}" 
+				     type="button" 
+				     styleClass="ui-confirmdialog-no" 
+				     icon="ui-icon-close" />
+		</p:confirmDialog>
             </div>
         </h:form>
     </ui:define>
