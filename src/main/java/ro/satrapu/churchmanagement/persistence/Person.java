@@ -15,13 +15,14 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -46,24 +47,34 @@ public class Person extends ManagedEntity {
      */
     public Person() {
 	super();
+	firstName = new NamePart();
+	middleName = new NamePart();
+	lastName = new NamePart();
 	emailAddress = new EmailAddress();
     }
 
     @NotNull
-    @Size(min = 1, max = 400)
-    @Column(nullable = false, length = 400, name = "FirstName")
-    private String firstName;
+    @Embedded
+    @AttributeOverrides(value = {
+	@AttributeOverride(name = "value", column = @Column(name = "FirstName", nullable = false, length = NamePart.MAX_LENGTH))})
+    private NamePart firstName;
 
-    @Size(max = 400)
-    @Column(nullable = true, length = 400, name = "MiddleName")
-    private String middleName;
-
-    @NotNull
-    @Size(min = 1, max = 400)
-    @Column(nullable = false, length = 400, name = "LastName")
-    private String lastName;
+    @Embedded
+    @AttributeOverrides(value = {
+	@AttributeOverride(name = "value", column = @Column(name = "MiddleName", nullable = true, length = NamePart.MAX_LENGTH))})
+    private NamePart middleName;
 
     @NotNull
     @Embedded
+    @AttributeOverrides(value = {
+	@AttributeOverride(name = "value", column = @Column(name = "LastName", nullable = false, length = NamePart.MAX_LENGTH))
+    })
+    private NamePart lastName;
+
+    @NotNull
+    @Embedded
+    @AttributeOverrides(value = {
+	@AttributeOverride(name = "value", column = @Column(name = "EmailAddress", nullable = false, length = EmailAddress.MAX_LENGTH))
+    })
     private EmailAddress emailAddress;
 }

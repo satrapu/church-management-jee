@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Represents an e-mail address.
+ * Represents a part of a name, like first name or last name.
  *
  * @author satrapu
  */
@@ -31,13 +31,12 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode
 @ToString
-public class EmailAddress implements Serializable {
+public class NamePart implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    public static final int MAX_LENGTH = 254;
+    public static final int MAX_LENGTH = 400;
     public static final int MIN_LENGTH = 1;
 
-    //see more details regarding email max length here: http://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
     @Size(min = MIN_LENGTH, max = MAX_LENGTH)
     private String value;
 }
