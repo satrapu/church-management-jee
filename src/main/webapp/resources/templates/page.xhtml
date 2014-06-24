@@ -42,18 +42,32 @@ limitations under the License.
                 <p:outputPanel styleClass="menu">
                     <ui:include src="menu.xhtml"/>
                 </p:outputPanel>
-                <p:outputPanel styleClass="messages">
-                    <p:messages id="messages"
-                                globalOnly="true"
-                                showSummary="true"
-                                showDetail="false" />
-                </p:outputPanel>
                 <p:outputPanel styleClass="title">
                     <ui:insert name="title"/>
                     <hr/>
                 </p:outputPanel>
                 <p:outputPanel styleClass="content">
-                    <ui:insert name="content"/>
+		    <p:outputPanel styleClass="messages">
+			<p:messages id="messages"
+				    globalOnly="true"
+				    showSummary="true"
+				    showDetail="false" />
+		    </p:outputPanel>
+		    <h:form id="form">
+			<ui:insert name="content"/>
+			<p:confirmDialog global="true"
+					 showEffect="fade"
+					 hideEffect="explode">
+			    <p:commandButton value="#{msg['global.actions.yes']}" 
+					     type="button" 
+					     styleClass="ui-confirmdialog-yes" 
+					     icon="ui-icon-check" />
+			    <p:commandButton value="#{msg['global.actions.no']}" 
+					     type="button" 
+					     styleClass="ui-confirmdialog-no" 
+					     icon="ui-icon-close" />
+			</p:confirmDialog>
+		    </h:form>
                 </p:outputPanel>
             </p:panel>
         </f:view>
