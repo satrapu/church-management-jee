@@ -24,7 +24,6 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import org.slf4j.Logger;
@@ -36,9 +35,10 @@ import ro.satrapu.churchmanagement.ui.Urls;
 
 /**
  * Manages a specific {@link Person} instance.
+ * <br/>
+ * Code inspired by Andy Gibson's post:
+ * <a href="http://www.andygibson.net/blog/tutorial/pattern-for-conversational-crud-in-java-ee-6">Conversational CRUD in Java EE 6</a>.
  *
- * @see <a href="http://www.andygibson.net/blog/tutorial/pattern-for-conversational-crud-in-java-ee-6">
- * Conversational CRUD in Java EE 6</a> by Andy Gibson.
  * @author satrapu
  */
 @Named
@@ -59,6 +59,9 @@ public class PersonHome implements Serializable {
     @Inject
     @LoggerInstance
     Logger logger;
+
+    @Inject
+    ValidatorFactory validatorFactory;
 
     private Serializable id;
     private Person instance;
@@ -231,8 +234,7 @@ public class PersonHome implements Serializable {
      */
     private boolean isValid() {
 	boolean result = true;
-	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-	Validator validator = factory.getValidator();
+	Validator validator = validatorFactory.getValidator();
 	Set<ConstraintViolation<Person>> constraintViolations = validator.validate(getInstance());
 
 	if (constraintViolations.size() > 0) {
