@@ -37,11 +37,11 @@ public class Messages implements Serializable {
     private static final String MESSAGE_KEY_NOT_FOUND = "???{0}???";
     
     @Inject
-    ResourceBundle resourceBundle;
+    transient ResourceBundle resourceBundle;
 
     @Inject
     @FacesContextInstance
-    FacesContext facesContext;
+    transient FacesContext facesContext;
 
     
     public void info(String messageKey) {
