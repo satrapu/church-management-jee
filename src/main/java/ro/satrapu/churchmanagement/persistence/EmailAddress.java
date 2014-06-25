@@ -17,10 +17,12 @@ package ro.satrapu.churchmanagement.persistence;
 
 import java.io.Serializable;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import ro.satrapu.churchmanagement.validation.Email;
 
 /**
  * Represents an e-mail address.
@@ -38,6 +40,8 @@ public class EmailAddress implements Serializable {
     public static final int MIN_LENGTH = 1;
 
     //see more details regarding email max length here: http://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
+    @NotNull
     @Size(min = MIN_LENGTH, max = MAX_LENGTH)
+    @Email
     private String value;
 }
