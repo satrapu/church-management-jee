@@ -21,7 +21,7 @@ limitations under the License.
 		xmlns:my="http://java.sun.com/jsf/composite/components"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:define name="title">#{msg['pages.admin.persons.remove.title']}</ui:define>
+    <ui:define name="title">#{msg['pages.persons.remove.title']}</ui:define>
     <ui:define name="content">
         <f:metadata>
             <f:viewParam name="id" 
@@ -53,8 +53,8 @@ limitations under the License.
 	    <p:commandButton action="#{personHome.remove}"
 			     value="#{msg['global.actions.remove']}"
 			     rendered="#{personHome.managed}">
-		<p:confirm header="#{msg['pages.admin.persons.remove.confirmationDialog.title']}" 
-			   message="#{msg['pages.admin.persons.remove.confirmationDialog.text']}" 
+		<p:confirm header="#{msg['pages.persons.remove.confirmationDialog.title']}" 
+			   message="#{msg['pages.persons.remove.confirmationDialog.text']}" 
 			   icon="ui-icon-alert" />
 	    </p:commandButton>
 	    <p:commandButton action="#{personHome.cancel}"
