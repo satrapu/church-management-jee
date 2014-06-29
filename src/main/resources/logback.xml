@@ -26,13 +26,13 @@
     </appender>
     <appender name="Application" 
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/churchmanagement.log</file>
+        <file>logs/church-management/church-management.log</file>
         <append>true</append>
         <encoder>
             <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger - %message%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/old/churchmanagement-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/church-management/old/church-management-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
