@@ -39,35 +39,79 @@ public class CurrentUser implements Serializable {
     private String name;
 
     public CurrentUser() {
-        this.authenticated = false;
-    }
-
-    public boolean isAdminMenuVisible() {
-        return authenticated;
+	this.authenticated = false;
     }
 
     public boolean isPersonsMenuVisible() {
-        return authenticated;
+	return authenticated;
+    }
+
+    public boolean isPersonListMenuVisible() {
+	return authenticated;
+    }
+
+    public boolean isPersonAddMenuVisible() {
+	return authenticated;
+    }
+
+    public boolean isDiscipleshipMenuVisible() {
+	return authenticated;
+    }
+
+    public boolean isDiscipleshipPairMenuVisible() {
+	return authenticated;
+    }
+
+    public boolean isDiscipleshipPairAddMenuVisible() {
+	return authenticated;
+    }
+
+    public boolean isDiscipleshipPairListMenuVisible() {
+	return authenticated;
+    }
+
+    public boolean isDiscipleshipTeacherMenuVisible() {
+	return authenticated;
+    }
+
+    public boolean isDiscipleshipTeacherListMenuVisible() {
+	return authenticated;
+    }
+
+    public boolean isDiscipleshipTeacherAddMenuVisible() {
+	return authenticated;
+    }
+
+    public boolean isDiscipleshipDiscipleMenuVisible() {
+	return authenticated;
+    }
+
+    public boolean isDiscipleshipDiscipleListMenuVisible() {
+	return authenticated;
+    }
+
+    public boolean isDiscipleshipDiscipleAddMenuVisible() {
+	return authenticated;
     }
 
     public void setAuthenticatedUser(AuthenticatedUser authenticatedUser) {
-        if (authenticatedUser == null) {
-            throw new IllegalArgumentException("Authenticated user cannot be null");
-        }
+	if (authenticatedUser == null) {
+	    throw new IllegalArgumentException("Authenticated user cannot be null");
+	}
 
-        String localName = authenticatedUser.getName();
+	String localName = authenticatedUser.getName();
 
-        if (localName == null || localName.isEmpty()) {
-            throw new IllegalArgumentException("The name of an authenticated user cannot be null or empty string");
-        }
+	if (localName == null || localName.isEmpty()) {
+	    throw new IllegalArgumentException("The name of an authenticated user cannot be null or empty string");
+	}
 
-        this.name = localName;
-        this.authenticated = true;
+	this.name = localName;
+	this.authenticated = true;
     }
 
     @PreDestroy
     public void destroy() {
-        authenticated = false;
-        name = null;
+	authenticated = false;
+	name = null;
     }
 }

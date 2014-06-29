@@ -29,11 +29,44 @@ limitations under the License.
                                    immediate="true"/>
                 </p:menuitem>
             </p:submenu>
-            <p:submenu label="#{msg['menu.admin.title']}"
-                       rendered="#{currentUser.adminMenuVisible}">
-                <p:menuitem value="#{msg['menu.admin.persons.title']}"
+	    <p:submenu label="#{msg['menu.persons.title']}"
+                       rendered="#{currentUser.personsMenuVisible}">
+                <p:menuitem value="#{msg['menu.persons.list.title']}"
                             url="/secured/persons/list.xhtml"
-                            rendered="#{currentUser.personsMenuVisible}"/>
+                            rendered="#{currentUser.personListMenuVisible}"/>
+		<p:menuitem value="#{msg['menu.persons.add.title']}"
+                            url="/secured/persons/edit.xhtml"
+                            rendered="#{currentUser.personAddMenuVisible}"/>
+            </p:submenu>
+	    <p:submenu label="#{msg['menu.discipleship.title']}"
+                       rendered="#{currentUser.discipleshipMenuVisible}">
+		<p:submenu label="#{msg['menu.discipleship.pairs.title']}"
+			   rendered="#{currentUser.discipleshipPairMenuVisible}">
+		    <p:menuitem value="#{msg['menu.discipleship.pairs.list.title']}"
+				url="/secured/discipleship/pairs/list.xhtml"
+				rendered="#{currentUser.discipleshipPairListMenuVisible}"/>
+		    <p:menuitem value="#{msg['menu.discipleship.pairs.add.title']}"
+				url="/secured/discipleship/pairs/edit.xhtml"
+				rendered="#{currentUser.discipleshipPairAddMenuVisible}"/>
+		</p:submenu>
+		<p:submenu label="#{msg['menu.discipleship.teachers.title']}"
+			   rendered="#{currentUser.discipleshipTeacherMenuVisible}">
+		    <p:menuitem value="#{msg['menu.discipleship.teachers.list.title']}"
+				url="/secured/discipleship/teachers/list.xhtml"
+				rendered="#{currentUser.discipleshipTeacherListMenuVisible}"/>
+		    <p:menuitem value="#{msg['menu.discipleship.teachers.add.title']}"
+				url="/secured/discipleship/teachers/edit.xhtml"
+				rendered="#{currentUser.discipleshipTeacherAddMenuVisible}"/>
+		</p:submenu>
+		<p:submenu label="#{msg['menu.discipleship.disciples.title']}"
+			   rendered="#{currentUser.discipleshipDiscipleMenuVisible}">
+		    <p:menuitem value="#{msg['menu.discipleship.disciples.list.title']}"
+				url="/secured/discipleship/disciples/list.xhtml"
+				rendered="#{currentUser.discipleshipDiscipleListMenuVisible}"/>
+		    <p:menuitem value="#{msg['menu.discipleship.disciples.add.title']}"
+				url="/secured/discipleship/disciples/edit.xhtml"
+				rendered="#{currentUser.discipleshipDiscipleAddMenuVisible}"/>
+		</p:submenu>
             </p:submenu>
         </p:menubar>
     </h:form>
