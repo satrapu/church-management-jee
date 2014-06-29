@@ -28,6 +28,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
+ * Represents a person attending a church, either as member or not.
  *
  * @author satrapu
  */
