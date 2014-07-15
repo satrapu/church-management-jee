@@ -37,21 +37,21 @@ public class EntityIdConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        try {
-            return Long.parseLong(value);
-        } catch (NumberFormatException ex) {
-            String detail = MessageFormat.format(messages.getMessageFor("converters.entityIdConverter.conversionFailed"), value);
-            FacesMessage conversionFailedMessage = new FacesMessage(messages.getMessageFor("converters.conversionFailed"), detail);
-            throw new ConverterException(conversionFailedMessage, ex);
-        }
+	try {
+	    return Long.parseLong(value);
+	} catch (NumberFormatException ex) {
+	    String details = MessageFormat.format(messages.getMessageFor("converters.conversionFailed.entityIdConverter"), value);
+	    FacesMessage conversionFailedMessage = new FacesMessage(messages.getMessageFor("converters.conversionFailed.title"), details);
+	    throw new ConverterException(conversionFailedMessage, ex);
+	}
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        if (value == null) {
-            return null;
-        }
+	if (value == null) {
+	    return null;
+	}
 
-        return value.toString();
+	return value.toString();
     }
 }
