@@ -26,6 +26,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import ro.satrapu.churchmanagement.model.StringWrapperExtensions;
 
 /**
  * Represents a person attending a church, either as member or not.
@@ -48,6 +49,7 @@ public class Person extends ManagedEntity {
      */
     public Person() {
 	super();
+
 	firstName = new NamePart();
 	middleName = new NamePart();
 	lastName = new NamePart();
@@ -78,4 +80,20 @@ public class Person extends ManagedEntity {
 	@AttributeOverride(name = "value", column = @Column(name = "EmailAddress", nullable = false, length = EmailAddress.MAX_LENGTH))
     })
     private EmailAddress emailAddress;
+
+    public boolean hasFirstName() {
+	return !StringWrapperExtensions.isNullOrWhitespace(firstName);
+    }
+
+    public boolean hasMiddleName() {
+	return !StringWrapperExtensions.isNullOrWhitespace(middleName);
+    }
+
+    public boolean hasLastName() {
+	return !StringWrapperExtensions.isNullOrWhitespace(lastName);
+    }
+
+    public boolean hasEmailAddress() {
+	return !StringWrapperExtensions.isNullOrWhitespace(emailAddress);
+    }
 }

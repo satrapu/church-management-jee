@@ -21,6 +21,7 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import ro.satrapu.churchmanagement.model.StringWrapper;
 
 /**
  * Represents a part of a name, like first name or last name.
@@ -31,11 +32,11 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode
 @ToString
-public class NamePart implements Serializable {
+public class NamePart implements Serializable, StringWrapper {
 
     private static final long serialVersionUID = 1L;
-    public static final int MAX_LENGTH = 400;
-    public static final int MIN_LENGTH = 1;
+    static final int MAX_LENGTH = 400;
+    static final int MIN_LENGTH = 1;
 
     @Size(min = MIN_LENGTH, max = MAX_LENGTH)
     private String value;

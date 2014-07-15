@@ -22,6 +22,7 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import ro.satrapu.churchmanagement.model.StringWrapper;
 import ro.satrapu.churchmanagement.validation.Email;
 
 /**
@@ -33,11 +34,11 @@ import ro.satrapu.churchmanagement.validation.Email;
 @Data
 @EqualsAndHashCode
 @ToString
-public class EmailAddress implements Serializable {
+public class EmailAddress implements Serializable, StringWrapper {
 
     private static final long serialVersionUID = 1L;
-    public static final int MAX_LENGTH = 254;
-    public static final int MIN_LENGTH = 1;
+    static final int MAX_LENGTH = 254;
+    static final int MIN_LENGTH = 1;
 
     //see more details regarding email max length here: http://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
     @NotNull
