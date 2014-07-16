@@ -49,22 +49,23 @@ public class PersonList {
 
     @PostConstruct
     public void init() {
-        data = new LazyDataModel<Person>() {
+	data = new LazyDataModel<Person>() {
+	    private static final long serialVersionUID = 1L;
 
-            @Override
-            public List<Person> load(int currentPageIndex, int recordsPerPage, String sortField, SortOrder sortOrder, Map filters) {
-                logger.debug("Loading page #{} containing maximum {} instances of type {} ...", currentPageIndex + 1, recordsPerPage,
-                        clazz.getName());
-                return persistenceService.fetch(clazz, currentPageIndex, recordsPerPage);
-            }
-        };
+	    @Override
+	    public List<Person> load(int currentPageIndex, int recordsPerPage, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+		logger.debug("Loading page #{} containing maximum {} instances of type {} ...", currentPageIndex + 1, recordsPerPage,
+			clazz.getName());
+		return persistenceService.fetch(clazz, currentPageIndex, recordsPerPage);
+	    }
+	};
 
-        long count = persistenceService.count(clazz);
-        logger.debug("Found {} records", count);
-        data.setRowCount(new Long(count).intValue());
+	long count = persistenceService.count(clazz);
+	logger.debug("Found {} records", count);
+	data.setRowCount(new Long(count).intValue());
     }
 
-    public LazyDataModel getData() {
-        return data;
+    public LazyDataModel<Person> getData() {
+	return data;
     }
 }
