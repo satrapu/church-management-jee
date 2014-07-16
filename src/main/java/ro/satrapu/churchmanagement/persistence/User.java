@@ -15,10 +15,13 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
+import ro.satrapu.churchmanagement.model.EmailAddress;
+import ro.satrapu.churchmanagement.model.NamePart;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -28,17 +31,18 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
+ * Represents a Church Management application user.
  *
  * @author satrapu
  */
-@javax.persistence.Entity
+@Entity
 @Table(name = "Users", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"EmailAddress"}, name = "UK_Users_EmailAddress")
 })
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class User extends ManagedEntity {
+public class User extends ManagedEntityBase {
 
     private static final long serialVersionUID = 1L;
 
@@ -47,6 +51,7 @@ public class User extends ManagedEntity {
      */
     public User() {
 	super();
+
 	firstName = new NamePart();
 	middleName = new NamePart();
 	lastName = new NamePart();

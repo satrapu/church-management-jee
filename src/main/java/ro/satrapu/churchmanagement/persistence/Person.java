@@ -15,6 +15,8 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
+import ro.satrapu.churchmanagement.model.EmailAddress;
+import ro.satrapu.churchmanagement.model.NamePart;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -29,7 +31,7 @@ import lombok.ToString;
 import ro.satrapu.churchmanagement.model.StringWrapperExtensions;
 
 /**
- * Represents a person attending a church, either as member or not.
+ * Represents a person attending a church, either as a member or not.
  *
  * @author satrapu
  */
@@ -40,7 +42,7 @@ import ro.satrapu.churchmanagement.model.StringWrapperExtensions;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Person extends ManagedEntity {
+public class Person extends ManagedEntityBase {
 
     private static final long serialVersionUID = 1L;
 
