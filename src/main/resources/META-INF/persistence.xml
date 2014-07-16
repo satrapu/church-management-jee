@@ -21,6 +21,8 @@ limitations under the License.
     <persistence-unit name="churchmanagement" 
 		      transaction-type="JTA">
 	<jta-data-source>jdbc/churchmanagement</jta-data-source>
+	<class>ro.satrapu.churchmanagement.persistence.Disciple</class>
+	<class>ro.satrapu.churchmanagement.persistence.DiscipleshipTeacher</class>
 	<class>ro.satrapu.churchmanagement.persistence.Person</class>
 	<class>ro.satrapu.churchmanagement.persistence.User</class>
 	<exclude-unlisted-classes>true</exclude-unlisted-classes>
