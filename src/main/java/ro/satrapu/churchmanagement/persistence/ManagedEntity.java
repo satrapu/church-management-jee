@@ -15,34 +15,26 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
+import java.io.Serializable;
 
 /**
- * Base class for any JPA entity.
+ * Represents a persistent entity.
  *
  * @author satrapu
  */
-@MappedSuperclass
-@Data
-@SuppressWarnings("ValidAttributes")
-public abstract class ManagedEntity implements Entity {
+public interface ManagedEntity extends Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Setter(AccessLevel.PRIVATE)
-    @Column(name = "Id")
-    private Long id;
-    @Version
-    @Setter(AccessLevel.PRIVATE)
-    @Column(name = "Version")
-    private Long version;
+    /**
+     * Gets the entity identifier.
+     *
+     * @return A non-null value if the entity was already persisted; null, otherwise.
+     */
+    public Serializable getId();
+
+    /**
+     * Gets the entity version.
+     *
+     * @return A positive value, if the entity was persisted; 0, otherwise.
+     */
+    public Long getVersion();
 }
