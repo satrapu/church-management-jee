@@ -28,8 +28,7 @@ import org.slf4j.LoggerFactory;
 public class LoggerProducer {
 
     /**
-     * Creates a new {@link Logger} instance for the given
-     * {@link InjectionPoint} instance.
+     * Creates a new {@link Logger} instance for the given {@link InjectionPoint} instance.
      *
      * @param injectionPoint
      * @return A new {@link Logger} instance.
@@ -37,18 +36,17 @@ public class LoggerProducer {
     @Produces
     @LoggerInstance
     public static Logger produce(InjectionPoint injectionPoint) {
-        Class<?> clazz = injectionPoint.getMember().getDeclaringClass();
-        return produce(clazz);
+	Class<?> clazz = injectionPoint.getMember().getDeclaringClass();
+	return produce(clazz);
     }
 
     /**
-     * Creates a new {@link Logger} instance for the given {@link Class}
-     * instance.
+     * Creates a new {@link Logger} instance for the given {@link Class} instance.
      *
      * @param clazz
      * @return A new {@link Logger} instance.
      */
-    public static Logger produce(Class clazz) {
-        return LoggerFactory.getLogger(clazz);
+    public static Logger produce(Class<?> clazz) {
+	return LoggerFactory.getLogger(clazz);
     }
 }
