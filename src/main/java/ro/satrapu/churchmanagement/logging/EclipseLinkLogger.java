@@ -22,6 +22,9 @@ import org.slf4j.Logger;
 
 /**
  * Logs EclipseLink messages via an {@link Logger} instance.
+ * <br/>
+ * This implementation has been inspired by
+ * <a href="https://github.com/lalyos/derbyfood/blob/master/src/main/java/com/acme/lunch/logger/CustomSessionLogger.java">this one</a>.
  *
  * @author satrapu
  */
