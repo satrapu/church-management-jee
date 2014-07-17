@@ -34,10 +34,7 @@ limitations under the License.
 		     rows="25"
 		     rowKey="#{person.id}"
 		     lazy="true">
-	    <p:column>
-		<f:facet name="header">
-		    #{msg['global.actions']}
-		</f:facet>
+	    <p:column headerText="#{msg['global.actions']}">
 		<div class="actions">
 		    <h:link outcome="edit"
 			    value="#{msg['global.actions.edit']}">
@@ -51,40 +48,22 @@ limitations under the License.
 		    </h:link>
 		</div>
 	    </p:column>
-	    <p:column>
-		<f:facet name="header">
-		    #{msg['entities.person.fields.id']}
-		</f:facet>
+	    <p:column headerText="#{msg['entities.person.fields.id']}">
 		<h:outputText value="#{person.id}" />
 	    </p:column>
-	    <p:column>
-		<f:facet name="header">
-		    #{msg['entities.fields.version']}
-		</f:facet>
+	    <p:column headerText="#{msg['entities.fields.version']}">
 		<h:outputText value="#{person.version}" />
 	    </p:column>
-	    <p:column>
-		<f:facet name="header">
-		    #{msg['entities.person.fields.firstName']}
-		</f:facet>
+	    <p:column headerText="#{msg['entities.person.fields.firstName']}">
 		<h:outputText value="#{person.firstName.value}" />
 	    </p:column>
-	    <p:column>
-		<f:facet name="header">
-		    #{msg['entities.person.fields.middleName']}
-		</f:facet>
+	    <p:column headerText="#{msg['entities.person.fields.middleName']}">
 		<h:outputText value="#{person.middleName.value}" />
 	    </p:column>
-	    <p:column>
-		<f:facet name="header">
-		    #{msg['entities.person.fields.lastName']}
-		</f:facet>
+	    <p:column headerText="#{msg['entities.person.fields.lastName']}">
 		<h:outputText value="#{person.lastName.value}" />
 	    </p:column>
-	    <p:column>
-		<f:facet name="header">
-		    #{msg['entities.person.fields.emailAddress']}
-		</f:facet>
+	    <p:column headerText="#{msg['entities.person.fields.emailAddress']}">
 		<h:outputText value="#{person.emailAddress.value}" />
 	    </p:column>
 	</p:dataTable>
