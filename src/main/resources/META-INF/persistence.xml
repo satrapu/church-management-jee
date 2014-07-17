@@ -28,8 +28,10 @@ limitations under the License.
 	<exclude-unlisted-classes>true</exclude-unlisted-classes>
 	<validation-mode>CALLBACK</validation-mode>
 	<properties>
-	    <property name="javax.persistence.schema-generation.database.action" 
-		      value="drop-and-create"/>
+	    <property name="eclipselink.logging.level" 
+		      value="FINEST"/>
+	    <property name="eclipselink.logging.logger" 
+		      value="ro.satrapu.churchmanagement.logging.EclipseLinkLogger"/>
 	</properties>
     </persistence-unit>
 </persistence>
