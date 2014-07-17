@@ -16,6 +16,7 @@
 package ro.satrapu.churchmanagement.persistence;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -52,6 +53,27 @@ public class PersistenceService {
 	return entity;
     }
 
+    public <T extends ManagedEntity> List<T> persist(List<T> entities) {
+	if (entities == null) {
+	    throw new IllegalArgumentException("Cannot persist null entity list");
+	}
+
+	if (entities.isEmpty()) {
+	    logger.warn("Entity list is empty, there is nothing to persist");
+	    return new ArrayList<>();
+	}
+
+	List<T> persistedEntities = new ArrayList<>(entities.size());
+
+	for (T entity : entities) {
+	    logger.debug("Persisting entity of type {} ...", entity.getClass().getName());
+	    entityManager.persist(entity);
+	    persistedEntities.add(entity);
+	}
+
+	return persistedEntities;
+    }
+
     public <T extends ManagedEntity> void remove(T entity) {
 	if (entity == null) {
 	    throw new IllegalArgumentException("Cannot remove null entity");
@@ -62,6 +84,23 @@ public class PersistenceService {
 	entityManager.remove(mergedEntity);
     }
 
+    public <T extends ManagedEntity> void remove(List<T> entities) {
+	if (entities == null) {
+	    throw new IllegalArgumentException("Cannot remove null entity list");
+	}
+
+	if (entities.isEmpty()) {
+	    logger.warn("Entity list is empty, there is nothing to remove");
+	    return;
+	}
+
+	for (T entity : entities) {
+	    logger.debug("Removing entity of type {} ...", entity.getClass().getName());
+	    T mergedEntity = entityManager.merge(entity);
+	    entityManager.remove(mergedEntity);
+	}
+    }
+
     public <T extends ManagedEntity> T merge(T entity) {
 	if (entity == null) {
 	    throw new IllegalArgumentException("Cannot merge null entity");
@@ -70,6 +109,27 @@ public class PersistenceService {
 	logger.debug("Merging entity of type {} ...", entity.getClass().getName());
 	T mergedEntity = entityManager.merge(entity);
 	return mergedEntity;
+    }
+
+    public <T extends ManagedEntity> List<T> merge(List<T> entities) {
+	if (entities == null) {
+	    throw new IllegalArgumentException("Cannot merge null entity list");
+	}
+
+	if (entities.isEmpty()) {
+	    logger.warn("Entity list is empty, there is nothing to merge");
+	    return new ArrayList<>();
+	}
+
+	List<T> mergedEntities = new ArrayList<>(entities.size());
+
+	for (T entity : entities) {
+	    logger.debug("Merging entity of type {} ...", entity.getClass().getName());
+	    entityManager.merge(entity);
+	    mergedEntities.add(entity);
+	}
+
+	return mergedEntities;
     }
 
     public <T extends ManagedEntity> void detach(T entity) {
