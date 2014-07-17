@@ -35,8 +35,6 @@ import ro.satrapu.churchmanagement.persistence.Person;
 @Model
 public class PersonList {
 
-    private static final long serialVersionUID = 1L;
-
     @Inject
     PersistenceService persistenceService;
 
