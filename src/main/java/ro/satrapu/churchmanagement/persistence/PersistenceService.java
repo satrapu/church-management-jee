@@ -27,6 +27,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import org.slf4j.Logger;
 import ro.satrapu.churchmanagement.logging.LoggerInstance;
+import ro.satrapu.churchmanagement.persistence.query.EntityQuery;
 
 /**
  * Manages application entities.
@@ -193,6 +194,29 @@ public class PersistenceService {
 	logger.debug("Fetching entity reference of type {}, using id {} ...", entityClass.getName(), entityId);
 	T entity = entityManager.getReference(entityClass, entityId);
 	return entity;
+    }
+
+    /**
+     *
+     * @param <T>
+     * @param entityQuery
+     * @return
+     */
+    public <T> List<T> fetch(EntityQuery<T> entityQuery) {
+	return fetch(entityQuery, null, null);
+    }
+
+    /**
+     *
+     * @param <T>
+     * @param entityQuery
+     * @param firstResult
+     * @param maxResults
+     * @return
+     */
+    public <T> List<T> fetch(EntityQuery<T> entityQuery, Integer firstResult, Integer maxResults) {
+	List<T> result = entityQuery.list(entityManager, firstResult, maxResults);
+	return result;
     }
 
     public <T extends ManagedEntity> List<T> fetch(Class<T> entityClass, int pageIndex, int recordsPerPage) {

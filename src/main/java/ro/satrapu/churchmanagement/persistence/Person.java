@@ -22,6 +22,8 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -82,6 +84,9 @@ public class Person extends ManagedEntityBase {
 	@AttributeOverride(name = "value", column = @Column(name = "EmailAddress", nullable = false, length = EmailAddress.MAX_LENGTH))
     })
     private EmailAddress emailAddress;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = true, mappedBy = "person")
+    private DiscipleshipTeacher discipleshipTeacher;
 
     public boolean hasFirstName() {
 	return !StringWrapperExtensions.isNullOrWhitespace(firstName);
