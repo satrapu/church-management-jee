@@ -26,32 +26,35 @@ limitations under the License.
 		       value="#{msg['global.noRecords']}"/>
 	<p:dataTable id="dataTable"
 		     value="#{discipleshipTeacherList.data}"
-		     var="person"
+		     var="discipleshipTeacherInfo"
 		     rendered="#{discipleshipTeacherList.data.rowCount > 0}"
 		     paginator="true"
 		     paginatorPosition="top"
 		     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
 		     rowsPerPageTemplate="5,10,25,50,100"
 		     rows="25"
-		     rowKey="#{person.id}"
+		     rowKey="#{discipleshipTeacherInfo}.id}"
 		     lazy="true"
 		     selection="#{discipleshipTeacherList.selectedPersons}">
 	    <p:column selectionMode="multiple"
 		      style="width:16px;text-align:center"/>
+	    <p:column headerText="Is Teacher">
+		<h:outputText value="#{discipleshipTeacherInfo.teacher? 'YES': 'NO'}" />
+	    </p:column>
 	    <p:column headerText="#{msg['entities.person.fields.id']}">
-		<h:outputText value="#{person.id}" />
+		<h:outputText value="#{discipleshipTeacherInfo.id}" />
 	    </p:column>
 	    <p:column headerText="#{msg['entities.person.fields.firstName']}">
-		<h:outputText value="#{person.firstName.value}" />
+		<h:outputText value="#{discipleshipTeacherInfo.firstName.value}" />
 	    </p:column>
 	    <p:column headerText="#{msg['entities.person.fields.middleName']}">
-		<h:outputText value="#{person.middleName.value}" />
+		<h:outputText value="#{discipleshipTeacherInfo.middleName.value}" />
 	    </p:column>
 	    <p:column headerText="#{msg['entities.person.fields.lastName']}">
-		<h:outputText value="#{person.lastName.value}" />
+		<h:outputText value="#{discipleshipTeacherInfo.lastName.value}" />
 	    </p:column>
 	    <p:column headerText="#{msg['entities.person.fields.emailAddress']}">
-		<h:outputText value="#{person.emailAddress.value}" />
+		<h:outputText value="#{discipleshipTeacherInfo.emailAddress.value}" />
 	    </p:column>
 	    <f:facet name="footer">
 		<div class="actions"
