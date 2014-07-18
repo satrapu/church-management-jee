@@ -16,6 +16,7 @@
 package ro.satrapu.churchmanagement.persistence;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -39,7 +40,7 @@ public class DiscipleshipTeacher extends ManagedEntityBase {
     private static final long serialVersionUID = 1L;
 
     @MapsId
-    @OneToOne
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "Id")
     private Person person;
 }
