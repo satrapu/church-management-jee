@@ -29,8 +29,8 @@ import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
 import ro.satrapu.churchmanagement.logging.LoggerInstance;
 import ro.satrapu.churchmanagement.model.discipleship.DiscipleshipTeacherInfo;
-import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.DiscipleshipTeacher;
+import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
 import ro.satrapu.churchmanagement.persistence.query.impl.DiscipleshipTeachersQuery;
 
@@ -43,9 +43,10 @@ import ro.satrapu.churchmanagement.persistence.query.impl.DiscipleshipTeachersQu
 @ViewScoped
 public class DiscipleshipTeacherList implements Serializable {
 
-    private static final Class<Person> personClazz = Person.class;
-    private static final Class<DiscipleshipTeacher> discipleshipTeacherClazz = DiscipleshipTeacher.class;
     private static final long serialVersionUID = 1L;
+    private static final Class<DiscipleshipTeacherInfo> discipleshipTeacherInfoClazz = DiscipleshipTeacherInfo.class;
+    private static final Class<DiscipleshipTeacher> discipleshipTeacherClazz = DiscipleshipTeacher.class;
+    private static final Class<Person> personClazz = Person.class;
 
     @Inject
     PersistenceService persistenceService;
@@ -59,19 +60,19 @@ public class DiscipleshipTeacherList implements Serializable {
 
     @PostConstruct
     public void init() {
+	final DiscipleshipTeachersQuery query = new DiscipleshipTeachersQuery();
 	data = new LazyDataModel<DiscipleshipTeacherInfo>() {
 	    private static final long serialVersionUID = 1L;
 
 	    @Override
 	    public List<DiscipleshipTeacherInfo> load(int currentPageIndex, int recordsPerPage, String sortField, SortOrder sortOrder, Map<String, String> filters) {
 		logger.debug("Loading page #{} containing maximum {} instances of type {} ...", currentPageIndex + 1, recordsPerPage,
-			personClazz.getName());
-		return persistenceService.fetch(new DiscipleshipTeachersQuery(), currentPageIndex, recordsPerPage);
+			discipleshipTeacherInfoClazz.getCanonicalName());
+		return persistenceService.fetch(query, currentPageIndex, recordsPerPage);
 	    }
 	};
 
-	long count = persistenceService.count(personClazz);
-	logger.debug("Found {} records", count);
+	long count = persistenceService.count(query);
 	data.setRowCount(new Long(count).intValue());
     }
 
@@ -88,40 +89,40 @@ public class DiscipleshipTeacherList implements Serializable {
     }
 
     public void markCurrentSelectionAsTeachers(ActionEvent actionEvent) {
-//	if (selectedPersons != null && selectedPersons.size() > 0) {
-//	    List<DiscipleshipTeacher> discipleshipTeachers = new ArrayList<>(selectedPersons.size());
-//
-//	    for (DiscipleshipTeacherInfo person : selectedPersons) {
-//		DiscipleshipTeacher discipleshipTeacher = persistenceService.fetch(discipleshipTeacherClazz, person.getId());
-//
-//		if (discipleshipTeacher == null) {
-//		    discipleshipTeacher = new DiscipleshipTeacher();
-//		    discipleshipTeacher.setPerson(person);
-//		    discipleshipTeachers.add(discipleshipTeacher);
-//		}
-//	    }
-//
-//	    if (!discipleshipTeachers.isEmpty()) {
-//		persistenceService.persist(discipleshipTeachers);
-//	    }
-//	}
+	if (selectedPersons != null && selectedPersons.size() > 0) {
+	    List<DiscipleshipTeacher> discipleshipTeachers = new ArrayList<>();
+
+	    for (DiscipleshipTeacherInfo selectedPerson : selectedPersons) {
+		if (!selectedPerson.isAvailableAsTeacher()) {
+		    Person person = persistenceService.fetchReference(personClazz, selectedPerson.getPersonId());
+
+		    DiscipleshipTeacher discipleshipTeacher = new DiscipleshipTeacher();
+		    discipleshipTeacher.setPerson(person);
+
+		    discipleshipTeachers.add(discipleshipTeacher);
+		}
+	    }
+
+	    if (!discipleshipTeachers.isEmpty()) {
+		persistenceService.persist(discipleshipTeachers);
+	    }
+	}
     }
 
     public void unmarkCurrentSelectionAsTeachers(ActionEvent actionEvent) {
-//	if (selectedPersons != null && selectedPersons.size() > 0) {
-//	    List<DiscipleshipTeacher> discipleshipTeachers = new ArrayList<>(selectedPersons.size());
-//
-//	    for (DiscipleshipTeacherInfo person : selectedPersons) {
-//		DiscipleshipTeacher discipleshipTeacher = persistenceService.fetch(discipleshipTeacherClazz, person.getId());
-//
-//		if (discipleshipTeacher != null) {
-//		    discipleshipTeachers.add(discipleshipTeacher);
-//		}
-//	    }
-//
-//	    if (!discipleshipTeachers.isEmpty()) {
-//		persistenceService.remove(discipleshipTeachers);
-//	    }
-//	}
+	if (selectedPersons != null && selectedPersons.size() > 0) {
+	    List<DiscipleshipTeacher> discipleshipTeachers = new ArrayList<>();
+
+	    for (DiscipleshipTeacherInfo selectedPerson : selectedPersons) {
+		if (selectedPerson.isAvailableAsTeacher()) {
+		    DiscipleshipTeacher discipleshipTeacher = persistenceService.fetchReference(discipleshipTeacherClazz, selectedPerson.getPersonId());
+		    discipleshipTeachers.add(discipleshipTeacher);
+		}
+	    }
+
+	    if (!discipleshipTeachers.isEmpty()) {
+		persistenceService.remove(discipleshipTeachers);
+	    }
+	}
     }
 }
