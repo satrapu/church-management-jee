@@ -24,14 +24,20 @@ import ro.satrapu.churchmanagement.persistence.DiscipleshipTeacher;
 import ro.satrapu.churchmanagement.persistence.Person;
 import ro.satrapu.churchmanagement.persistence.query.EntityQuery;
 import static org.torpedoquery.jpa.Torpedo.*;
-import ro.satrapu.churchmanagement.model.EmailAddress;
-import ro.satrapu.churchmanagement.model.NamePart;
+import ro.satrapu.churchmanagement.model.text.StringExtensions;
 
 /**
  *
  * @author satrapu
  */
 public class DiscipleshipTeachersQuery implements EntityQuery<DiscipleshipTeacherInfo> {
+
+    private static final int COLUMN_INDEX_PERSON_ID = 0;
+    private static final int COLUMN_INDEX_PERSON_FIRST_NAME = 1;
+    private static final int COLUMN_INDEX_PERSON_MIDDLE_NAME = 2;
+    private static final int COLUMN_INDEX_PERSON_LAST_NAME = 3;
+    private static final int COLUMN_INDEX_PERSON_EMAIL_ADDRESS = 4;
+    private static final int COLUMN_INDEX_TEACHER_ID = 5;
 
     /**
      *
@@ -44,8 +50,8 @@ public class DiscipleshipTeachersQuery implements EntityQuery<DiscipleshipTeache
     public List<DiscipleshipTeacherInfo> list(EntityManager entityManager, Integer firstResult, Integer maxResults) {
 	Person person = from(Person.class);
 	DiscipleshipTeacher discipleshipTeacher = leftJoin(person.getDiscipleshipTeacher());
-	Query<Object[]> torpedoQuery = select(person.getFirstName().getValue(), person.getMiddleName().getValue(),
-		person.getLastName().getValue(), person.getEmailAddress().getValue(), discipleshipTeacher.getId() != null);
+	Query<Object[]> torpedoQuery = select(person.getId(), person.getFirstName().getValue(), person.getMiddleName().getValue(),
+		person.getLastName().getValue(), person.getEmailAddress().getValue(), discipleshipTeacher.getId());
 
 	if (firstResult != null) {
 	    torpedoQuery.setFirstResult(firstResult);
@@ -60,11 +66,13 @@ public class DiscipleshipTeachersQuery implements EntityQuery<DiscipleshipTeache
 
 	for (Object[] record : records) {
 	    DiscipleshipTeacherInfo discipleshipTeacherInfo = new DiscipleshipTeacherInfo();
-	    discipleshipTeacherInfo.setFirstName(new NamePart(record[0].toString()));
-	    discipleshipTeacherInfo.setMiddleName(new NamePart(record[1].toString()));
-	    discipleshipTeacherInfo.setLastName(new NamePart(record[2].toString()));
-	    discipleshipTeacherInfo.setEmailAddress(new EmailAddress(record[3].toString()));
-	    discipleshipTeacherInfo.setTeacher(record[4] == null ? false : Boolean.parseBoolean(record[4].toString()));
+	    discipleshipTeacherInfo.setPersonId(Long.parseLong(record[COLUMN_INDEX_PERSON_ID].toString()));
+	    discipleshipTeacherInfo.setPersonName(StringExtensions.join(record[COLUMN_INDEX_PERSON_FIRST_NAME].toString(),
+		    record[COLUMN_INDEX_PERSON_MIDDLE_NAME].toString(), record[COLUMN_INDEX_PERSON_LAST_NAME].toString()));
+	    discipleshipTeacherInfo.setPersonEmailAddress(record[COLUMN_INDEX_PERSON_EMAIL_ADDRESS].toString());
+	    discipleshipTeacherInfo.setAvailableAsTeacher(record[COLUMN_INDEX_TEACHER_ID] == null
+		    ? false
+		    : Boolean.parseBoolean(record[COLUMN_INDEX_TEACHER_ID].toString()));
 
 	    result.add(discipleshipTeacherInfo);
 	}
