@@ -16,8 +16,6 @@
 package ro.satrapu.churchmanagement.model.discipleship;
 
 import lombok.Data;
-import ro.satrapu.churchmanagement.model.EmailAddress;
-import ro.satrapu.churchmanagement.model.NamePart;
 
 /**
  *
@@ -26,10 +24,8 @@ import ro.satrapu.churchmanagement.model.NamePart;
 @Data
 public class DiscipleshipTeacherInfo {
 
-    private Long id;
-    private NamePart firstName;
-    private NamePart middleName;
-    private NamePart lastName;
-    private EmailAddress emailAddress;
-    private boolean isTeacher;
+    private Long personId;
+    private String personName;
+    private String personEmailAddress;
+    private boolean isAvailableAsTeacher;
 }
