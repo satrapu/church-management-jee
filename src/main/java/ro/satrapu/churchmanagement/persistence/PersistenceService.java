@@ -27,6 +27,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import org.slf4j.Logger;
 import ro.satrapu.churchmanagement.logging.LoggerInstance;
+import ro.satrapu.churchmanagement.persistence.query.EntityCountQuery;
 import ro.satrapu.churchmanagement.persistence.query.EntityQuery;
 
 /**
@@ -215,6 +216,10 @@ public class PersistenceService {
      * @return
      */
     public <T> List<T> fetch(EntityQuery<T> entityQuery, Integer firstResult, Integer maxResults) {
+	if (entityQuery == null) {
+	    throw new IllegalArgumentException("Cannot fetch entities using null as query");
+	}
+
 	List<T> result = entityQuery.list(entityManager, firstResult, maxResults);
 	return result;
     }
@@ -251,6 +256,16 @@ public class PersistenceService {
 	criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(entityClass)));
 
 	long count = entityManager.createQuery(criteriaQuery).getSingleResult();
+	logger.debug("Found {} entities", count);
+	return count;
+    }
+
+    public long count(EntityCountQuery entityCountQuery) {
+	if (entityCountQuery == null) {
+	    throw new IllegalArgumentException("Cannot count entities using null as query");
+	}
+
+	long count = entityCountQuery.count(entityManager);
 	logger.debug("Found {} entities", count);
 	return count;
     }
