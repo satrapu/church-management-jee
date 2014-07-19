@@ -20,17 +20,17 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import org.torpedoquery.jpa.Query;
 import ro.satrapu.churchmanagement.model.discipleship.DiscipleshipTeacherInfo;
-import ro.satrapu.churchmanagement.persistence.DiscipleshipTeacher;
 import ro.satrapu.churchmanagement.persistence.Person;
 import ro.satrapu.churchmanagement.persistence.query.EntityQuery;
 import static org.torpedoquery.jpa.Torpedo.*;
 import ro.satrapu.churchmanagement.model.text.StringExtensions;
+import ro.satrapu.churchmanagement.persistence.query.EntityCountQuery;
 
 /**
  *
  * @author satrapu
  */
-public class DiscipleshipTeachersQuery implements EntityQuery<DiscipleshipTeacherInfo> {
+public class DiscipleshipTeachersQuery implements EntityQuery<DiscipleshipTeacherInfo>, EntityCountQuery {
 
     private static final int COLUMN_INDEX_PERSON_ID = 0;
     private static final int COLUMN_INDEX_PERSON_FIRST_NAME = 1;
@@ -49,9 +49,8 @@ public class DiscipleshipTeachersQuery implements EntityQuery<DiscipleshipTeache
     @Override
     public List<DiscipleshipTeacherInfo> list(EntityManager entityManager, Integer firstResult, Integer maxResults) {
 	Person person = from(Person.class);
-	DiscipleshipTeacher discipleshipTeacher = leftJoin(person.getDiscipleshipTeacher());
 	Query<Object[]> torpedoQuery = select(person.getId(), person.getFirstName().getValue(), person.getMiddleName().getValue(),
-		person.getLastName().getValue(), person.getEmailAddress().getValue(), discipleshipTeacher.getId());
+		person.getLastName().getValue(), person.getEmailAddress().getValue(), person.getDiscipleshipTeacher());
 
 	if (firstResult != null) {
 	    torpedoQuery.setFirstResult(firstResult);
@@ -70,9 +69,7 @@ public class DiscipleshipTeachersQuery implements EntityQuery<DiscipleshipTeache
 	    discipleshipTeacherInfo.setPersonName(StringExtensions.join(record[COLUMN_INDEX_PERSON_FIRST_NAME].toString(),
 		    record[COLUMN_INDEX_PERSON_MIDDLE_NAME].toString(), record[COLUMN_INDEX_PERSON_LAST_NAME].toString()));
 	    discipleshipTeacherInfo.setPersonEmailAddress(record[COLUMN_INDEX_PERSON_EMAIL_ADDRESS].toString());
-	    discipleshipTeacherInfo.setAvailableAsTeacher(record[COLUMN_INDEX_TEACHER_ID] == null
-		    ? false
-		    : Boolean.parseBoolean(record[COLUMN_INDEX_TEACHER_ID].toString()));
+	    discipleshipTeacherInfo.setAvailableAsTeacher(record[COLUMN_INDEX_TEACHER_ID] != null);
 
 	    result.add(discipleshipTeacherInfo);
 	}
@@ -80,4 +77,12 @@ public class DiscipleshipTeachersQuery implements EntityQuery<DiscipleshipTeache
 	return result;
     }
 
+    @Override
+    public Long count(EntityManager entityManager) {
+	Person person = from(Person.class);
+	Query<Long> torpedoQuery = select(org.torpedoquery.jpa.Torpedo.count(person.getId()));
+	List<Long> result = torpedoQuery.list(entityManager);
+
+	return result.get(0);
+    }
 }
