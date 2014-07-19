@@ -10,3 +10,4 @@
 nb-configuration.xml
 nbactions.xml
 faces-config.NavData
+/nbactions-release-profile.xml
