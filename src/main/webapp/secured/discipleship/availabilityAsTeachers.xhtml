@@ -20,7 +20,7 @@ limitations under the License.
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <ui:define name="title">#{msg['pages.discipleship.teachers.list.title']}</ui:define>
+    <ui:define name="title">#{msg['pages.discipleship.availabilityAsTeachers.title']}</ui:define>
     <ui:define name="content">
 	<p:outputLabel rendered="#{discipleshipTeacherList.data.rowCount == 0}"
 		       value="#{msg['global.noRecords']}"/>
@@ -33,28 +33,24 @@ limitations under the License.
 		     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"  
 		     rowsPerPageTemplate="5,10,25,50,100"
 		     rows="25"
-		     rowKey="#{discipleshipTeacherInfo}.id}"
+		     rowKey="#{discipleshipTeacherInfo}.personId}"
 		     lazy="true"
 		     selection="#{discipleshipTeacherList.selectedPersons}">
 	    <p:column selectionMode="multiple"
 		      style="width:16px;text-align:center"/>
-	    <p:column headerText="Is Teacher">
-		<h:outputText value="#{discipleshipTeacherInfo.teacher? 'YES': 'NO'}" />
+	    <p:column headerText="#{msg['model.dsicipleshipTeacherInfo.fields.availabilityStatus']}">
+		<h:outputText value="#{discipleshipTeacherInfo.availableAsTeacher? 
+				       msg['pages.discipleship.availabilityAsTeachers.status.available']
+				       : msg['pages.discipleship.availabilityAsTeachers.status.unavailable']}" />
 	    </p:column>
-	    <p:column headerText="#{msg['entities.person.fields.id']}">
-		<h:outputText value="#{discipleshipTeacherInfo.id}" />
+	    <p:column headerText="#{msg['model.dsicipleshipTeacherInfo.fields.personId']}">
+		<h:outputText value="#{discipleshipTeacherInfo.personId}" />
 	    </p:column>
-	    <p:column headerText="#{msg['entities.person.fields.firstName']}">
-		<h:outputText value="#{discipleshipTeacherInfo.firstName.value}" />
+	    <p:column headerText="#{msg['model.dsicipleshipTeacherInfo.fields.personName']}">
+		<h:outputText value="#{discipleshipTeacherInfo.personName}" />
 	    </p:column>
-	    <p:column headerText="#{msg['entities.person.fields.middleName']}">
-		<h:outputText value="#{discipleshipTeacherInfo.middleName.value}" />
-	    </p:column>
-	    <p:column headerText="#{msg['entities.person.fields.lastName']}">
-		<h:outputText value="#{discipleshipTeacherInfo.lastName.value}" />
-	    </p:column>
-	    <p:column headerText="#{msg['entities.person.fields.emailAddress']}">
-		<h:outputText value="#{discipleshipTeacherInfo.emailAddress.value}" />
+	    <p:column headerText="#{msg['model.dsicipleshipTeacherInfo.fields.personEmailAddress']}">
+		<h:outputText value="#{discipleshipTeacherInfo.personEmailAddress}" />
 	    </p:column>
 	    <f:facet name="footer">
 		<div class="actions"
@@ -62,13 +58,13 @@ limitations under the License.
 		    <p:commandButton process="dataTable" 
 				     update="dataTable"
 				     icon="ui-icon-check" 
-				     value="Set as teacher(s)" 
+				     value="#{msg['pages.discipleship.availabilityAsTeachers.actions.markAsAvailable']}" 
 				     ajax="false"
 				     actionListener="#{discipleshipTeacherList.markCurrentSelectionAsTeachers}"/>
 		    <p:commandButton process="dataTable" 
 				     update="dataTable"
 				     icon="ui-icon-uncheck" 
-				     value="Unset as teacher(s)"
+				     value="#{msg['pages.discipleship.availabilityAsTeachers.actions.markAsUnavailable']}" 
 				     ajax="false"
 				     actionListener="#{discipleshipTeacherList.unmarkCurrentSelectionAsTeachers}"/>
 		</div>
