@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import ro.satrapu.churchmanagement.model.StringWrapperExtensions;
+import ro.satrapu.churchmanagement.model.text.StringWrapperExtensions;
 
 /**
  * Represents a person attending a church, either as a member or not.
