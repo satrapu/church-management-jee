@@ -15,10 +15,10 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
@@ -33,14 +33,26 @@ import lombok.ToString;
 @Entity
 @Table(name = "Discipleship_Teachers")
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class DiscipleshipTeacher extends ManagedEntityBase {
+@EqualsAndHashCode(exclude = "person")
+@ToString(callSuper = true, exclude = "person")
+//excluded person field from lombok's @EqualsAndHashCode and @ToString annotations to avoid a StackOverflowError 
+//caused by a circular reference between a teacher and a person, 
+//as detaild here: https://groups.google.com/forum/#!topic/project-lombok/Xr13lPinsvg
+public class DiscipleshipTeacher implements ManagedEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @MapsId
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "Id")
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @Id
     private Person person;
+
+    @Override
+    public Serializable getId() {
+	return person.getId();
+    }
+
+    @Override
+    public Long getVersion() {
+	return person.getVersion();
+    }
 }
