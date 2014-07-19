@@ -70,11 +70,11 @@ public class CurrentUser implements Serializable {
 	return authenticated;
     }
 
-    public boolean isDiscipleshipTeacherListMenuVisible() {
+    public boolean isDiscipleshipAvailabilityAsTeachersMenuVisible() {
 	return authenticated;
     }
 
-    public boolean isDiscipleshipDiscipleListMenuVisible() {
+    public boolean isDiscipleshipAvailabilityAsDisciplesMenuVisible() {
 	return authenticated;
     }
 

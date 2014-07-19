@@ -49,12 +49,12 @@ limitations under the License.
 				url="/secured/discipleship/pairs/edit.xhtml"
 				rendered="#{currentUser.discipleshipPairAddMenuVisible}"/>
 		</p:submenu>
-		<p:menuitem value="#{msg['menu.discipleship.teachers.list.title']}"
-			    url="/secured/discipleship/teachers/list.xhtml"
-			    rendered="#{currentUser.discipleshipTeacherListMenuVisible}"/>
-		<p:menuitem value="#{msg['menu.discipleship.disciples.list.title']}"
-			    url="/secured/discipleship/disciples/list.xhtml"
-			    rendered="#{currentUser.discipleshipDiscipleListMenuVisible}"/>
+		<p:menuitem value="#{msg['menu.discipleship.availabilityAsTeachers.title']}"
+			    url="/secured/discipleship/availabilityAsTeachers.xhtml"
+			    rendered="#{currentUser.discipleshipAvailabilityAsTeachersMenuVisible}"/>
+		<p:menuitem value="#{msg['menu.discipleship.availabilityAsDisciples.title']}"
+			    url="/secured/discipleship/availabilityAsDisciples.xhtml"
+			    rendered="#{currentUser.discipleshipAvailabilityAsDisciplesMenuVisible}"/>
             </p:submenu>
         </p:menubar>
     </h:form>
