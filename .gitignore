@@ -1,13 +1,25 @@
+# Compilation artifacts #
 *.class
 
-# Package Files #
+# Package artifacts #
 *.jar
 *.war
 *.ear
+
+# Maven artifacts #
 /target/
+
+# IntelliJ IDEA artifacts #
 /.idea/
 /church-management.iml
-nb-configuration.xml
-nbactions.xml
-faces-config.NavData
+
+# NetBeans artifacts # 
+/nb-configuration.xml
+/nbactions.xml
 /nbactions-release-profile.xml
+/faces-config.NavData
+
+# Eclipse artifacts #
+/.project
+/.classpath
+/.settings/
