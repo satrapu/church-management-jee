@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Contains all details needed to authenticate a user.
+ * Represents the authentication details (user name and password) a user will enter at login page in order to access this application.
  *
  * @author satrapu
  */
@@ -38,6 +38,6 @@ public class AuthenticationDetails implements Serializable {
     private String userName;
 
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 1000)
     private String password;
 }
