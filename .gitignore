@@ -23,3 +23,4 @@
 /.project
 /.classpath
 /.settings/
+/src/main/webapp/WEB-INF/jboss-web.xml
