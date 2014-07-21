@@ -39,4 +39,59 @@ public class StringWrapperExtensions {
 
 	return StringExtensions.isNullOrWhitespace(stringWrapper.getValue());
     }
+
+    /**
+     * Joins the given {@code values} into one using an empty space as the delimiter.
+     *
+     * @param values The values to join.
+     * @return A new {@link StringWrapper} representing the joined {@code values} delimited by an empty string.
+     */
+    public static StringWrapper join(StringWrapper... values) {
+	return joinWithDelimiter(" ", values);
+    }
+
+    /**
+     * Joins the given {@code values} into one using the given {@code delimiter} value as the delimiter.
+     *
+     * @param delimiter The delimiter to be added between to successful values.
+     * @param values The values to join.
+     * @return A new {@link StringWrapper} representing the joined {@code values} delimited by the {@code delimiter} value.
+     */
+    public static StringWrapper joinWithDelimiter(String delimiter, StringWrapper... values) {
+	if (delimiter == null) {
+	    throw new IllegalArgumentException("The delimiter is not allowed to be null");
+	}
+
+	if (values == null || values.length == 0) {
+	    return new StringWrapper() {
+
+		@Override
+		public String getValue() {
+		    return "";
+		}
+	    };
+	}
+
+	StringBuilder sb = new StringBuilder();
+
+	for (StringWrapper stringWrapper : values) {
+	    if (!isNullOrWhitespace(stringWrapper)) {
+		if (sb.length() > 0) {
+		    sb.append(delimiter);
+		}
+
+		sb.append(stringWrapper.getValue());
+	    }
+	}
+
+	final String result = sb.toString();
+
+	return new StringWrapper() {
+
+	    @Override
+	    public String getValue() {
+		return result;
+	    }
+	};
+    }
 }
