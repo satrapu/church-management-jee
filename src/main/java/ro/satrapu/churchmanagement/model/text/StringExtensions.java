@@ -70,13 +70,13 @@ public class StringExtensions {
 
 	StringBuilder sb = new StringBuilder();
 
-	for (String stringWrapper : values) {
-	    if (!isNullOrWhitespace(stringWrapper)) {
+	for (String value : values) {
+	    if (!isNullOrWhitespace(value)) {
 		if (sb.length() > 0) {
 		    sb.append(delimiter);
 		}
 
-		sb.append(stringWrapper);
+		sb.append(value);
 	    }
 	}
 
