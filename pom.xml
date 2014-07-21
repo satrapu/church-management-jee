@@ -93,11 +93,6 @@
 	    <artifactId>lombok</artifactId>
 	    <version>1.14.4</version>
 	</dependency>
-	<dependency>
-	    <groupId>org.torpedoquery</groupId>
-	    <artifactId>org.torpedoquery</artifactId>
-	    <version>1.6.0</version>
-	</dependency>
     </dependencies>
     <profiles>
 	<profile>
