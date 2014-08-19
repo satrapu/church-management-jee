@@ -26,7 +26,7 @@ limitations under the License.
         <f:metadata>
             <f:viewParam name="id" 
                          value="#{personHome.id}"
-                         converter="entityIdConverter"/>
+                         converter="personIdConverter"/>
             <f:event type="preRenderView"
                      listener="#{personHome.beginConversation}" />
         </f:metadata>
