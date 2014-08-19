@@ -35,73 +35,73 @@ public class Messages implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(Messages.class);
     private static final String MESSAGE_KEY_NOT_FOUND = "???{0}???";
-    
+
     @Inject
+    @ResourceBundleInstance
     transient ResourceBundle resourceBundle;
 
     @Inject
     @FacesContextInstance
     transient FacesContext facesContext;
 
-    
-    public void info(String messageKey) {
-        logger.debug("Adding info message using key for summary: {} ...", messageKey);
-        add(FacesMessage.SEVERITY_INFO, messageKey);
+    public void info(String messageKey, Object... arguments) {
+	logger.debug("Adding info message using key for summary: {} ...", messageKey);
+	add(FacesMessage.SEVERITY_INFO, messageKey, arguments);
     }
 
-    public void warning(String messageKey) {
-        logger.debug("Adding warning message using key for summary: {} ...", messageKey);
-        add(FacesMessage.SEVERITY_WARN, messageKey);
+    public void warning(String messageKey, Object... arguments) {
+	logger.debug("Adding warning message using key for summary: {} ...", messageKey);
+	add(FacesMessage.SEVERITY_WARN, messageKey, arguments);
     }
 
-    public void error(String messageKey) {
-        logger.debug("Adding error message using key for summary: {} ...", messageKey);
-        add(FacesMessage.SEVERITY_ERROR, messageKey);
+    public void error(String messageKey, Object... arguments) {
+	logger.debug("Adding error message using key for summary: {} ...", messageKey);
+	add(FacesMessage.SEVERITY_ERROR, messageKey, arguments);
     }
 
-    public void fatal(String messageKey) {
-        logger.debug("Adding fatal message using key for summary: {} ...", messageKey);
-        add(FacesMessage.SEVERITY_FATAL, messageKey);
+    public void fatal(String messageKey, Object... arguments) {
+	logger.debug("Adding fatal message using key for summary: {} ...", messageKey);
+	add(FacesMessage.SEVERITY_FATAL, messageKey, arguments);
     }
 
-    public void add(FacesMessage.Severity severity, String summaryMessageKey) {
-        logger.debug("Adding FacesMessage using severity: {} and key for summary: {} ...", severity, summaryMessageKey);
+    public void add(FacesMessage.Severity severity, String summaryMessageKey, Object... arguments) {
+	logger.debug("Adding FacesMessage using severity: {} and key for summary: {} ...", severity, summaryMessageKey);
 
-        FacesMessage facesMessage = new FacesMessage();
-        facesMessage.setSeverity(severity);
-        facesMessage.setSummary(getMessageFor(summaryMessageKey));
+	FacesMessage facesMessage = new FacesMessage();
+	facesMessage.setSeverity(severity);
+	facesMessage.setSummary(getMessageFor(summaryMessageKey, arguments));
 
-        facesContext.addMessage(null, facesMessage);
+	facesContext.addMessage(null, facesMessage);
     }
 
-    public void add(FacesMessage.Severity severity, String summaryMessageKey, String detailMessageKey) {
-        logger.debug("Adding FacesMessage using severity: {}, key for summary: {} and key for detail: {} ...",
-                severity, summaryMessageKey, detailMessageKey);
+    public void add(FacesMessage.Severity severity, String summaryMessageKey, String detailMessageKey, Object... arguments) {
+	logger.debug("Adding FacesMessage using severity: {}, key for summary: {} and key for detail: {} ...",
+		severity, summaryMessageKey, detailMessageKey);
 
-        FacesMessage facesMessage = new FacesMessage();
-        facesMessage.setSeverity(severity);
-        facesMessage.setSummary(getMessageFor(summaryMessageKey));
-        facesMessage.setDetail(getMessageFor(detailMessageKey));
+	FacesMessage facesMessage = new FacesMessage();
+	facesMessage.setSeverity(severity);
+	facesMessage.setSummary(getMessageFor(summaryMessageKey, arguments));
+	facesMessage.setDetail(getMessageFor(detailMessageKey, arguments));
 
-        add(facesMessage);
+	add(facesMessage);
     }
 
     public void add(FacesMessage facesMessage) {
-        logger.debug("Adding FacesMessage: {} ...", facesMessage);
-        facesContext.addMessage(null, facesMessage);
+	logger.debug("Adding FacesMessage: {} ...", facesMessage);
+	facesContext.addMessage(null, facesMessage);
     }
 
-    public String getMessageFor(String key) {
-        logger.debug("Trying to get message using key: {} ...", key);
-        String value;
+    public String getMessageFor(String key, Object... arguments) {
+	logger.debug("Trying to get message using key: {} ...", key);
+	String value;
 
-        if (!resourceBundle.containsKey(key)) {
-            value = MessageFormat.format(MESSAGE_KEY_NOT_FOUND, key);
-        } else {
-            value = resourceBundle.getString(key);
-        }
+	if (!resourceBundle.containsKey(key)) {
+	    value = MessageFormat.format(MESSAGE_KEY_NOT_FOUND, key);
+	} else {
+	    value = MessageFormat.format(resourceBundle.getString(key), arguments);
+	}
 
-        logger.debug("Found message: {}", value);
-        return value;
+	logger.debug("Found message: {}", value);
+	return value;
     }
 }

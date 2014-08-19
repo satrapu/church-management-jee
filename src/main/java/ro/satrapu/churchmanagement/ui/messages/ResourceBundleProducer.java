@@ -45,17 +45,18 @@ public class ResourceBundleProducer {
      * @throws RuntimeException If a {@link ResourceBundle} instance was not found.
      */
     @Produces
+    @ResourceBundleInstance
     public ResourceBundle getResourceBundle() {
-        logger.debug("Messages will be fetched using bundle name: {} ...", RESOURCE_BUNDLE_NAME);
-        ResourceBundle resourceBundle = facesContext.getApplication().getResourceBundle(facesContext, RESOURCE_BUNDLE_NAME);
+	logger.debug("Messages will be fetched using bundle name: {} ...", RESOURCE_BUNDLE_NAME);
+	ResourceBundle resourceBundle = facesContext.getApplication().getResourceBundle(facesContext, RESOURCE_BUNDLE_NAME);
 
-        if (resourceBundle == null) {
-            String errorMessage = MessageFormat.format("Could not find bundle using name: {0}.", RESOURCE_BUNDLE_NAME);
-            logger.error(errorMessage);
-            throw new RuntimeException(errorMessage);
-        }
+	if (resourceBundle == null) {
+	    String errorMessage = MessageFormat.format("Could not find bundle using name: {0}.", RESOURCE_BUNDLE_NAME);
+	    logger.error(errorMessage);
+	    throw new RuntimeException(errorMessage);
+	}
 
-        logger.debug("Found bundle with {} pairs", resourceBundle.keySet().size());
-        return resourceBundle;
+	logger.debug("Found bundle with {} pairs", resourceBundle.keySet().size());
+	return resourceBundle;
     }
 }
