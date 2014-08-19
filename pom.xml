@@ -36,7 +36,7 @@
 	    <timezone>2</timezone>
 	    <url>https://www.linkedin.com/in/bmarian</url>
 	    <roles>
-		<role>Main commiter</role>
+		<role>Main Commiter</role>
 	    </roles>
 	</developer>
     </developers>
@@ -118,7 +118,7 @@
 	    <filter>src/main/filters/${appserver.discriminator}.properties</filter>
 	</filters>
 	<resources>
-	    <!-- replace data source name found inside persistence.xml with the one coming from the filter -->
+	    <!-- replace tokens with actual values coming from the filters (i.e. the data source name found inside persistence.xml) -->
 	    <resource>
 		<directory>src/main/resources</directory>
 		<filtering>true</filtering>
@@ -145,15 +145,23 @@
 		<configuration>
 		    <failOnMissingWebXml>false</failOnMissingWebXml>
 		    <webResources>
-			<!-- copy app server specific files to WEB-INF folder inside the final WAR -->
+			<!-- copy application server specific configuration files -->
 			<resource>
 			    <directory>resources-appserver-specific/${appserver.discriminator}/WEB-INF</directory>
 			    <targetPath>WEB-INF</targetPath>
 			</resource>
-			<!-- copy the properties file containing translations as they will not be copied automatically -->
+			
+			<!-- copy property file used by the UI -->
 			<resource>
 			    <directory>src/main/resources/ro/satrapu/churchmanagement/ui</directory>
 			    <targetPath>WEB-INF/classes/ro/satrapu/churchmanagement/ui</targetPath>
+			</resource>
+			
+			<!-- copy property files used by custom JSF converters and validators -->
+			<resource>
+			    <directory>src/main/resources</directory>
+			    <include>ValidationMessages*.properties</include>
+			    <targetPath>WEB-INF/classes</targetPath>
 			</resource>
 		    </webResources>
 		</configuration>
