@@ -31,8 +31,10 @@ limitations under the License.
             <p:panel styleClass="page">
                 <f:facet name="header">
                     <p:outputPanel styleClass="header">
-                        #{msg['application.title']}
-			#{applicationSettings.titleSuffix}
+			<a href="#{currentUser.homePageUrl}">
+			    #{msg['application.title']}
+			    #{applicationSettings.titleSuffix}
+			</a>
                     </p:outputPanel>
                 </f:facet>
                 <f:facet name="footer">

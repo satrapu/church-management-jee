@@ -22,6 +22,10 @@
     font-weight: bold;
 }
 
+.page .header a{
+    text-decoration: none;
+}
+
 .page .footer{
     text-align: center;
     font-size: 75%;

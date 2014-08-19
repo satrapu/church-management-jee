@@ -16,12 +16,15 @@
 package ro.satrapu.churchmanagement.security;
 
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import ro.satrapu.churchmanagement.ui.Urls;
 
 /**
  * Represents the current user.
@@ -34,11 +37,17 @@ import lombok.Setter;
 public class CurrentUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Inject
+    Urls urls;
+
     @Setter(AccessLevel.PRIVATE)
     private boolean authenticated;
+
     private String name;
 
-    public CurrentUser() {
+    @PostConstruct
+    public void init() {
 	this.authenticated = false;
     }
 
@@ -76,6 +85,10 @@ public class CurrentUser implements Serializable {
 
     public boolean isDiscipleshipAvailabilityAsDisciplesMenuVisible() {
 	return authenticated;
+    }
+
+    public String getHomePageUrl() {
+	return urls.addContextPath(Urls.Secured.HOME);
     }
 
     public void setAuthenticatedUser(AuthenticatedUser authenticatedUser) {
