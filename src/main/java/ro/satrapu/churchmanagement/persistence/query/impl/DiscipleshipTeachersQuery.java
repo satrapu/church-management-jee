@@ -18,12 +18,21 @@ package ro.satrapu.churchmanagement.persistence.query.impl;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
+import ro.satrapu.churchmanagement.model.EmailAddress;
+import ro.satrapu.churchmanagement.model.NamePart;
 import ro.satrapu.churchmanagement.model.discipleship.DiscipleshipTeacherInfo;
 import ro.satrapu.churchmanagement.model.text.StringWrapperExtensions;
+import ro.satrapu.churchmanagement.persistence.DiscipleshipTeacher;
+import ro.satrapu.churchmanagement.persistence.DiscipleshipTeacher_;
 import ro.satrapu.churchmanagement.persistence.Person;
+import ro.satrapu.churchmanagement.persistence.Person_;
 import ro.satrapu.churchmanagement.persistence.query.EntityCountQuery;
 import ro.satrapu.churchmanagement.persistence.query.EntityQuery;
 
@@ -36,18 +45,34 @@ public class DiscipleshipTeachersQuery implements EntityQuery<DiscipleshipTeache
     @Override
     public List<DiscipleshipTeacherInfo> list(EntityManager entityManager, Integer firstResult, Integer maxResults) {
 	CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-	CriteriaQuery<Person> criteriaQuery = criteriaBuilder.createQuery(Person.class);
-	TypedQuery<Person> typedQuery = entityManager.createQuery(criteriaQuery);
-	List<Person> persons = typedQuery.getResultList();
-	List<DiscipleshipTeacherInfo> result = new ArrayList<>(persons.size());
+	CriteriaQuery<Tuple> criteriaQuery = criteriaBuilder.createTupleQuery();
+	Root<Person> person = criteriaQuery.from(Person.class);
+	Join<Person, DiscipleshipTeacher> teacher = person.join(Person_.discipleshipTeacher, JoinType.LEFT);
+	criteriaQuery.multiselect(person.get(Person_.id), person.get(Person_.firstName), person.get(Person_.middleName), person.get(Person_.lastName),
+		person.get(Person_.emailAddress), teacher.get(DiscipleshipTeacher_.id));
 
-	for (Person localPerson : persons) {
+	TypedQuery<Tuple> typedQuery = entityManager.createQuery(criteriaQuery);
+	typedQuery.setFirstResult(firstResult);
+	typedQuery.setMaxResults(maxResults);
+
+	List<Tuple> records = typedQuery.getResultList();
+	List<DiscipleshipTeacherInfo> result = new ArrayList<>(records.size());
+
+	for (Tuple record : records) {
+	    Integer id = record.get(0, Integer.class);
+	    NamePart firstName = record.get(1, NamePart.class);
+	    NamePart middleName = record.get(2, NamePart.class);
+	    NamePart lastName = record.get(3, NamePart.class);
+	    EmailAddress emailAddress = record.get(4, EmailAddress.class);
+	    Integer discipleshipTeacherId = record.get(5, Integer.class);
+
 	    DiscipleshipTeacherInfo discipleshipTeacherInfo = new DiscipleshipTeacherInfo();
-	    discipleshipTeacherInfo.setAvailableAsTeacher(localPerson.getDiscipleshipTeacher() != null);
-	    discipleshipTeacherInfo.setPersonEmailAddress(localPerson.getEmailAddress().getValue());
-	    discipleshipTeacherInfo.setPersonId(localPerson.getId());
-	    discipleshipTeacherInfo.setPersonName(
-		    StringWrapperExtensions.join(localPerson.getFirstName(), localPerson.getMiddleName(), localPerson.getLastName()).getValue());
+	    discipleshipTeacherInfo.setDiscipleshipTeacherId(discipleshipTeacherId);
+	    discipleshipTeacherInfo.setAvailableAsTeacher(discipleshipTeacherId != null);
+	    discipleshipTeacherInfo.setPersonEmailAddress(emailAddress.getValue());
+	    discipleshipTeacherInfo.setPersonId(id);
+	    discipleshipTeacherInfo.setPersonName(StringWrapperExtensions.join(firstName, middleName, lastName).getValue());
+
 	    result.add(discipleshipTeacherInfo);
 	}
 

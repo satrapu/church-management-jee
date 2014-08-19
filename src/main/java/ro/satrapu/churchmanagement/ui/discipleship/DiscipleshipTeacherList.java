@@ -33,6 +33,7 @@ import ro.satrapu.churchmanagement.persistence.DiscipleshipTeacher;
 import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
 import ro.satrapu.churchmanagement.persistence.query.impl.DiscipleshipTeachersQuery;
+import ro.satrapu.churchmanagement.ui.messages.Messages;
 
 /**
  * Displays a list of {@link Person} instances to be marked or unmarked as discipleship teachers.
@@ -54,6 +55,9 @@ public class DiscipleshipTeacherList implements Serializable {
     @Inject
     @LoggerInstance
     Logger logger;
+
+    @Inject
+    Messages messages;
 
     LazyDataModel<DiscipleshipTeacherInfo> data;
     List<DiscipleshipTeacherInfo> selectedPersons;
@@ -89,7 +93,15 @@ public class DiscipleshipTeacherList implements Serializable {
     }
 
     public void markCurrentSelectionAsTeachers(ActionEvent actionEvent) {
-	if (selectedPersons != null && selectedPersons.size() > 0) {
+	if (selectedPersons == null) {
+	    return;
+	}
+
+	if (selectedPersons.isEmpty()) {
+	    return;
+	}
+
+	try {
 	    List<DiscipleshipTeacher> discipleshipTeachers = new ArrayList<>();
 
 	    for (DiscipleshipTeacherInfo selectedPerson : selectedPersons) {
@@ -105,24 +117,55 @@ public class DiscipleshipTeacherList implements Serializable {
 
 	    if (!discipleshipTeachers.isEmpty()) {
 		persistenceService.persist(discipleshipTeachers);
+
+		if (discipleshipTeachers.size() > 1) {
+		    messages.info("pages.discipleship.availabilityAsTeachers.actions.markAsAvailable.success.many", discipleshipTeachers.size());
+		} else {
+		    messages.info("pages.discipleship.availabilityAsTeachers.actions.markAsAvailable.success.single");
+		}
+	    } else {
+		messages.warning("pages.discipleship.availabilityAsTeachers.actions.markAsAvailable.warning.none");
 	    }
+	} catch (Exception e) {
+	    logger.error("markCurrentSelectionAsTeachers - ERROR", e);
+	    messages.error("pages.discipleship.availabilityAsTeachers.actions.markAsAvailable.failure");
 	}
     }
 
     public void unmarkCurrentSelectionAsTeachers(ActionEvent actionEvent) {
-	if (selectedPersons != null && selectedPersons.size() > 0) {
+	if (selectedPersons == null) {
+	    return;
+	}
+
+	if (selectedPersons.isEmpty()) {
+	    return;
+	}
+
+	try {
 	    List<DiscipleshipTeacher> discipleshipTeachers = new ArrayList<>();
 
 	    for (DiscipleshipTeacherInfo selectedPerson : selectedPersons) {
 		if (selectedPerson.isAvailableAsTeacher()) {
-		    DiscipleshipTeacher discipleshipTeacher = persistenceService.fetchReference(discipleshipTeacherClazz, selectedPerson.getPersonId());
+		    DiscipleshipTeacher discipleshipTeacher = persistenceService.fetchReference(discipleshipTeacherClazz,
+			    selectedPerson.getDiscipleshipTeacherId());
 		    discipleshipTeachers.add(discipleshipTeacher);
 		}
 	    }
 
 	    if (!discipleshipTeachers.isEmpty()) {
 		persistenceService.remove(discipleshipTeachers);
+
+		if (discipleshipTeachers.size() > 1) {
+		    messages.info("pages.discipleship.availabilityAsTeachers.actions.markAsUnavailable.success.many", discipleshipTeachers.size());
+		} else {
+		    messages.info("pages.discipleship.availabilityAsTeachers.actions.markAsUnavailable.success.single");
+		}
+	    } else {
+		messages.warning("pages.discipleship.availabilityAsTeachers.actions.markAsUnavailable.warning.none");
 	    }
+	} catch (Exception e) {
+	    logger.error("unmarkCurrentSelectionAsTeachers - ERROR", e);
+	    messages.error("pages.discipleship.availabilityAsTeachers.actions.markAsUnavailable.failure");
 	}
     }
 }

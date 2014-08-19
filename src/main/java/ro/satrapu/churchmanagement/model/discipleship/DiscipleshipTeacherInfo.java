@@ -24,8 +24,9 @@ import lombok.Data;
 @Data
 public class DiscipleshipTeacherInfo {
 
-    private Long personId;
+    private Integer personId;
     private String personName;
     private String personEmailAddress;
+    private Integer discipleshipTeacherId;
     private boolean isAvailableAsTeacher;
 }
