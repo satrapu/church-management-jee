@@ -16,11 +16,15 @@
 package ro.satrapu.churchmanagement.persistence;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -38,21 +42,19 @@ import lombok.ToString;
 //excluded person field from lombok's @EqualsAndHashCode and @ToString annotations to avoid a StackOverflowError 
 //caused by a circular reference between a teacher and a person, 
 //as detaild here: https://groups.google.com/forum/#!topic/project-lombok/Xr13lPinsvg
-public class DiscipleshipTeacher implements ManagedEntity {
+public class DiscipleshipTeacher implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "Id")
+    private Integer id;
+
+    @Version
+    @Column(name = "Version")
+    private Integer version;
+
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private Person person;
-
-    @Override
-    public Serializable getId() {
-	return person.getId();
-    }
-
-    @Override
-    public Long getVersion() {
-	return person.getVersion();
-    }
 }

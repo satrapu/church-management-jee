@@ -15,6 +15,7 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
+import java.io.Serializable;
 import ro.satrapu.churchmanagement.model.EmailAddress;
 import ro.satrapu.churchmanagement.model.NamePart;
 import javax.persistence.AttributeOverride;
@@ -23,9 +24,13 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,9 +47,9 @@ import ro.satrapu.churchmanagement.model.text.StringWrapperExtensions;
     @UniqueConstraint(columnNames = {"EmailAddress"}, name = "UK_Persons_EmailAddress")
 })
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class Person extends ManagedEntityBase {
+@EqualsAndHashCode
+@ToString
+public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -59,6 +64,15 @@ public class Person extends ManagedEntityBase {
 	lastName = new NamePart();
 	emailAddress = new EmailAddress();
     }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "Id")
+    private Integer id;
+
+    @Version
+    @Column(name = "Version")
+    private Integer version;
 
     @NotNull
     @Embedded

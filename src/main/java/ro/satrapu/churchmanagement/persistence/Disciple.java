@@ -15,11 +15,16 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
+import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -32,14 +37,24 @@ import lombok.ToString;
 @Entity
 @Table(name = "Discipleship_Disciples")
 @Data
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class Disciple extends ManagedEntityBase {
+@EqualsAndHashCode(exclude = "person")
+@ToString(callSuper = true, exclude = "person")
+//excluded person field from lombok's @EqualsAndHashCode and @ToString annotations to avoid a StackOverflowError 
+//caused by a circular reference between a teacher and a person, 
+//as detaild here: https://groups.google.com/forum/#!topic/project-lombok/Xr13lPinsvg
+public class Disciple implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @MapsId
-    @OneToOne
-    @JoinColumn(name = "Id")
+     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "Id")
+    private Integer id;
+
+    @Version
+    @Column(name = "Version")
+    private Integer version;
+
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     private Person person;
 }

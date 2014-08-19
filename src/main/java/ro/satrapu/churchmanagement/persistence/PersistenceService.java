@@ -45,7 +45,7 @@ public class PersistenceService {
     @PersistenceContext(unitName = PersistenceUnits.CHURCH_MANAGEMENT)
     EntityManager entityManager;
 
-    public <T extends ManagedEntity> T persist(T entity) {
+    public <T extends Serializable> T persist(T entity) {
 	if (entity == null) {
 	    throw new IllegalArgumentException("Cannot persist null entity");
 	}
@@ -55,7 +55,7 @@ public class PersistenceService {
 	return entity;
     }
 
-    public <T extends ManagedEntity> List<T> persist(List<T> entities) {
+    public <T extends Serializable> List<T> persist(List<T> entities) {
 	if (entities == null) {
 	    throw new IllegalArgumentException("Cannot persist null entity list");
 	}
@@ -76,7 +76,7 @@ public class PersistenceService {
 	return persistedEntities;
     }
 
-    public <T extends ManagedEntity> void remove(T entity) {
+    public <T extends Serializable> void remove(T entity) {
 	if (entity == null) {
 	    throw new IllegalArgumentException("Cannot remove null entity");
 	}
@@ -86,7 +86,7 @@ public class PersistenceService {
 	entityManager.remove(mergedEntity);
     }
 
-    public <T extends ManagedEntity> void remove(List<T> entities) {
+    public <T extends Serializable> void remove(List<T> entities) {
 	if (entities == null) {
 	    throw new IllegalArgumentException("Cannot remove null entity list");
 	}
@@ -103,7 +103,7 @@ public class PersistenceService {
 	}
     }
 
-    public <T extends ManagedEntity> T merge(T entity) {
+    public <T extends Serializable> T merge(T entity) {
 	if (entity == null) {
 	    throw new IllegalArgumentException("Cannot merge null entity");
 	}
@@ -113,7 +113,7 @@ public class PersistenceService {
 	return mergedEntity;
     }
 
-    public <T extends ManagedEntity> List<T> merge(List<T> entities) {
+    public <T extends Serializable> List<T> merge(List<T> entities) {
 	if (entities == null) {
 	    throw new IllegalArgumentException("Cannot merge null entity list");
 	}
@@ -134,7 +134,7 @@ public class PersistenceService {
 	return mergedEntities;
     }
 
-    public <T extends ManagedEntity> void detach(T entity) {
+    public <T extends Serializable> void detach(T entity) {
 	if (entity == null) {
 	    throw new IllegalArgumentException("Cannot detach null entity");
 	}
@@ -143,7 +143,7 @@ public class PersistenceService {
 	entityManager.detach(entity);
     }
 
-    public <T extends ManagedEntity> boolean isManaged(T entity) {
+    public <T extends Serializable> boolean isManaged(T entity) {
 	if (entity == null) {
 	    return false;
 	}
@@ -152,7 +152,7 @@ public class PersistenceService {
 	return entityManager.contains(entity);
     }
 
-    public <T extends ManagedEntity> List<T> fetch(Class<T> entityClass) {
+    public <T extends Serializable> List<T> fetch(Class<T> entityClass) {
 	if (entityClass == null) {
 	    throw new IllegalArgumentException("Cannot fetch entities by using null as entity class");
 	}
@@ -169,7 +169,7 @@ public class PersistenceService {
 	return resultList;
     }
 
-    public <T extends ManagedEntity> T fetch(Class<T> entityClass, Serializable entityId) {
+    public <T extends Serializable> T fetch(Class<T> entityClass, Serializable entityId) {
 	if (entityClass == null) {
 	    throw new IllegalArgumentException("Cannot fetch entity by using null as entity class");
 	}
@@ -183,7 +183,7 @@ public class PersistenceService {
 	return entity;
     }
 
-    public <T extends ManagedEntity> T fetchReference(Class<T> entityClass, Serializable entityId) {
+    public <T extends Serializable> T fetchReference(Class<T> entityClass, Serializable entityId) {
 	if (entityClass == null) {
 	    throw new IllegalArgumentException("Cannot fetch entity reference by using null as entity class");
 	}
@@ -224,7 +224,7 @@ public class PersistenceService {
 	return result;
     }
 
-    public <T extends ManagedEntity> List<T> fetch(Class<T> entityClass, int pageIndex, int recordsPerPage) {
+    public <T extends Serializable> List<T> fetch(Class<T> entityClass, int pageIndex, int recordsPerPage) {
 	if (entityClass == null) {
 	    throw new IllegalArgumentException("Cannot fetch entities using null as entity class");
 	}
@@ -244,7 +244,7 @@ public class PersistenceService {
 	return resultList;
     }
 
-    public <T extends ManagedEntity> long count(Class<T> entityClass) {
+    public <T extends Serializable> long count(Class<T> entityClass) {
 	if (entityClass == null) {
 	    throw new IllegalArgumentException("Cannot count entities by using null as entity class");
 	}
