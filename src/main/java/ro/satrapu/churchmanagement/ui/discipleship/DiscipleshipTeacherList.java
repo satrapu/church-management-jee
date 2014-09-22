@@ -116,10 +116,10 @@ public class DiscipleshipTeacherList implements Serializable {
 	    }
 
 	    if (!discipleshipTeachers.isEmpty()) {
-		persistenceService.persist(discipleshipTeachers);
+		List<DiscipleshipTeacher> persistedDiscipleshipTeachers = persistenceService.persist(discipleshipTeachers);
 
 		if (discipleshipTeachers.size() > 1) {
-		    messages.info("pages.discipleship.availabilityAsTeachers.actions.markAsAvailable.success.many", discipleshipTeachers.size());
+		    messages.info("pages.discipleship.availabilityAsTeachers.actions.markAsAvailable.success.many", persistedDiscipleshipTeachers.size());
 		} else {
 		    messages.info("pages.discipleship.availabilityAsTeachers.actions.markAsAvailable.success.single");
 		}
@@ -146,8 +146,7 @@ public class DiscipleshipTeacherList implements Serializable {
 
 	    for (DiscipleshipTeacherInfo selectedPerson : selectedPersons) {
 		if (selectedPerson.isAvailableAsTeacher()) {
-		    DiscipleshipTeacher discipleshipTeacher = persistenceService.fetchReference(discipleshipTeacherClazz,
-			    selectedPerson.getDiscipleshipTeacherId());
+		    DiscipleshipTeacher discipleshipTeacher = persistenceService.fetchReference(discipleshipTeacherClazz, selectedPerson.getDiscipleshipTeacherId());
 		    discipleshipTeachers.add(discipleshipTeacher);
 		}
 	    }
