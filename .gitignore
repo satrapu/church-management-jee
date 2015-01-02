@@ -25,3 +25,4 @@
 /.settings/
 /src/main/webapp/WEB-INF/jboss-web.xml
 /src/main/webapp/WEB-INF/glassfish-web.xml
+/.apt_generated/
