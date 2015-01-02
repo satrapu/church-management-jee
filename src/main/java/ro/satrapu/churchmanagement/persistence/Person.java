@@ -101,6 +101,9 @@ public class Person implements Serializable {
 
     @OneToOne(fetch = FetchType.LAZY, optional = true, mappedBy = "person")
     private DiscipleshipTeacher discipleshipTeacher;
+    
+    @OneToOne(fetch = FetchType.LAZY, optional = true, mappedBy = "person")
+    private Disciple disciple;
 
     public boolean hasFirstName() {
 	return !StringWrapperExtensions.isNullOrWhitespace(firstName);
