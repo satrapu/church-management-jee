@@ -15,11 +15,12 @@
 	<url>https://drone.io/github.com/satrapu/church-management-jee</url>
     </ciManagement>
     <scm>
-	<connection>scm:git:https://github.com/satrapu/church-management-jee.git</connection>
-	<url>https://github.com/satrapu/church-management-jee</url>
+	<connection>https://github.com/satrapu/church-management-jee.git</connection>
+	<url>https://github.com/satrapu/church-management-jee/commits</url>
+	<developerConnection>https://github.com/satrapu/church-management-jee.git</developerConnection>
     </scm>
     <issueManagement>
-	<system>GitHub</system>
+	<system>GitHub Issues</system>
 	<url>https://github.com/satrapu/church-management-jee/issues</url>
     </issueManagement>
     <licenses>
@@ -168,4 +169,9 @@
 	    </plugin>
 	</plugins>
     </build>
+    <url>https://github.com/satrapu/church-management-jee</url>
+    <organization>
+    	<url>http://crossprogramming.com/</url>
+    	<name>crossprogramming</name>
+    </organization>
 </project>
