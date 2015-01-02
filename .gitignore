@@ -5,20 +5,16 @@
 *.jar
 *.war
 *.ear
-
 # Maven artifacts #
 /target/
-
 # IntelliJ IDEA artifacts #
 /.idea/
 /church-management.iml
-
 # NetBeans artifacts # 
 /nb-configuration.xml
 /nbactions.xml
 /nbactions-release-profile.xml
 /faces-config.NavData
-
 # Eclipse artifacts #
 /.project
 /.classpath
@@ -26,3 +22,8 @@
 /src/main/webapp/WEB-INF/jboss-web.xml
 /src/main/webapp/WEB-INF/glassfish-web.xml
 /.apt_generated/
+target
+.settings/*
+!.settings/.jsdtscope
+.project
+.classpath
