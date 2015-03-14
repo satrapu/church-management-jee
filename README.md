@@ -14,7 +14,7 @@ Build Servers
 - teamcity <a href="http://teamcity.codebetter.com/viewType.html?buildTypeId=churchmanagement_master_branch_commit_build&tab=buildTypeStatusDiv&guest=1"><img src="http://teamcity.codebetter.com/app/rest/builds/buildType:(id:churchmanagement_master_branch_commit_build)/statusIcon"/></a>
 - travis-ci [![Build Status](https://travis-ci.org/satrapu/church-management-jee.svg?branch=master)](https://travis-ci.org/satrapu/church-management-jee)
 
-Powered By
+Sponsored By
 -
 - [![IntelliJ IDEA](https://www.jetbrains.com/idea/docs/logo_intellij_idea.png)](https://www.jetbrains.com/idea/)
 - [CodeBetter](http://codebetter.com/) and [JetBrains](http://www.jetbrains.com/).
