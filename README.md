@@ -18,5 +18,5 @@ Sponsored By
 -
 - [![IntelliJ IDEA](https://www.jetbrains.com/idea/docs/logo_intellij_idea.png)](https://www.jetbrains.com/idea/)
 - [CodeBetter](http://codebetter.com/) and [JetBrains](http://www.jetbrains.com/).
-- [![YouTrack and TeamCity](http://www.jetbrains.com/img/banners/Codebetter300x250.png)](https://www.jetbrains.com/teamcity/)
+[![YouTrack and TeamCity](http://www.jetbrains.com/img/banners/Codebetter300x250.png)](https://www.jetbrains.com/teamcity/)
 - [![Java Profiler](http://www.ej-technologies.com/images/banners/jprofiler_large.png)](http://www.ej-technologies.com/products/jprofiler/overview.html)
