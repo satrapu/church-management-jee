@@ -17,5 +17,5 @@ Build Servers
 Powered By
 -
 - [CodeBetter](http://codebetter.com/) and [JetBrains](http://www.jetbrains.com/).
-- ![YouTrack and TeamCity](http://www.jetbrains.com/img/banners/Codebetter300x250.png)
+- [![YouTrack and TeamCity](http://www.jetbrains.com/img/banners/Codebetter300x250.png)](https://www.jetbrains.com/teamcity/)
 - [![Java Profiler](http://www.ej-technologies.com/images/banners/jprofiler_large.png)](http://www.ej-technologies.com/products/jprofiler/overview.html)
