@@ -1,0 +1,2 @@
+INSERT INTO Persons (Id, Version, FirstName, MiddleName, LastName, EmailAddress) VALUES (1, 1, 'Bogdan', NULL, 'Marian', 'bogdan.marian@server.net')
+--INSERT INTO Persons (Id, Version, FirstName, MiddleName, LastName, EmailAddress) VALUES (2, 1, 'Dragos', NULL, 'Marian', 'dragos.marian@server.net')

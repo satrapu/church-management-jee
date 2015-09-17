@@ -15,9 +15,10 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.slf4j.Logger;
+import ro.satrapu.churchmanagement.logging.LoggerInstance;
+import ro.satrapu.churchmanagement.persistence.query.EntityCountQuery;
+import ro.satrapu.churchmanagement.persistence.query.EntityQuery;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -25,10 +26,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import org.slf4j.Logger;
-import ro.satrapu.churchmanagement.logging.LoggerInstance;
-import ro.satrapu.churchmanagement.persistence.query.EntityCountQuery;
-import ro.satrapu.churchmanagement.persistence.query.EntityQuery;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manages application entities.
@@ -36,7 +36,9 @@ import ro.satrapu.churchmanagement.persistence.query.EntityQuery;
  * @author satrapu
  */
 @Stateless
-public class PersistenceService {
+public class PersistenceService implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Inject
     @LoggerInstance
@@ -198,7 +200,6 @@ public class PersistenceService {
     }
 
     /**
-     *
      * @param <T>
      * @param entityQuery
      * @return
@@ -208,7 +209,6 @@ public class PersistenceService {
     }
 
     /**
-     *
      * @param <T>
      * @param entityQuery
      * @param firstResult

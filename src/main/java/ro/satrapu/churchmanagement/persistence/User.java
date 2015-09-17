@@ -42,7 +42,8 @@ import lombok.ToString;
  */
 @Entity
 @Table(name = "Users", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"EmailAddress"}, name = "UK_Users_EmailAddress")
+    @UniqueConstraint(columnNames = {"EmailAddress"}, name = "UK_Users_EmailAddress"),
+    @UniqueConstraint(columnNames = {"UserName"}, name = "UK_Users_UserName")
 })
 @Data
 @EqualsAndHashCode

@@ -15,10 +15,13 @@
  */
 package ro.satrapu.churchmanagement.ui.persons;
 
-import java.io.Serializable;
-import java.text.MessageFormat;
-import java.util.Iterator;
-import java.util.Set;
+import org.slf4j.Logger;
+import ro.satrapu.churchmanagement.logging.LoggerInstance;
+import ro.satrapu.churchmanagement.persistence.PersistenceService;
+import ro.satrapu.churchmanagement.persistence.Person;
+import ro.satrapu.churchmanagement.ui.Urls;
+import ro.satrapu.churchmanagement.ui.messages.Messages;
+
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
@@ -26,12 +29,9 @@ import javax.inject.Named;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import org.slf4j.Logger;
-import ro.satrapu.churchmanagement.logging.LoggerInstance;
-import ro.satrapu.churchmanagement.persistence.PersistenceService;
-import ro.satrapu.churchmanagement.persistence.Person;
-import ro.satrapu.churchmanagement.ui.messages.Messages;
-import ro.satrapu.churchmanagement.ui.Urls;
+import java.io.Serializable;
+import java.text.MessageFormat;
+import java.util.Set;
 
 /**
  * Manages a specific {@link Person} instance.
@@ -72,15 +72,15 @@ public class PersonHome implements Serializable {
      * @return An entity managed by this instance.
      */
     public Person getInstance() {
-	if (instance == null) {
-	    if (id != null) {
-		instance = loadInstance();
-	    } else {
-		instance = createInstance();
-	    }
-	}
+        if (instance == null) {
+            if (id != null) {
+                instance = loadInstance();
+            } else {
+                instance = createInstance();
+            }
+        }
 
-	return instance;
+        return instance;
     }
 
     /**
@@ -89,7 +89,7 @@ public class PersonHome implements Serializable {
      * @return The entity identifier.
      */
     public Serializable getId() {
-	return id;
+        return id;
     }
 
     /**
@@ -98,19 +98,19 @@ public class PersonHome implements Serializable {
      * @param id The identifier to set.
      */
     public void setId(Serializable id) {
-	this.id = id;
+        this.id = id;
     }
 
     /**
-     * Loads an entity based on the value returned by the {@link EntityHome#getId()} method.
+     * Loads an entity based on the value returned by the {@link PersonHome#getId()} method.
      *
-     * @return
+     * @return the {@link Person} entity
      */
     @SuppressWarnings("unchecked")
     public Person loadInstance() {
-	Class<Person> clazz = Person.class;
-	logger.debug("Loading instance of type {} using id {} ...", clazz.getName(), id);
-	return persistenceService.fetch(clazz, id);
+        Class<Person> clazz = Person.class;
+        logger.debug("Loading instance of type {} using id {} ...", clazz.getName(), id);
+        return persistenceService.fetch(clazz, id);
     }
 
     /**
@@ -120,8 +120,8 @@ public class PersonHome implements Serializable {
      */
     @SuppressWarnings("unchecked")
     public Person createInstance() {
-	logger.debug("Creating entity of type {} ...", Person.class.getName());
-	return new Person();
+        logger.debug("Creating entity of type {} ...", Person.class.getName());
+        return new Person();
     }
 
     /**
@@ -130,7 +130,7 @@ public class PersonHome implements Serializable {
      * @return True, if the entity is managed; false, otherwise.
      */
     public boolean isManaged() {
-	return getInstance().getId() != null;
+        return getInstance().getId() != null;
     }
 
     /**
@@ -139,44 +139,44 @@ public class PersonHome implements Serializable {
      * @return The operation outcome, if successful; null, otherwise.
      */
     public String save() {
-	boolean hasErrors = true;
+        boolean hasErrors = true;
 
-	if (!isValid()) {
-	    messages.error("global.fields.invalid");
-	} else {
-	    if (isManaged()) {
-		Person person = getInstance();
+        if (!isValid()) {
+            messages.error("global.fields.invalid");
+        } else {
+            if (isManaged()) {
+                Person person = getInstance();
 
-		try {
-		    logger.debug("Merging instance: {} ...", person);
-		    persistenceService.merge(person);
-		    messages.info("entities.person.actions.update.success");
-		    hasErrors = false;
-		} catch (Exception e) {
-		    logger.error("Could not merge instance", e);
-		    messages.error("entities.person.actions.update.failure");
-		}
-	    } else {
-		Person person = getInstance();
+                try {
+                    logger.debug("Merging instance: {} ...", person);
+                    persistenceService.merge(person);
+                    messages.info("entities.person.actions.update.success");
+                    hasErrors = false;
+                } catch (Exception e) {
+                    logger.error("Could not merge instance", e);
+                    messages.error("entities.person.actions.update.failure");
+                }
+            } else {
+                Person person = getInstance();
 
-		try {
-		    logger.debug("Persisting instance: {} ...", person);
-		    persistenceService.persist(person);
-		    messages.info("entities.person.actions.save.success");
-		    hasErrors = false;
-		} catch (Exception e) {
-		    logger.error("Could not persist instance", e);
-		    messages.error("entities.person.actions.save.failure");
-		}
-	    }
-	}
+                try {
+                    logger.debug("Persisting instance: {} ...", person);
+                    persistenceService.persist(person);
+                    messages.info("entities.person.actions.save.success");
+                    hasErrors = false;
+                } catch (Exception e) {
+                    logger.error("Could not persist instance", e);
+                    messages.error("entities.person.actions.save.failure");
+                }
+            }
+        }
 
-	if (hasErrors) {
-	    return null;
-	} else {
-	    conversation.end();
-	    return Urls.Secured.Persons.LIST;
-	}
+        if (hasErrors) {
+            return null;
+        } else {
+            conversation.end();
+            return Urls.Secured.Persons.LIST;
+        }
     }
 
     /**
@@ -185,19 +185,19 @@ public class PersonHome implements Serializable {
      * @return The operation outcome.
      */
     public String cancel() {
-	logger.debug("Cancelling editing instance ...");
-	conversation.end();
-	return Urls.Secured.Persons.LIST;
+        logger.debug("Cancelling editing instance ...");
+        conversation.end();
+        return Urls.Secured.Persons.LIST;
     }
 
     /**
      * Initializes a long-running conversation.
      */
     public void beginConversation() {
-	if (conversation.isTransient()) {
-	    conversation.begin();
-	    logger.debug("Starting conversation with id: {}", conversation.getId());
-	}
+        if (conversation.isTransient()) {
+            conversation.begin();
+            logger.debug("Starting conversation with id: {}", conversation.getId());
+        }
     }
 
     /**
@@ -206,25 +206,25 @@ public class PersonHome implements Serializable {
      * @return The operation outcome, if successful; null, otherwise.
      */
     public String remove() {
-	boolean hasErrors = true;
-	Person person = getInstance();
-	logger.debug("Removing instance: {} ...", person);
+        boolean hasErrors = true;
+        Person person = getInstance();
+        logger.debug("Removing instance: {} ...", person);
 
-	try {
-	    persistenceService.remove(person);
-	    messages.info("entities.person.actions.remove.success");
-	    hasErrors = false;
-	} catch (Exception e) {
-	    logger.error("Could not remove instance", e);
-	    messages.error("entities.person.actions.remove.failure");
-	}
+        try {
+            persistenceService.remove(person);
+            messages.info("entities.person.actions.remove.success");
+            hasErrors = false;
+        } catch (Exception e) {
+            logger.error("Could not remove instance", e);
+            messages.error("entities.person.actions.remove.failure");
+        }
 
-	if (!hasErrors) {
-	    conversation.end();
-	    return Urls.Secured.Persons.LIST;
-	}
+        if (!hasErrors) {
+            conversation.end();
+            return Urls.Secured.Persons.LIST;
+        }
 
-	return null;
+        return null;
     }
 
     /**
@@ -233,24 +233,22 @@ public class PersonHome implements Serializable {
      * @return True, if the instance is valid; false, otherwise.
      */
     private boolean isValid() {
-	boolean result = true;
-	Validator validator = validatorFactory.getValidator();
-	Set<ConstraintViolation<Person>> constraintViolations = validator.validate(getInstance());
+        boolean result = true;
+        Validator validator = validatorFactory.getValidator();
+        Set<ConstraintViolation<Person>> constraintViolations = validator.validate(getInstance());
 
-	if (constraintViolations.size() > 0) {
-	    StringBuilder sb = new StringBuilder();
-	    Iterator<ConstraintViolation<Person>> iterator = constraintViolations.iterator();
+        if (constraintViolations.size() > 0) {
+            StringBuilder sb = new StringBuilder();
 
-	    while (iterator.hasNext()) {
-		ConstraintViolation<Person> constraintViolation = iterator.next();
-		sb.append(MessageFormat.format("{0}: {1}{2}",
-			constraintViolation.getPropertyPath(), constraintViolation.getMessage(), System.lineSeparator()));
-		result = false;
-	    }
+            for (ConstraintViolation<Person> constraintViolation : constraintViolations) {
+                sb.append(MessageFormat.format("{0}: {1}{2}",
+                        constraintViolation.getPropertyPath(), constraintViolation.getMessage(), System.lineSeparator()));
+                result = false;
+            }
 
-	    logger.error("Encountered an invalid Person instance: {}{}", System.lineSeparator(), sb.toString());
-	}
+            logger.error("Encountered an invalid Person instance: {}{}", System.lineSeparator(), sb.toString());
+        }
 
-	return result;
+        return result;
     }
 }

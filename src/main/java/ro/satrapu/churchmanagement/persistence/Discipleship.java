@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 satrapu.
+ * Copyright 2015 crossprogramming.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,35 +18,38 @@ package ro.satrapu.churchmanagement.persistence;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Represents a {@link Person} who is available to act in a church as a disciple.
  *
  * @author satrapu
  */
 @Entity
-@Table(name = "Discipleship_Disciples")
+@Table(name = "Discipleship", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"PersonId"}, name = "UK_Discipleship_PersonId")
+})
 @Data
-@EqualsAndHashCode(exclude = "person")
-@ToString(callSuper = true, exclude = "person")
-//excluded person field from lombok's @EqualsAndHashCode and @ToString annotations to avoid a StackOverflowError 
-//caused by a circular reference between a teacher and a person, 
-//as detaild here: https://groups.google.com/forum/#!topic/project-lombok/Xr13lPinsvg
-public class Disciple implements Serializable {
+@EqualsAndHashCode
+@ToString
+public class Discipleship implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-     @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
     private Integer id;
@@ -55,6 +58,13 @@ public class Disciple implements Serializable {
     @Column(name = "Version")
     private Integer version;
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @NotNull
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "PersonId", unique = true)
     private Person person;
+
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "Status", nullable = false)
+    private DiscipleshipStatus status;
 }
