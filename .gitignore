@@ -27,3 +27,4 @@ target
 !.settings/.jsdtscope
 .project
 .classpath
+/nbactions-wildfly.xml
