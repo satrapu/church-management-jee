@@ -15,10 +15,12 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
-import java.io.Serializable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,17 +32,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import java.io.Serializable;
 
 /**
- *
  * @author satrapu
  */
 @Entity
 @Table(name = "Discipleship", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"PersonId"}, name = "UK_Discipleship_PersonId")
+        @UniqueConstraint(columnNames = {"PersonId"}, name = "UK_Discipleship_PersonId")
 })
 @Data
 @EqualsAndHashCode
@@ -64,7 +63,7 @@ public class Discipleship implements Serializable {
     private Person person;
 
     @NotNull
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated
     @Column(name = "Status", nullable = false)
     private DiscipleshipStatus status;
 }
