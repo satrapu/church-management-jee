@@ -16,9 +16,13 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
-import java.io.Serializable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import ro.satrapu.churchmanagement.model.EmailAddress;
 import ro.satrapu.churchmanagement.model.NamePart;
+import ro.satrapu.churchmanagement.validation.Email;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,9 +32,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import java.io.Serializable;
 
 /**
  * Represents a person attending a church, either as a member or not.
@@ -39,7 +41,7 @@ import lombok.ToString;
  */
 @Entity
 @Table(name = "Persons", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"EmailAddress"}, name = "UK_Persons_EmailAddress")
+        @UniqueConstraint(columnNames = {"EmailAddress"}, name = "UK_Persons_EmailAddress")
 })
 @Data
 @EqualsAndHashCode
@@ -70,5 +72,6 @@ public class Person implements Serializable {
 
     @NotNull
     @Column(name = "EmailAddress", nullable = false, length = EmailAddress.MAX_LENGTH)
+    @Email
     private String emailAddress;
 }
