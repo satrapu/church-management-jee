@@ -16,8 +16,10 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
 import ro.satrapu.churchmanagement.model.EmailAddress;
 import ro.satrapu.churchmanagement.model.NamePart;
@@ -53,10 +55,12 @@ public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
+    @Setter(AccessLevel.PRIVATE)
     private Integer id;
 
     @Version
     @Column(name = "Version")
+    @Setter(AccessLevel.PRIVATE)
     private Integer version;
 
     @NotNull

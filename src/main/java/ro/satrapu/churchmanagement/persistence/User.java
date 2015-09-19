@@ -15,8 +15,10 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
 import ro.satrapu.churchmanagement.model.EmailAddress;
 import ro.satrapu.churchmanagement.model.NamePart;
@@ -56,23 +58,13 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
+    @Setter(AccessLevel.PRIVATE)
     private Integer id;
 
     @Version
     @Column(name = "Version")
+    @Setter(AccessLevel.PRIVATE)
     private Integer version;
-
-    /**
-     * Creates a new instance of {@link User} class.
-     */
-    public User() {
-        super();
-
-        firstName = new NamePart();
-        middleName = new NamePart();
-        lastName = new NamePart();
-        emailAddress = new EmailAddress();
-    }
 
     @NotNull
     @Size(min = 1, max = 400)
@@ -113,4 +105,16 @@ public class User implements Serializable {
             @AttributeOverride(name = "value", column = @Column(name = "EmailAddress", nullable = false, length = EmailAddress.MAX_LENGTH))
     })
     private EmailAddress emailAddress;
+
+    /**
+     * Creates a new instance of {@link User} class.
+     */
+    public User() {
+        super();
+
+        firstName = new NamePart();
+        middleName = new NamePart();
+        lastName = new NamePart();
+        emailAddress = new EmailAddress();
+    }
 }

@@ -15,8 +15,10 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
@@ -28,8 +30,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -38,9 +38,6 @@ import java.io.Serializable;
  * @author satrapu
  */
 @Entity
-@Table(name = "Discipleship", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"PersonId"}, name = "UK_Discipleship_PersonId")
-})
 @Data
 @EqualsAndHashCode
 @ToString
@@ -51,10 +48,12 @@ public class Discipleship implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
+    @Setter(AccessLevel.PRIVATE)
     private Integer id;
 
     @Version
     @Column(name = "Version")
+    @Setter(AccessLevel.PRIVATE)
     private Integer version;
 
     @NotNull
