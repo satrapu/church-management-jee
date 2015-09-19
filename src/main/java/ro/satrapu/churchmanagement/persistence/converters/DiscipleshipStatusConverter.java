@@ -15,40 +15,40 @@
  */
 package ro.satrapu.churchmanagement.persistence.converters;
 
-import javax.persistence.AttributeConverter;
 import ro.satrapu.churchmanagement.persistence.DiscipleshipStatus;
 
+import javax.persistence.AttributeConverter;
+
 /**
- *
  * @author satrapu
  */
 public class DiscipleshipStatusConverter implements AttributeConverter<DiscipleshipStatus, String> {
 
     @Override
     public String convertToDatabaseColumn(DiscipleshipStatus enumValue) {
-	switch (enumValue) {
-	    case DISCIPLESHIP_CANDIDATE:
-		return "D";
-	    case NOT_INTERESTED:
-		return "N";
-	    case TEACHING_CANDIDATE:
-		return "T";
-	    default:
-		throw new IllegalArgumentException("Unknown " + enumValue);
-	}
+        switch (enumValue) {
+            case DISCIPLESHIP_CANDIDATE:
+                return "D";
+            case NOT_INTERESTED:
+                return "N";
+            case TEACHING_CANDIDATE:
+                return "T";
+            default:
+                throw new IllegalArgumentException("Unknown " + enumValue);
+        }
     }
 
     @Override
     public DiscipleshipStatus convertToEntityAttribute(String databaseValue) {
-	switch (databaseValue) {
-	    case "D":
-		return DiscipleshipStatus.DISCIPLESHIP_CANDIDATE;
-	    case "N":
-		return DiscipleshipStatus.NOT_INTERESTED;
-	    case "T":
-		return DiscipleshipStatus.TEACHING_CANDIDATE;
-	    default:
-		throw new IllegalArgumentException("Unknown " + databaseValue);
-	}
+        switch (databaseValue) {
+            case "D":
+                return DiscipleshipStatus.DISCIPLESHIP_CANDIDATE;
+            case "N":
+                return DiscipleshipStatus.NOT_INTERESTED;
+            case "T":
+                return DiscipleshipStatus.TEACHING_CANDIDATE;
+            default:
+                throw new IllegalArgumentException("Unknown " + databaseValue);
+        }
     }
 }
