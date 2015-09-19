@@ -15,27 +15,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
-	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
                                  http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
-	     version="2.1">
+             version="2.1">
     <persistence-unit name="churchmanagement"
-		      transaction-type="JTA">
-	<jta-data-source>${datasource.name}</jta-data-source>
-	<class>ro.satrapu.churchmanagement.persistence.User</class>
-	<class>ro.satrapu.churchmanagement.persistence.Person</class>
-	<class>ro.satrapu.churchmanagement.persistence.Discipleship</class>
-	<exclude-unlisted-classes>true</exclude-unlisted-classes>
-	<validation-mode>CALLBACK</validation-mode>
-	<properties>
-	    <property name="eclipselink.logging.level"
-		      value="FINEST"/>
-	    <property name="eclipselink.logging.logger"
-		      value="ro.satrapu.churchmanagement.logging.EclipseLinkLogger"/>
-	    <property name="javax.persistence.schema-generation.database.action"
-		      value="drop-and-create"/>
-	    <property name="javax.persistence.sql-load-script-source"
-		      value="META-INF/sql/initial-data.sql"/>
-	</properties>
+                      transaction-type="JTA">
+        <jta-data-source>${datasource.name}</jta-data-source>
+        <class>ro.satrapu.churchmanagement.persistence.User</class>
+        <class>ro.satrapu.churchmanagement.persistence.Person</class>
+        <class>ro.satrapu.churchmanagement.persistence.Discipleship</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <validation-mode>CALLBACK</validation-mode>
+        <properties>
+            <property name="javax.persistence.schema-generation.database.action"
+                      value="drop-and-create"/>
+            <property name="javax.persistence.sql-load-script-source"
+                      value="META-INF/sql/initial-data.sql"/>
+        </properties>
     </persistence-unit>
 </persistence>
