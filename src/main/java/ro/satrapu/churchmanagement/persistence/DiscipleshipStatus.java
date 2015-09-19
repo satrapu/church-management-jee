@@ -16,7 +16,6 @@
 package ro.satrapu.churchmanagement.persistence;
 
 /**
- *
  * @author satrapu
  */
 public enum DiscipleshipStatus {
