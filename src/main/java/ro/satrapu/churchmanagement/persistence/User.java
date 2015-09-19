@@ -15,9 +15,12 @@
  */
 package ro.satrapu.churchmanagement.persistence;
 
-import java.io.Serializable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import ro.satrapu.churchmanagement.model.EmailAddress;
 import ro.satrapu.churchmanagement.model.NamePart;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -31,9 +34,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import java.io.Serializable;
 
 /**
  * Represents a Church Management application user.
@@ -42,8 +43,8 @@ import lombok.ToString;
  */
 @Entity
 @Table(name = "Users", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"EmailAddress"}, name = "UK_Users_EmailAddress"),
-    @UniqueConstraint(columnNames = {"UserName"}, name = "UK_Users_UserName")
+        @UniqueConstraint(columnNames = {"EmailAddress"}, name = "UK_Users_EmailAddress"),
+        @UniqueConstraint(columnNames = {"UserName"}, name = "UK_Users_UserName")
 })
 @Data
 @EqualsAndHashCode
@@ -65,12 +66,12 @@ public class User implements Serializable {
      * Creates a new instance of {@link User} class.
      */
     public User() {
-	super();
+        super();
 
-	firstName = new NamePart();
-	middleName = new NamePart();
-	lastName = new NamePart();
-	emailAddress = new EmailAddress();
+        firstName = new NamePart();
+        middleName = new NamePart();
+        lastName = new NamePart();
+        emailAddress = new EmailAddress();
     }
 
     @NotNull
@@ -91,25 +92,25 @@ public class User implements Serializable {
     @NotNull
     @Embedded
     @AttributeOverrides(value = {
-	@AttributeOverride(name = "value", column = @Column(name = "FirstName", nullable = false, length = NamePart.MAX_LENGTH))})
+            @AttributeOverride(name = "value", column = @Column(name = "FirstName", nullable = false, length = NamePart.MAX_LENGTH))})
     private NamePart firstName;
 
     @Embedded
     @AttributeOverrides(value = {
-	@AttributeOverride(name = "value", column = @Column(name = "MiddleName", nullable = true, length = NamePart.MAX_LENGTH))})
+            @AttributeOverride(name = "value", column = @Column(name = "MiddleName", nullable = true, length = NamePart.MAX_LENGTH))})
     private NamePart middleName;
 
     @NotNull
     @Embedded
     @AttributeOverrides(value = {
-	@AttributeOverride(name = "value", column = @Column(name = "LastName", nullable = false, length = NamePart.MAX_LENGTH))
+            @AttributeOverride(name = "value", column = @Column(name = "LastName", nullable = false, length = NamePart.MAX_LENGTH))
     })
     private NamePart lastName;
 
     @NotNull
     @Embedded
     @AttributeOverrides(value = {
-	@AttributeOverride(name = "value", column = @Column(name = "EmailAddress", nullable = false, length = EmailAddress.MAX_LENGTH))
+            @AttributeOverride(name = "value", column = @Column(name = "EmailAddress", nullable = false, length = EmailAddress.MAX_LENGTH))
     })
     private EmailAddress emailAddress;
 }
