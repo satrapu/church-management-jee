@@ -28,14 +28,14 @@ public interface UserAuthenticator {
      * @param authenticationDetails Represents the details of an authentication operation.
      * @return
      */
-    public AuthenticatedUser authenticate(AuthenticationDetails authenticationDetails);
+    AuthenticatedUser authenticate(AuthenticationDetails authenticationDetails);
 
     /**
      * Checks whether this implementation can produce an {@link AuthenticationDetails} instance used for authenticating a hard-coded user.
      *
      * @return
      */
-    public boolean hasHardCodedValue();
+    boolean hasHardCodedValue();
 
     /**
      * Creates an {@link AuthenticationDetails} instance used for authenticating a hard-coded user.
@@ -43,5 +43,5 @@ public interface UserAuthenticator {
      * @return An {@link AuthenticationDetails} instance if this {@link UserAuthenticator} implementation supports hard-coded users; null,
      * otherwise.
      */
-    public AuthenticationDetails getHardCodedValue();
+    AuthenticationDetails getHardCodedValue();
 }
