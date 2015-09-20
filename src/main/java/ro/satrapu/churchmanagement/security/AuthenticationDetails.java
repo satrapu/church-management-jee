@@ -15,12 +15,13 @@
  */
 package ro.satrapu.churchmanagement.security;
 
-import java.io.Serializable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * Represents the authentication details (user name and password) a user will enter at login page in order to access this application.
@@ -31,8 +32,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class AuthenticationDetails implements Serializable {
-
     private static final long serialVersionUID = 1L;
+    
     @NotNull
     @Size(min = 1, max = 400)
     private String userName;

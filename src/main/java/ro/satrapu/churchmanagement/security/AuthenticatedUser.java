@@ -26,6 +26,5 @@ import lombok.ToString;
 @Data
 @ToString
 public class AuthenticatedUser {
-
     private String name;
 }
