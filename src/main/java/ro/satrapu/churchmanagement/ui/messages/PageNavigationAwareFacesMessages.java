@@ -15,41 +15,38 @@
  */
 package ro.satrapu.churchmanagement.ui.messages;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
- * @see <a
- * href="http://stackoverflow.com/questions/11955848/jsf-2-1-redirect-preserving-error-message">StackOverflow</a>.
+ * @author Jesse Wilson jesse[AT]odel.on.ca
+ * @secondaryAuthor Lincoln Baxter III lincoln[AT]ocpsoft.com
+ * @see <a href="http://stackoverflow.com/questions/11955848/jsf-2-1-redirect-preserving-error-message">StackOverflow</a>.
  * Enables messages to be rendered on different pages from which they were set.
- *
+ * <br/>
  * After each phase where messages may be added, this moves the messages from
  * the page-scoped FacesContext to the session-scoped session map.
- *
+ * <br/>
  * Before messages are rendered, this moves the messages from the session-scoped
  * session map back to the page-scoped FacesContext.
- *
+ * <br/>
  * Only global messages, not associated with a particular component, are moved.
  * Component messages cannot be rendered on pages other than the one on which
  * they were added.
- *
+ * <br/>
  * To enable multi-page messages support, add a <code>lifecycle</code> block to
  * your faces-config.xml file. That block should contain a single
  * <code>phase-listener</code> block containing the fully-qualified class name
  * of this file.
- *
- * @author Jesse Wilson jesse[AT]odel.on.ca
- * @secondaryAuthor Lincoln Baxter III lincoln[AT]ocpsoft.com
  */
 public class PageNavigationAwareFacesMessages implements PhaseListener {
-
     private static final long serialVersionUID = 1L;
     private static final String sessionToken = "MULTI_PAGE_MESSAGES_SUPPORT";
 
@@ -86,13 +83,12 @@ public class PageNavigationAwareFacesMessages implements PhaseListener {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private int saveMessages(final FacesContext facesContext) {
         List<FacesMessage> messages = new ArrayList<>();
 
-        for (Iterator<FacesMessage> iter = facesContext.getMessages(null); iter.hasNext();) {
-            messages.add(iter.next());
-            iter.remove();
+        for (Iterator<FacesMessage> messageIterator = facesContext.getMessages(null); messageIterator.hasNext(); ) {
+            messages.add(messageIterator.next());
+            messageIterator.remove();
         }
 
         if (messages.isEmpty()) {
@@ -111,7 +107,6 @@ public class PageNavigationAwareFacesMessages implements PhaseListener {
         return messages.size();
     }
 
-    @SuppressWarnings("unchecked")
     private int restoreMessages(final FacesContext facesContext) {
         Map<String, Object> sessionMap = facesContext.getExternalContext().getSessionMap();
         List<FacesMessage> messages = (List<FacesMessage>) sessionMap.remove(sessionToken);

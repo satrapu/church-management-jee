@@ -15,12 +15,13 @@
  */
 package ro.satrapu.churchmanagement.model;
 
-import java.io.Serializable;
-import javax.persistence.Embeddable;
-import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
+import javax.persistence.Embeddable;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * Represents a part of a name, like first name or last name.
@@ -32,7 +33,6 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class NamePart implements Serializable, StringWrapper {
-
     private static final long serialVersionUID = 1L;
     public static final int MAX_LENGTH = 400;
     public static final int MIN_LENGTH = 1;
@@ -52,6 +52,7 @@ public class NamePart implements Serializable, StringWrapper {
      * @param value
      */
     public NamePart(String value) {
-	this.value = value;
+        this();
+        this.value = value;
     }
 }
