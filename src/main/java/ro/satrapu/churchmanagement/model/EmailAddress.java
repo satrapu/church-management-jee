@@ -15,14 +15,15 @@
  */
 package ro.satrapu.churchmanagement.model;
 
-import java.io.Serializable;
-import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import ro.satrapu.churchmanagement.validation.Email;
+
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * Represents an e-mail address.
@@ -34,12 +35,13 @@ import ro.satrapu.churchmanagement.validation.Email;
 @EqualsAndHashCode
 @ToString
 public class EmailAddress implements Serializable, StringWrapper {
-
     private static final long serialVersionUID = 1L;
     public static final int MAX_LENGTH = 254;
     public static final int MIN_LENGTH = 1;
 
-    //see more details regarding email max length here: http://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
+    /**
+     * See more details regarding email max length <a href="http://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address">here</a>.
+     */
     @NotNull
     @Size(min = MIN_LENGTH, max = MAX_LENGTH)
     @Email
@@ -57,6 +59,7 @@ public class EmailAddress implements Serializable, StringWrapper {
      * @param value
      */
     public EmailAddress(String value) {
-	this.value = value;
+        this();
+        this.value = value;
     }
 }
