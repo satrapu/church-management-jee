@@ -15,17 +15,17 @@
  */
 package ro.satrapu.churchmanagement.ui.persons;
 
-import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Model;
-import javax.inject.Inject;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import org.slf4j.Logger;
-import ro.satrapu.churchmanagement.logging.LoggerInstance;
 import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Model;
+import javax.inject.Inject;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Displays a list of {@link Person} instances matching a given criteria.
@@ -34,36 +34,42 @@ import ro.satrapu.churchmanagement.persistence.Person;
  */
 @Model
 public class PersonList {
+    private final Class<Person> clazz;
+    private final Logger logger;
+    private final PersistenceService persistenceService;
+    private LazyDataModel<Person> data;
 
     @Inject
-    PersistenceService persistenceService;
+    public PersonList(PersistenceService persistenceService,  Logger logger) {
+        if (persistenceService == null) {
+            throw new IllegalArgumentException("Persistence service is null");
+        }
 
-    @Inject
-    @LoggerInstance
-    Logger logger;
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger is null");
+        }
 
-    LazyDataModel<Person> data;
-    private static final Class<Person> clazz = Person.class;
+        this.persistenceService = persistenceService;
+        this.logger = logger;
+        clazz = Person.class;
+    }
 
     @PostConstruct
     public void init() {
-	data = new LazyDataModel<Person>() {
-	    private static final long serialVersionUID = 1L;
+        data = new LazyDataModel<Person>() {
+            @Override
+            public List<Person> load(int currentPageIndex, int recordsPerPage, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+                logger.debug("Loading page #{} containing maximum {} instances of type {} ...", currentPageIndex + 1, recordsPerPage, clazz.getName());
+                return persistenceService.fetch(clazz, currentPageIndex, recordsPerPage);
+            }
+        };
 
-	    @Override
-	    public List<Person> load(int currentPageIndex, int recordsPerPage, String sortField, SortOrder sortOrder, Map<String, String> filters) {
-		logger.debug("Loading page #{} containing maximum {} instances of type {} ...", currentPageIndex + 1, recordsPerPage,
-			clazz.getName());
-		return persistenceService.fetch(clazz, currentPageIndex, recordsPerPage);
-	    }
-	};
-
-	long count = persistenceService.count(clazz);
-	logger.debug("Found {} records", count);
-	data.setRowCount(new Long(count).intValue());
+        long count = persistenceService.count(clazz);
+        logger.debug("Found {} records of type {}", count, clazz.getName());
+        data.setRowCount(new Long(count).intValue());
     }
 
     public LazyDataModel<Person> getData() {
-	return data;
+        return data;
     }
 }

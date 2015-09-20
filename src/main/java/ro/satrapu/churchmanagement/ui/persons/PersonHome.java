@@ -16,7 +16,6 @@
 package ro.satrapu.churchmanagement.ui.persons;
 
 import org.slf4j.Logger;
-import ro.satrapu.churchmanagement.logging.LoggerInstance;
 import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
 import ro.satrapu.churchmanagement.ui.Urls;
@@ -29,6 +28,7 @@ import javax.inject.Named;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Set;
@@ -46,25 +46,26 @@ import java.util.Set;
 public class PersonHome implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Inject
-    PersistenceService persistenceService;
-
-    @Inject
-    Conversation conversation;
-
-    @Inject
-    Messages messages;
-
-    @Inject
-    @LoggerInstance
-    Logger logger;
-
-    @Inject
-    ValidatorFactory validatorFactory;
-
+    private PersistenceService persistenceService;
+    private Conversation conversation;
+    private Messages messages;
+    private Logger logger;
+    private ValidatorFactory validatorFactory;
     private Serializable id;
     private Person instance;
+
+    @Inject
+    public PersonHome(@NotNull PersistenceService persistenceService,
+                      @NotNull Conversation conversation,
+                      @NotNull Messages messages,
+                      @NotNull Logger logger,
+                      @NotNull ValidatorFactory validatorFactory) {
+        this.persistenceService = persistenceService;
+        this.conversation = conversation;
+        this.messages = messages;
+        this.logger = logger;
+        this.validatorFactory = validatorFactory;
+    }
 
     /**
      * Gets the entity managed by this instance.
@@ -89,6 +90,7 @@ public class PersonHome implements Serializable {
      * @return The entity identifier.
      */
     public Serializable getId() {
+
         return id;
     }
 
@@ -106,7 +108,6 @@ public class PersonHome implements Serializable {
      *
      * @return the {@link Person} entity
      */
-    @SuppressWarnings("unchecked")
     public Person loadInstance() {
         Class<Person> clazz = Person.class;
         logger.debug("Loading instance of type {} using id {} ...", clazz.getName(), id);
@@ -118,7 +119,6 @@ public class PersonHome implements Serializable {
      *
      * @return A new entity.
      */
-    @SuppressWarnings("unchecked")
     public Person createInstance() {
         logger.debug("Creating entity of type {} ...", Person.class.getName());
         return new Person();
@@ -142,7 +142,7 @@ public class PersonHome implements Serializable {
         boolean hasErrors = true;
 
         if (!isValid()) {
-            messages.error("global.fields.invalid");
+            messages.addError("global.fields.invalid");
         } else {
             if (isManaged()) {
                 Person person = getInstance();
@@ -150,11 +150,11 @@ public class PersonHome implements Serializable {
                 try {
                     logger.debug("Merging instance: {} ...", person);
                     persistenceService.merge(person);
-                    messages.info("entities.person.actions.update.success");
+                    messages.addInfo("entities.person.actions.update.success");
                     hasErrors = false;
                 } catch (Exception e) {
                     logger.error("Could not merge instance", e);
-                    messages.error("entities.person.actions.update.failure");
+                    messages.addError("entities.person.actions.update.failure");
                 }
             } else {
                 Person person = getInstance();
@@ -162,11 +162,11 @@ public class PersonHome implements Serializable {
                 try {
                     logger.debug("Persisting instance: {} ...", person);
                     persistenceService.persist(person);
-                    messages.info("entities.person.actions.save.success");
+                    messages.addInfo("entities.person.actions.save.success");
                     hasErrors = false;
                 } catch (Exception e) {
                     logger.error("Could not persist instance", e);
-                    messages.error("entities.person.actions.save.failure");
+                    messages.addError("entities.person.actions.save.failure");
                 }
             }
         }
@@ -212,11 +212,11 @@ public class PersonHome implements Serializable {
 
         try {
             persistenceService.remove(person);
-            messages.info("entities.person.actions.remove.success");
+            messages.addInfo("entities.person.actions.remove.success");
             hasErrors = false;
         } catch (Exception e) {
             logger.error("Could not remove instance", e);
-            messages.error("entities.person.actions.remove.failure");
+            messages.addError("entities.person.actions.remove.failure");
         }
 
         if (!hasErrors) {
