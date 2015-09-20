@@ -15,12 +15,12 @@
  */
 package ro.satrapu.churchmanagement.security;
 
+import org.slf4j.Logger;
+
 import javax.enterprise.inject.Alternative;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import org.slf4j.Logger;
-import ro.satrapu.churchmanagement.logging.LoggerInstance;
-import ro.satrapu.churchmanagement.ui.FacesContextInstance;
+import javax.validation.constraints.NotNull;
 
 /**
  * An {@link UserAuthenticator} implementation which authenticates users against a hard-coded pair of user named and password.
@@ -37,60 +37,62 @@ public class HardCodedUserAuthenticator implements UserAuthenticator {
      */
     private static final String HARD_CODED_PASSWORD = "QZ{vVyj*:9C5P5fBm+tQGch}mM\\,s;q>ZE7F!k6;Z@#RJpR{hbAN&GJz~4vvPF#Je{q<Q&afT]5}-@Sa[qMa;)_Bj!sb6susv>W^^{?R#t*XD4hym%CQ9_VhNTvA;*J^";
 
-    @Inject
-    @LoggerInstance
-    Logger logger;
+    private Logger logger;
+    private FacesContext facesContext;
 
     @Inject
-    @FacesContextInstance
-    FacesContext facesContext;
+    public HardCodedUserAuthenticator(@NotNull FacesContext facesContext,
+                                      @NotNull Logger logger) {
+        this.facesContext = facesContext;
+        this.logger = logger;
+    }
 
     @Override
     public AuthenticatedUser authenticate(AuthenticationDetails authenticationDetails) {
-	if (authenticationDetails == null) {
-	    throw new IllegalArgumentException("Authentication details are required");
-	}
+        if (authenticationDetails == null) {
+            throw new IllegalArgumentException("Authentication details are required");
+        }
 
-	String userName = authenticationDetails.getUserName();
-	String password = authenticationDetails.getPassword();
+        String userName = authenticationDetails.getUserName();
+        String password = authenticationDetails.getPassword();
 
-	if (userName == null || userName.length() == 0) {
-	    throw new IllegalArgumentException("User name is required");
-	}
+        if (userName == null || userName.length() == 0) {
+            throw new IllegalArgumentException("User name is required");
+        }
 
-	if (password == null || password.length() == 0) {
-	    throw new IllegalArgumentException("Password is required");
-	}
+        if (password == null || password.length() == 0) {
+            throw new IllegalArgumentException("Password is required");
+        }
 
-	boolean isAuthenticated = getHardCodedValue().getUserName().equals(userName) && getHardCodedValue().getPassword().equals(password);
+        boolean isAuthenticated = getHardCodedValue().getUserName().equals(userName) && getHardCodedValue().getPassword().equals(password);
 
-	if (!isAuthenticated) {
-	    throw new RuntimeException("User name and password do not match");
-	}
+        if (!isAuthenticated) {
+            throw new RuntimeException("User name and password do not match");
+        }
 
-	AuthenticatedUser authenticatedUser = new AuthenticatedUser();
-	authenticatedUser.setName("Bogdan Marian");
-	return authenticatedUser;
+        AuthenticatedUser authenticatedUser = new AuthenticatedUser();
+        authenticatedUser.setName("Bogdan Marian");
+        return authenticatedUser;
     }
 
     @Override
     public AuthenticationDetails getHardCodedValue() {
-	AuthenticationDetails authenticationDetails = new AuthenticationDetails();
-	authenticationDetails.setUserName(HARD_CODED_USER_NAME);
-	authenticationDetails.setPassword(HARD_CODED_PASSWORD);
+        AuthenticationDetails authenticationDetails = new AuthenticationDetails();
+        authenticationDetails.setUserName(HARD_CODED_USER_NAME);
+        authenticationDetails.setPassword(HARD_CODED_PASSWORD);
 
-	return authenticationDetails;
+        return authenticationDetails;
     }
 
     @Override
     public boolean hasHardCodedValue() {
-	switch (facesContext.getApplication().getProjectStage()) {
-	    case Development:
-	    case SystemTest:
-	    case UnitTest:
-		return true;
-	    default:
-		return false;
-	}
+        switch (facesContext.getApplication().getProjectStage()) {
+            case Development:
+            case SystemTest:
+            case UnitTest:
+                return true;
+            default:
+                return false;
+        }
     }
 }

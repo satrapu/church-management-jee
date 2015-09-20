@@ -16,257 +16,253 @@
 package ro.satrapu.churchmanagement.persistence;
 
 import org.slf4j.Logger;
-import ro.satrapu.churchmanagement.logging.LoggerInstance;
 import ro.satrapu.churchmanagement.persistence.query.EntityCountQuery;
 import ro.satrapu.churchmanagement.persistence.query.EntityQuery;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Manages application entities.
+ * Manages all CRUD application operations.
  *
  * @author satrapu
  */
 @Stateless
 public class PersistenceService implements Serializable {
-
     private static final long serialVersionUID = 1L;
+    private EntityManager entityManager;
+    private Logger logger;
+
+    /**
+     * This default constructor is required in order to support the one annotated with @Inject - see more details <a href="http://stackoverflow.com/a/9192342">here</a>.
+     */
+    public PersistenceService() {
+    }
 
     @Inject
-    @LoggerInstance
-    Logger logger;
-
-    @PersistenceContext(unitName = PersistenceUnits.CHURCH_MANAGEMENT)
-    EntityManager entityManager;
+    public PersistenceService(@NotNull @ChurchManagementDatabase EntityManager entityManager,
+                              @NotNull Logger logger) {
+        this();
+        this.entityManager = entityManager;
+        this.logger = logger;
+    }
 
     public <T extends Serializable> T persist(T entity) {
-	if (entity == null) {
-	    throw new IllegalArgumentException("Cannot persist null entity");
-	}
+        if (entity == null) {
+            throw new IllegalArgumentException("Parameter \"entity\" is null");
+        }
 
-	logger.debug("Persisting entity of type {} ...", entity.getClass().getName());
-	entityManager.persist(entity);
-	return entity;
+        logger.debug("Persisting entity of type {} ...", entity.getClass().getName());
+        entityManager.persist(entity);
+        return entity;
     }
 
     public <T extends Serializable> List<T> persist(List<T> entities) {
-	if (entities == null) {
-	    throw new IllegalArgumentException("Cannot persist null entity list");
-	}
+        if (entities == null) {
+            throw new IllegalArgumentException("Cannot persist null entity list");
+        }
 
-	if (entities.isEmpty()) {
-	    logger.warn("Entity list is empty, there is nothing to persist");
-	    return new ArrayList<>();
-	}
+        if (entities.isEmpty()) {
+            logger.warn("Entity list is empty, there is nothing to persist");
+            return new ArrayList<>();
+        }
 
-	List<T> persistedEntities = new ArrayList<>(entities.size());
+        List<T> persistedEntities = new ArrayList<>(entities.size());
 
-	for (T entity : entities) {
-	    logger.debug("Persisting entity of type {} ...", entity.getClass().getName());
-	    entityManager.persist(entity);
-	    persistedEntities.add(entity);
-	}
+        for (T entity : entities) {
+            logger.debug("Persisting entity of type {} ...", entity.getClass().getName());
+            entityManager.persist(entity);
+            persistedEntities.add(entity);
+        }
 
-	return persistedEntities;
+        return persistedEntities;
     }
 
     public <T extends Serializable> void remove(T entity) {
-	if (entity == null) {
-	    throw new IllegalArgumentException("Cannot remove null entity");
-	}
+        if (entity == null) {
+            throw new IllegalArgumentException("Cannot remove null entity");
+        }
 
-	logger.debug("Removing entity of type {} ...", entity.getClass().getName());
-	T mergedEntity = entityManager.merge(entity);
-	entityManager.remove(mergedEntity);
+        logger.debug("Removing entity of type {} ...", entity.getClass().getName());
+        T mergedEntity = entityManager.merge(entity);
+        entityManager.remove(mergedEntity);
     }
 
     public <T extends Serializable> void remove(List<T> entities) {
-	if (entities == null) {
-	    throw new IllegalArgumentException("Cannot remove null entity list");
-	}
+        if (entities == null) {
+            throw new IllegalArgumentException("Cannot remove null entity list");
+        }
 
-	if (entities.isEmpty()) {
-	    logger.warn("Entity list is empty, there is nothing to remove");
-	    return;
-	}
+        if (entities.isEmpty()) {
+            logger.warn("Entity list is empty, there is nothing to remove");
+            return;
+        }
 
-	for (T entity : entities) {
-	    logger.debug("Removing entity of type {} ...", entity.getClass().getName());
-	    T mergedEntity = entityManager.merge(entity);
-	    entityManager.remove(mergedEntity);
-	}
+        for (T entity : entities) {
+            logger.debug("Removing entity of type {} ...", entity.getClass().getName());
+            T mergedEntity = entityManager.merge(entity);
+            entityManager.remove(mergedEntity);
+        }
     }
 
     public <T extends Serializable> T merge(T entity) {
-	if (entity == null) {
-	    throw new IllegalArgumentException("Cannot merge null entity");
-	}
+        if (entity == null) {
+            throw new IllegalArgumentException("Cannot merge null entity");
+        }
 
-	logger.debug("Merging entity of type {} ...", entity.getClass().getName());
-	T mergedEntity = entityManager.merge(entity);
-	return mergedEntity;
+        logger.debug("Merging entity of type {} ...", entity.getClass().getName());
+        T mergedEntity = entityManager.merge(entity);
+        return mergedEntity;
     }
 
     public <T extends Serializable> List<T> merge(List<T> entities) {
-	if (entities == null) {
-	    throw new IllegalArgumentException("Cannot merge null entity list");
-	}
+        if (entities == null) {
+            throw new IllegalArgumentException("Cannot merge null entity list");
+        }
 
-	if (entities.isEmpty()) {
-	    logger.warn("Entity list is empty, there is nothing to merge");
-	    return new ArrayList<>();
-	}
+        if (entities.isEmpty()) {
+            logger.warn("Entity list is empty, there is nothing to merge");
+            return new ArrayList<>();
+        }
 
-	List<T> mergedEntities = new ArrayList<>(entities.size());
+        List<T> mergedEntities = new ArrayList<>(entities.size());
 
-	for (T entity : entities) {
-	    logger.debug("Merging entity of type {} ...", entity.getClass().getName());
-	    entityManager.merge(entity);
-	    mergedEntities.add(entity);
-	}
+        for (T entity : entities) {
+            logger.debug("Merging entity of type {} ...", entity.getClass().getName());
+            entityManager.merge(entity);
+            mergedEntities.add(entity);
+        }
 
-	return mergedEntities;
+        return mergedEntities;
     }
 
     public <T extends Serializable> void detach(T entity) {
-	if (entity == null) {
-	    throw new IllegalArgumentException("Cannot detach null entity");
-	}
+        if (entity == null) {
+            throw new IllegalArgumentException("Cannot detach null entity");
+        }
 
-	logger.debug("Detaching entity of type {} ...", entity.getClass().getName());
-	entityManager.detach(entity);
+        logger.debug("Detaching entity of type {} ...", entity.getClass().getName());
+        entityManager.detach(entity);
     }
 
     public <T extends Serializable> boolean isManaged(T entity) {
-	if (entity == null) {
-	    return false;
-	}
+        if (entity == null) {
+            return false;
+        }
 
-	logger.debug("Checking whether entity of type {} is managed or not ...", entity.getClass().getName());
-	return entityManager.contains(entity);
+        logger.debug("Checking whether entity of type {} is managed or not ...", entity.getClass().getName());
+        return entityManager.contains(entity);
     }
 
     public <T extends Serializable> List<T> fetch(Class<T> entityClass) {
-	if (entityClass == null) {
-	    throw new IllegalArgumentException("Cannot fetch entities by using null as entity class");
-	}
+        if (entityClass == null) {
+            throw new IllegalArgumentException("Cannot fetch entities by using null as entity class");
+        }
 
-	logger.debug("Fetching all entities of type {} ...", entityClass.getName());
+        logger.debug("Fetching all entities of type {} ...", entityClass.getName());
 
-	CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-	CriteriaQuery<T> criteria = builder.createQuery(entityClass);
-	criteria.select(criteria.from(entityClass));
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteria = builder.createQuery(entityClass);
+        criteria.select(criteria.from(entityClass));
 
-	TypedQuery<T> query = entityManager.createQuery(criteria);
-	List<T> resultList = query.getResultList();
-	logger.debug("Fetched {} entities", resultList.size());
-	return resultList;
+        TypedQuery<T> query = entityManager.createQuery(criteria);
+        List<T> resultList = query.getResultList();
+        logger.debug("Fetched {} entities", resultList.size());
+        return resultList;
     }
 
     public <T extends Serializable> T fetch(Class<T> entityClass, Serializable entityId) {
-	if (entityClass == null) {
-	    throw new IllegalArgumentException("Cannot fetch entity by using null as entity class");
-	}
+        if (entityClass == null) {
+            throw new IllegalArgumentException("Cannot fetch entity by using null as entity class");
+        }
 
-	if (entityId == null) {
-	    throw new IllegalArgumentException("Cannot fetch entity by using null as entity id");
-	}
+        if (entityId == null) {
+            throw new IllegalArgumentException("Cannot fetch entity by using null as entity id");
+        }
 
-	logger.debug("Fetching entity of type {} using id {} ...", entityClass.getName(), entityId);
-	T entity = entityManager.find(entityClass, entityId);
-	return entity;
+        logger.debug("Fetching entity of type {} using id {} ...", entityClass.getName(), entityId);
+        T entity = entityManager.find(entityClass, entityId);
+        return entity;
     }
 
     public <T extends Serializable> T fetchReference(Class<T> entityClass, Serializable entityId) {
-	if (entityClass == null) {
-	    throw new IllegalArgumentException("Cannot fetch entity reference by using null as entity class");
-	}
+        if (entityClass == null) {
+            throw new IllegalArgumentException("Cannot fetch entity reference by using null as entity class");
+        }
 
-	if (entityId == null) {
-	    throw new IllegalArgumentException("Cannot fetch entity reference by using null as entity id");
-	}
+        if (entityId == null) {
+            throw new IllegalArgumentException("Cannot fetch entity reference by using null as entity id");
+        }
 
-	logger.debug("Fetching entity reference of type {}, using id {} ...", entityClass.getName(), entityId);
-	T entity = entityManager.getReference(entityClass, entityId);
-	return entity;
+        logger.debug("Fetching entity reference of type {}, using id {} ...", entityClass.getName(), entityId);
+        T entity = entityManager.getReference(entityClass, entityId);
+        return entity;
     }
 
-    /**
-     * @param <T>
-     * @param entityQuery
-     * @return
-     */
     public <T> List<T> fetch(EntityQuery<T> entityQuery) {
-	return fetch(entityQuery, null, null);
+        return fetch(entityQuery, null, null);
     }
 
-    /**
-     * @param <T>
-     * @param entityQuery
-     * @param firstResult
-     * @param maxResults
-     * @return
-     */
     public <T> List<T> fetch(EntityQuery<T> entityQuery, Integer firstResult, Integer maxResults) {
-	if (entityQuery == null) {
-	    throw new IllegalArgumentException("Cannot fetch entities using null as query");
-	}
+        if (entityQuery == null) {
+            throw new IllegalArgumentException("Cannot fetch entities using null as query");
+        }
 
-	List<T> result = entityQuery.list(entityManager, firstResult, maxResults);
-	return result;
+        List<T> result = entityQuery.list(entityManager, firstResult, maxResults);
+        return result;
     }
 
     public <T extends Serializable> List<T> fetch(Class<T> entityClass, int pageIndex, int recordsPerPage) {
-	if (entityClass == null) {
-	    throw new IllegalArgumentException("Cannot fetch entities using null as entity class");
-	}
+        if (entityClass == null) {
+            throw new IllegalArgumentException("Cannot fetch entities using null as entity class");
+        }
 
-	logger.debug("Fetching maximum {} entities of type {} for page #{} ...", recordsPerPage, entityClass.getName(), pageIndex + 1);
+        logger.debug("Fetching maximum {} entities of type {} for page #{} ...", recordsPerPage, entityClass.getName(), pageIndex + 1);
 
-	CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-	CriteriaQuery<T> criteria = builder.createQuery(entityClass);
-	criteria.select(criteria.from(entityClass));
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteria = builder.createQuery(entityClass);
+        criteria.select(criteria.from(entityClass));
 
-	TypedQuery<T> query = entityManager.createQuery(criteria);
-	query.setFirstResult(pageIndex);
-	query.setMaxResults(recordsPerPage);
+        TypedQuery<T> query = entityManager.createQuery(criteria);
+        query.setFirstResult(pageIndex);
+        query.setMaxResults(recordsPerPage);
 
-	List<T> resultList = query.getResultList();
-	logger.debug("Found {} entities", resultList.size());
-	return resultList;
+        List<T> resultList = query.getResultList();
+        logger.debug("Found {} entities", resultList.size());
+        return resultList;
     }
 
     public <T extends Serializable> long count(Class<T> entityClass) {
-	if (entityClass == null) {
-	    throw new IllegalArgumentException("Cannot count entities by using null as entity class");
-	}
+        if (entityClass == null) {
+            throw new IllegalArgumentException("Cannot count entities by using null as entity class");
+        }
 
-	logger.debug("Counting entities of type {} ...", entityClass.getName());
+        logger.debug("Counting entities of type {} ...", entityClass.getName());
 
-	CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-	CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-	criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(entityClass)));
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+        criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(entityClass)));
 
-	long count = entityManager.createQuery(criteriaQuery).getSingleResult();
-	logger.debug("Found {} entities", count);
-	return count;
+        long count = entityManager.createQuery(criteriaQuery).getSingleResult();
+        logger.debug("Found {} entities", count);
+        return count;
     }
 
     public long count(EntityCountQuery entityCountQuery) {
-	if (entityCountQuery == null) {
-	    throw new IllegalArgumentException("Cannot count entities using null as query");
-	}
+        if (entityCountQuery == null) {
+            throw new IllegalArgumentException("Cannot count entities using null as query");
+        }
 
-	long count = entityCountQuery.count(entityManager);
-	logger.debug("Found {} entities", count);
-	return count;
+        long count = entityCountQuery.count(entityManager);
+        logger.debug("Found {} entities", count);
+        return count;
     }
 }

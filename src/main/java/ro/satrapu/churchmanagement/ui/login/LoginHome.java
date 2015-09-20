@@ -15,19 +15,19 @@
  */
 package ro.satrapu.churchmanagement.ui.login;
 
+import org.slf4j.Logger;
+import ro.satrapu.churchmanagement.security.AuthenticatedUser;
+import ro.satrapu.churchmanagement.security.AuthenticationDetails;
+import ro.satrapu.churchmanagement.security.CurrentUser;
+import ro.satrapu.churchmanagement.security.UserAuthenticator;
+import ro.satrapu.churchmanagement.ui.Urls;
+import ro.satrapu.churchmanagement.ui.messages.Messages;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import org.slf4j.Logger;
-import ro.satrapu.churchmanagement.logging.LoggerInstance;
-import ro.satrapu.churchmanagement.security.AuthenticatedUser;
-import ro.satrapu.churchmanagement.security.AuthenticationDetails;
-import ro.satrapu.churchmanagement.security.UserAuthenticator;
-import ro.satrapu.churchmanagement.security.CurrentUser;
-import ro.satrapu.churchmanagement.ui.FacesContextInstance;
-import ro.satrapu.churchmanagement.ui.messages.Messages;
-import ro.satrapu.churchmanagement.ui.Urls;
+import javax.validation.constraints.NotNull;
 
 /**
  * Handles user login/logout actions.
@@ -36,33 +36,33 @@ import ro.satrapu.churchmanagement.ui.Urls;
  */
 @Model
 public class LoginHome {
-
-    @Inject
-    @LoggerInstance
-    Logger logger;
-
-    @Inject
-    UserAuthenticator userAuthenticator;
-
-    @Inject
-    Messages messages;
-
-    @Inject
-    @FacesContextInstance
-    FacesContext facesContext;
-
-    @Inject
-    CurrentUser currentUser;
-
+    private CurrentUser currentUser;
+    private UserAuthenticator userAuthenticator;
     private AuthenticationDetails authenticationDetails;
+    private Messages messages;
+    private FacesContext facesContext;
+    private Logger logger;
+
+    @Inject
+    public LoginHome(CurrentUser currentUser,
+                     @NotNull UserAuthenticator userAuthenticator,
+                     @NotNull Messages messages,
+                     @NotNull FacesContext facesContext,
+                     @NotNull Logger logger) {
+        this.currentUser = currentUser;
+        this.userAuthenticator = userAuthenticator;
+        this.messages = messages;
+        this.facesContext = facesContext;
+        this.logger = logger;
+    }
 
     @PostConstruct
-    public void init() {
-	if (userAuthenticator.hasHardCodedValue()) {
-	    authenticationDetails = userAuthenticator.getHardCodedValue();
-	} else {
-	    authenticationDetails = new AuthenticationDetails();
-	}
+    public void initialize() {
+        if (userAuthenticator.hasHardCodedValue()) {
+            authenticationDetails = userAuthenticator.getHardCodedValue();
+        } else {
+            authenticationDetails = new AuthenticationDetails();
+        }
     }
 
     /**
@@ -71,24 +71,24 @@ public class LoginHome {
      * @return
      */
     public String login() {
-	AuthenticatedUser authenticatedUser = null;
-	boolean authenticationFailed = false;
+        AuthenticatedUser authenticatedUser = null;
+        boolean authenticationFailed = false;
 
-	try {
-	    authenticatedUser = userAuthenticator.authenticate(authenticationDetails);
-	} catch (Throwable e) {
-	    logger.warn("Unable to authenticate user", e);
-	    authenticationFailed = true;
-	}
+        try {
+            authenticatedUser = userAuthenticator.authenticate(authenticationDetails);
+        } catch (Throwable e) {
+            logger.warn("Unable to authenticate user", e);
+            authenticationFailed = true;
+        }
 
-	if (!authenticationFailed && authenticatedUser != null) {
-	    currentUser.setAuthenticatedUser(authenticatedUser);
-	    messages.info("pages.login.actions.login.success");
-	    return Urls.addRedirectQueryStringParameter(Urls.Secured.HOME);
-	} else {
-	    messages.error("pages.login.actions.login.failure");
-	    return null;
-	}
+        if (!authenticationFailed && authenticatedUser != null) {
+            currentUser.setAuthenticatedUser(authenticatedUser);
+            messages.addInfo("pages.login.actions.login.success");
+            return Urls.addRedirectQueryStringParameter(Urls.Secured.HOME);
+        } else {
+            messages.addError("pages.login.actions.login.failure");
+            return null;
+        }
     }
 
     /**
@@ -97,27 +97,28 @@ public class LoginHome {
      * @return
      */
     public String logout() {
-	resetLoginInfo();
-	currentUser.destroy();
-	facesContext.getExternalContext().invalidateSession();
-	messages.info("pages.login.actions.logout.success");
-	return Urls.addRedirectQueryStringParameter(Urls.Unsecured.LOGIN);
+        resetLoginInfo();
+        currentUser.destroy();
+        facesContext.getExternalContext().invalidateSession();
+        messages.addInfo("pages.login.actions.logout.success");
+
+        return Urls.addRedirectQueryStringParameter(Urls.Unsecured.LOGIN);
     }
 
     /**
      * Handles login form reset.
      */
     public void reset() {
-	resetLoginInfo();
-	messages.info("pages.login.actions.reset");
+        resetLoginInfo();
+        messages.addInfo("pages.login.actions.reset");
     }
 
     public AuthenticationDetails getAuthenticationDetails() {
-	return authenticationDetails;
+        return authenticationDetails;
     }
 
     private void resetLoginInfo() {
-	authenticationDetails.setUserName(null);
-	authenticationDetails.setPassword(null);
+        authenticationDetails.setUserName(null);
+        authenticationDetails.setPassword(null);
     }
 }
