@@ -15,16 +15,18 @@
  */
 package ro.satrapu.churchmanagement.security;
 
-import java.io.Serializable;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
+import ro.satrapu.churchmanagement.ui.Urls;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
-import ro.satrapu.churchmanagement.ui.Urls;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * Represents the current user.
@@ -35,80 +37,87 @@ import ro.satrapu.churchmanagement.ui.Urls;
 @SessionScoped
 @Data
 public class CurrentUser implements Serializable {
-
     private static final long serialVersionUID = 1L;
-
-    @Inject
-    Urls urls;
+    private Urls urls;
+    private String name;
 
     @Setter(AccessLevel.PRIVATE)
     private boolean authenticated;
 
-    private String name;
+    /**
+     * This constructor is needed by CDI.
+     */
+    public CurrentUser() {
+    }
 
-    @PostConstruct
-    public void init() {
-	this.authenticated = false;
+    @Inject
+    public CurrentUser(@NotNull Urls urls) {
+        this.urls = urls;
     }
 
     public boolean isPersonsMenuVisible() {
-	return authenticated;
+        return authenticated;
     }
 
     public boolean isPersonListMenuVisible() {
-	return authenticated;
+        return authenticated;
     }
 
     public boolean isPersonAddMenuVisible() {
-	return authenticated;
+        return authenticated;
     }
 
     public boolean isDiscipleshipMenuVisible() {
-	return authenticated;
+        return authenticated;
     }
 
     public boolean isDiscipleshipPairMenuVisible() {
-	return authenticated;
+        return authenticated;
     }
 
     public boolean isDiscipleshipPairAddMenuVisible() {
-	return authenticated;
+        return authenticated;
     }
 
     public boolean isDiscipleshipPairListMenuVisible() {
-	return authenticated;
+        return authenticated;
     }
 
     public boolean isDiscipleshipAvailabilityAsTeachersMenuVisible() {
-	return authenticated;
+        return authenticated;
     }
 
     public boolean isDiscipleshipAvailabilityAsDisciplesMenuVisible() {
-	return authenticated;
+        return authenticated;
     }
 
     public String getHomePageUrl() {
-	return urls.addContextPath(Urls.Secured.HOME);
+        return urls.addContextPath(Urls.Secured.HOME);
     }
 
     public void setAuthenticatedUser(AuthenticatedUser authenticatedUser) {
-	if (authenticatedUser == null) {
-	    throw new IllegalArgumentException("Authenticated user cannot be null");
-	}
+        if (authenticatedUser == null) {
+            throw new IllegalArgumentException("Authenticated user cannot be null");
+        }
 
-	String localName = authenticatedUser.getName();
+        String localName = authenticatedUser.getName();
 
-	if (localName == null || localName.isEmpty()) {
-	    throw new IllegalArgumentException("The name of an authenticated user cannot be null or empty string");
-	}
+        if (localName == null || localName.isEmpty()) {
+            throw new IllegalArgumentException("The name of an authenticated user cannot be null or empty string");
+        }
 
-	this.name = localName;
-	this.authenticated = true;
+        this.name = localName;
+        this.authenticated = true;
+    }
+
+    @PostConstruct
+    public void initialize() {
+        this.authenticated = false;
     }
 
     @PreDestroy
     public void destroy() {
-	authenticated = false;
-	name = null;
+        authenticated = false;
+        name = null;
     }
 }
