@@ -15,9 +15,10 @@
  */
 package ro.satrapu.churchmanagement.ui;
 
-import java.io.Serializable;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * Contains the URLs pointing to any page inside this application.
@@ -25,37 +26,37 @@ import javax.inject.Inject;
  * @author satrapu
  */
 public class Urls implements Serializable {
-
     private static final long serialVersionUID = 1L;
+    public static final String PATH_SEPARATOR = "/";
+    private FacesContext facesContext;
 
     @Inject
-    @FacesContextInstance
-    FacesContext facesContext;
-
-    public static final String PATH_SEPARATOR = "/";
+    public Urls(@NotNull FacesContext facesContext) {
+        this.facesContext = facesContext;
+    }
 
     /**
      * Ensures that the JSF redirect query string parameter is added to the given URL.
      *
-     * @param url
-     * @return
+     * @param url The URL where the JSF redirect query string parameter will be added to.
+     * @return A URL containing the JSF redirect query string parameter.
      */
     public static String addRedirectQueryStringParameter(String url) {
-	if (url == null || url.isEmpty()) {
-	    return "";
-	}
+        if (url == null || url.isEmpty()) {
+            return "";
+        }
 
-	//add query string parameter needed to instruct JSF runtime to perform a redirect when using this URL
-	StringBuilder redirectUrl = new StringBuilder(url);
+        //add query string parameter needed to instruct JSF runtime to perform a redirect when using this URL
+        StringBuilder redirectUrl = new StringBuilder(url);
 
-	if (!url.contains("?")) {
-	    redirectUrl.append("?");
-	} else {
-	    redirectUrl.append("&");
-	}
+        if (!url.contains("?")) {
+            redirectUrl.append("?");
+        } else {
+            redirectUrl.append("&");
+        }
 
-	redirectUrl.append("faces-redirect=true");
-	return redirectUrl.toString();
+        redirectUrl.append("faces-redirect=true");
+        return redirectUrl.toString();
     }
 
     /**
@@ -65,32 +66,29 @@ public class Urls implements Serializable {
      * @return
      */
     public String addContextPath(String url) {
-	StringBuilder processedUrl = new StringBuilder(facesContext.getExternalContext().getRequestContextPath());
+        StringBuilder processedUrl = new StringBuilder(facesContext.getExternalContext().getRequestContextPath());
 
-	if (!url.startsWith(PATH_SEPARATOR)) {
-	    processedUrl.append(PATH_SEPARATOR);
-	}
+        if (!url.startsWith(PATH_SEPARATOR)) {
+            processedUrl.append(PATH_SEPARATOR);
+        }
 
-	processedUrl.append(url);
-	return processedUrl.toString();
+        processedUrl.append(url);
+        return processedUrl.toString();
     }
 
     public interface Unsecured {
-
-	public static final String LOGIN = PATH_SEPARATOR + "login.xhtml";
+        String LOGIN = PATH_SEPARATOR + "login.xhtml";
     }
 
     public interface Secured {
+        String SECURED_PREFIX = "secured";
+        String HOME = PATH_SEPARATOR + SECURED_PREFIX + PATH_SEPARATOR + "home.xhtml";
 
-	public static final String SECURED_PREFIX = "secured";
-	public static final String HOME = PATH_SEPARATOR + SECURED_PREFIX + PATH_SEPARATOR + "home.xhtml";
-
-	public interface Persons {
-
-	    public static final String PREFIX = "persons";
-	    public static final String LIST = PATH_SEPARATOR + SECURED_PREFIX + PATH_SEPARATOR + PREFIX + PATH_SEPARATOR + "list.xhtml";
-	    public static final String EDIT = PATH_SEPARATOR + SECURED_PREFIX + PATH_SEPARATOR + PREFIX + PATH_SEPARATOR + "edit.xhtml";
-	    public static final String REMOVE = PATH_SEPARATOR + SECURED_PREFIX + PATH_SEPARATOR + PREFIX + PATH_SEPARATOR + "remove.xhtml";
-	}
+        public interface Persons {
+            String PREFIX = "persons";
+            String LIST = PATH_SEPARATOR + SECURED_PREFIX + PATH_SEPARATOR + PREFIX + PATH_SEPARATOR + "list.xhtml";
+            String EDIT = PATH_SEPARATOR + SECURED_PREFIX + PATH_SEPARATOR + PREFIX + PATH_SEPARATOR + "edit.xhtml";
+            String REMOVE = PATH_SEPARATOR + SECURED_PREFIX + PATH_SEPARATOR + PREFIX + PATH_SEPARATOR + "remove.xhtml";
+        }
     }
 }
