@@ -15,14 +15,14 @@
  */
 package ro.satrapu.churchmanagement.ui.messages;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
+import org.slf4j.Logger;
+
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import ro.satrapu.churchmanagement.ui.FacesContextInstance;
+import javax.validation.constraints.NotNull;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Produces {@link java.util.ResourceBundle} instances.
@@ -30,13 +30,16 @@ import ro.satrapu.churchmanagement.ui.FacesContextInstance;
  * @author satrapu
  */
 public class ResourceBundleProducer {
-
-    private static final Logger logger = LoggerFactory.getLogger(ResourceBundleProducer.class);
     private static final String RESOURCE_BUNDLE_NAME = "msg";
+    private FacesContext facesContext;
+    private Logger logger;
 
     @Inject
-    @FacesContextInstance
-    FacesContext facesContext;
+    public ResourceBundleProducer(@NotNull FacesContext facesContext,
+                                  @NotNull Logger logger) {
+        this.facesContext = facesContext;
+        this.logger = logger;
+    }
 
     /**
      * Produces a {@link ResourceBundle} instance as configured inside the faces.xml file.
@@ -45,18 +48,18 @@ public class ResourceBundleProducer {
      * @throws RuntimeException If a {@link ResourceBundle} instance was not found.
      */
     @Produces
-    @ResourceBundleInstance
     public ResourceBundle getResourceBundle() {
-	logger.debug("Messages will be fetched using bundle name: {} ...", RESOURCE_BUNDLE_NAME);
-	ResourceBundle resourceBundle = facesContext.getApplication().getResourceBundle(facesContext, RESOURCE_BUNDLE_NAME);
+        String resourceBundleName = RESOURCE_BUNDLE_NAME;
+        logger.debug("Messages will be fetched using bundle name: {} ...", resourceBundleName);
+        ResourceBundle resourceBundle = facesContext.getApplication().getResourceBundle(facesContext, resourceBundleName);
 
-	if (resourceBundle == null) {
-	    String errorMessage = MessageFormat.format("Could not find bundle using name: {0}.", RESOURCE_BUNDLE_NAME);
-	    logger.error(errorMessage);
-	    throw new RuntimeException(errorMessage);
-	}
+        if (resourceBundle == null) {
+            String errorMessage = MessageFormat.format("Could not find bundle using name: {0}.", resourceBundleName);
+            logger.error(errorMessage);
+            throw new RuntimeException(errorMessage);
+        }
 
-	logger.debug("Found bundle with {} pairs", resourceBundle.keySet().size());
-	return resourceBundle;
+        logger.debug("Found bundle with name {} and {} key-value pairs", resourceBundleName, resourceBundle.keySet().size());
+        return resourceBundle;
     }
 }
