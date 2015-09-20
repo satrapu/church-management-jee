@@ -25,19 +25,19 @@ import ro.satrapu.churchmanagement.model.StringWrapper;
 public class StringWrapperExtensions {
 
     public static boolean isNullOrEmpty(StringWrapper stringWrapper) {
-	if (stringWrapper == null) {
-	    return true;
-	}
+        if (stringWrapper == null) {
+            return true;
+        }
 
-	return StringExtensions.isNullOrEmpty(stringWrapper.getValue());
+        return StringExtensions.isNullOrEmpty(stringWrapper.getValue());
     }
 
     public static boolean isNullOrWhitespace(StringWrapper stringWrapper) {
-	if (stringWrapper == null) {
-	    return true;
-	}
+        if (stringWrapper == null) {
+            return true;
+        }
 
-	return StringExtensions.isNullOrWhitespace(stringWrapper.getValue());
+        return StringExtensions.isNullOrWhitespace(stringWrapper.getValue());
     }
 
     /**
@@ -47,51 +47,51 @@ public class StringWrapperExtensions {
      * @return A new {@link StringWrapper} representing the joined {@code values} delimited by an empty string.
      */
     public static StringWrapper join(StringWrapper... values) {
-	return joinWithDelimiter(" ", values);
+        return joinWithDelimiter(" ", values);
     }
 
     /**
      * Joins the given {@code values} into one using the given {@code delimiter} value as the delimiter.
      *
      * @param delimiter The delimiter to be added between to successful values.
-     * @param values The values to join.
+     * @param values    The values to join.
      * @return A new {@link StringWrapper} representing the joined {@code values} delimited by the {@code delimiter} value.
      */
     public static StringWrapper joinWithDelimiter(String delimiter, StringWrapper... values) {
-	if (delimiter == null) {
-	    throw new IllegalArgumentException("The delimiter is not allowed to be null");
-	}
+        if (delimiter == null) {
+            throw new IllegalArgumentException("The delimiter is not allowed to be null");
+        }
 
-	if (values == null || values.length == 0) {
-	    return new StringWrapper() {
+        if (values == null || values.length == 0) {
+            return new StringWrapper() {
 
-		@Override
-		public String getValue() {
-		    return "";
-		}
-	    };
-	}
+                @Override
+                public String getValue() {
+                    return "";
+                }
+            };
+        }
 
-	StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-	for (StringWrapper stringWrapper : values) {
-	    if (!isNullOrWhitespace(stringWrapper)) {
-		if (sb.length() > 0) {
-		    sb.append(delimiter);
-		}
+        for (StringWrapper stringWrapper : values) {
+            if (!isNullOrWhitespace(stringWrapper)) {
+                if (sb.length() > 0) {
+                    sb.append(delimiter);
+                }
 
-		sb.append(stringWrapper.getValue());
-	    }
-	}
+                sb.append(stringWrapper.getValue());
+            }
+        }
 
-	final String result = sb.toString();
+        final String result = sb.toString();
 
-	return new StringWrapper() {
+        return new StringWrapper() {
 
-	    @Override
-	    public String getValue() {
-		return result;
-	    }
-	};
+            @Override
+            public String getValue() {
+                return result;
+            }
+        };
     }
 }

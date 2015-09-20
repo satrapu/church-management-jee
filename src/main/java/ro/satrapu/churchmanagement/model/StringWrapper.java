@@ -21,7 +21,6 @@ package ro.satrapu.churchmanagement.model;
  * @author satrapu
  */
 public interface StringWrapper {
-
     /**
      * Gets the wrapped value.
      *
