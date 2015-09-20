@@ -29,7 +29,7 @@ public class StringExtensions {
      * @return True, if the {@code value} is null or empty; false, otherwise.
      */
     public static boolean isNullOrEmpty(String value) {
-	return value == null || value.isEmpty();
+        return value == null || value.isEmpty();
     }
 
     /**
@@ -39,7 +39,7 @@ public class StringExtensions {
      * @return True, if the {@code value} is null, empty or whitespace-only string; false, otherwise.
      */
     public static boolean isNullOrWhitespace(String value) {
-	return isNullOrEmpty(value) || value.trim().isEmpty();
+        return isNullOrEmpty(value) || value.trim().isEmpty();
     }
 
     /**
@@ -49,37 +49,37 @@ public class StringExtensions {
      * @return A new string representing the joined {@code values} delimited by an empty string.
      */
     public static String join(String... values) {
-	return joinWithDelimiter(" ", values);
+        return joinWithDelimiter(" ", values);
     }
 
     /**
      * Joins the given {@code values} into one using the given {@code delimiter} value as the delimiter.
      *
      * @param delimiter The delimiter to be added between to successful values.
-     * @param values The values to join.
+     * @param values    The values to join.
      * @return A new string representing the joined {@code values} delimited by the {@code delimiter} value.
      */
     public static String joinWithDelimiter(String delimiter, String... values) {
-	if (delimiter == null) {
-	    throw new IllegalArgumentException("The delimiter is not allowed to be null");
-	}
+        if (delimiter == null) {
+            throw new IllegalArgumentException("The delimiter is not allowed to be null");
+        }
 
-	if (values == null || values.length == 0) {
-	    return "";
-	}
+        if (values == null || values.length == 0) {
+            return "";
+        }
 
-	StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-	for (String value : values) {
-	    if (!isNullOrWhitespace(value)) {
-		if (sb.length() > 0) {
-		    sb.append(delimiter);
-		}
+        for (String value : values) {
+            if (!isNullOrWhitespace(value)) {
+                if (sb.length() > 0) {
+                    sb.append(delimiter);
+                }
 
-		sb.append(value);
-	    }
-	}
+                sb.append(value);
+            }
+        }
 
-	return sb.toString();
+        return sb.toString();
     }
 }
