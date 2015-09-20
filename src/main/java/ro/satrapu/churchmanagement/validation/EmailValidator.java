@@ -15,40 +15,35 @@
  */
 package ro.satrapu.churchmanagement.validation;
 
-import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.regex.Pattern;
 
 /**
- * Checks whether a value of type String represents a valid e-mail address or not.
+ * Checks whether a value of type {@link String} represents a valid e-mail address or not.
  *
  * @author satrapu
  */
 public class EmailValidator implements ConstraintValidator<Email, String> {
 
     private static final String EMAIL_PATTERN_VALUE = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-	    + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
-	    + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
+            + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
+            + "@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
     private static final Pattern emailPattern = Pattern.compile(EMAIL_PATTERN_VALUE, Pattern.CASE_INSENSITIVE & Pattern.UNICODE_CASE);
 
     @Override
     public void initialize(Email constraintAnnotation) {
-	//nothing to init
+        //nothing to init
     }
 
     @Override
     public boolean isValid(String emailAddress, ConstraintValidatorContext context) {
-	boolean isEmailValid = true;
+        boolean isEmailValid = true;
 
-	if (emailAddress != null && !emailAddress.isEmpty()) {
-	    isEmailValid = emailPattern.matcher(emailAddress).matches();
-	}
+        if (emailAddress != null && !emailAddress.isEmpty()) {
+            isEmailValid = emailPattern.matcher(emailAddress).matches();
+        }
 
-//	if (!isEmailValid) {
-//	    String invalidEmailMessage = messages.getMessageFor("validation.customConstraints.email");
-//	    context.buildConstraintViolationWithTemplate(invalidEmailMessage).addConstraintViolation();
-//	}
-
-	return isEmailValid;
+        return isEmailValid;
     }
 }
