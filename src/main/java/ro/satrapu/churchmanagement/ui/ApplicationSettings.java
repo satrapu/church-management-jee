@@ -15,14 +15,15 @@
  */
 package ro.satrapu.churchmanagement.ui;
 
-import java.io.Serializable;
-import java.text.MessageFormat;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.ProjectStage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.text.MessageFormat;
 
 /**
  * Contains application-wide settings.
@@ -32,33 +33,34 @@ import javax.inject.Named;
 @Named
 @ApplicationScoped
 public class ApplicationSettings implements Serializable {
-
     private static final long serialVersionUID = 1L;
+    private FacesContext facesContext;
     private String titleSuffix;
 
     @Inject
-    @FacesContextInstance
-    FacesContext facesContext;
-
-    @PostConstruct
-    public void init() {
-	initTitleSuffix();
+    public ApplicationSettings(@NotNull FacesContext facesContext) {
+        this.facesContext = facesContext;
     }
 
-    private void initTitleSuffix() {
-	ProjectStage projectStage = facesContext.getApplication().getProjectStage();
+    @PostConstruct
+    public void initialize() {
+        initializeTitleSuffix();
+    }
 
-	switch (projectStage) {
-	    case Production:
-		titleSuffix = "";
-		break;
-	    default:
-		titleSuffix = MessageFormat.format(" :: {0}", projectStage.toString());
-		break;
-	}
+    private void initializeTitleSuffix() {
+        ProjectStage projectStage = facesContext.getApplication().getProjectStage();
+
+        switch (projectStage) {
+            case Production:
+                titleSuffix = "";
+                break;
+            default:
+                titleSuffix = MessageFormat.format(" :: {0}", projectStage.toString());
+                break;
+        }
     }
 
     public String getTitleSuffix() {
-	return titleSuffix;
+        return titleSuffix;
     }
 }
