@@ -15,16 +15,15 @@
  */
 package ro.satrapu.churchmanagement.persistence.query;
 
-import java.util.List;
 import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * Represents an object used for querying a database.
  *
- * @author satrapu
  * @param <T>
+ * @author satrapu
  */
 public interface EntityQuery<T> {
-
-    public List<T> list(EntityManager entityManager, Integer firstResult, Integer maxResults);
+    List<T> list(EntityManager entityManager, Integer firstResult, Integer maxResults);
 }

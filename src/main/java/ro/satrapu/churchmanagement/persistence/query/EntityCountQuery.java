@@ -23,6 +23,5 @@ import javax.persistence.EntityManager;
  * @author satrapu
  */
 public interface EntityCountQuery {
-
-    public Long count(EntityManager entityManager);
+    Long count(EntityManager entityManager);
 }
