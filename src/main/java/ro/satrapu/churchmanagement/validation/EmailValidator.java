@@ -33,7 +33,7 @@ public class EmailValidator implements ConstraintValidator<Email, String> {
 
     @Override
     public void initialize(Email constraintAnnotation) {
-        //nothing to init
+        //nothing to initialize
     }
 
     @Override
