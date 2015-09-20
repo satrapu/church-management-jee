@@ -23,7 +23,6 @@ import javax.persistence.AttributeConverter;
  * @author satrapu
  */
 public class DiscipleshipStatusConverter implements AttributeConverter<DiscipleshipStatus, String> {
-
     @Override
     public String convertToDatabaseColumn(DiscipleshipStatus enumValue) {
         switch (enumValue) {

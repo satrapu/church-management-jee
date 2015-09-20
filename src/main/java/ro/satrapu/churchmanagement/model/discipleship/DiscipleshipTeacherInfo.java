@@ -18,12 +18,10 @@ package ro.satrapu.churchmanagement.model.discipleship;
 import lombok.Data;
 
 /**
- *
  * @author satrapu
  */
 @Data
 public class DiscipleshipTeacherInfo {
-
     private Integer personId;
     private String personName;
     private String personEmailAddress;

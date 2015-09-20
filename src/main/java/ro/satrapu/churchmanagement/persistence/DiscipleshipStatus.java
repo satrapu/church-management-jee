@@ -19,7 +19,6 @@ package ro.satrapu.churchmanagement.persistence;
  * @author satrapu
  */
 public enum DiscipleshipStatus {
-
     NOT_INTERESTED,
     DISCIPLESHIP_CANDIDATE,
     TEACHING_CANDIDATE;
