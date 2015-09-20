@@ -15,7 +15,8 @@
  */
 package ro.satrapu.churchmanagement.ui.converters;
 
-import java.text.MessageFormat;
+import ro.satrapu.churchmanagement.ui.messages.Messages;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -23,35 +24,46 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
-import ro.satrapu.churchmanagement.ui.messages.Messages;
+import javax.validation.constraints.NotNull;
+import java.text.MessageFormat;
 
 /**
- *
  * @author satrapu
  */
 @FacesConverter(value = "personIdConverter")
 public class PersonIdConverter implements Converter {
+    private Messages messages;
+
+    /**
+     * This default constructor is needed by CDI.
+     */
+    public PersonIdConverter() {
+    }
 
     @Inject
-    Messages messages;
+    public PersonIdConverter(@NotNull Messages messages) {
+        this.messages = messages;
+    }
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-	try {
-	    return Integer.parseInt(value);
-	} catch (NumberFormatException ex) {
-	    String details = MessageFormat.format(messages.getMessageFor("converters.conversionFailed.personIdConverter"), value);
-	    FacesMessage conversionFailedMessage = new FacesMessage(messages.getMessageFor("converters.conversionFailed.title"), details);
-	    throw new ConverterException(conversionFailedMessage, ex);
-	}
+        try {
+            Integer integerValue = Integer.parseInt(value);
+            return integerValue;
+        } catch (NumberFormatException ex) {
+            String details = MessageFormat.format(messages.getMessageFor("converters.conversionFailed.personIdConverter"), value);
+            FacesMessage conversionFailedMessage = new FacesMessage(messages.getMessageFor("converters.conversionFailed.title"), details);
+
+            throw new ConverterException(conversionFailedMessage, ex);
+        }
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-	if (value == null) {
-	    return null;
-	}
+        if (value == null) {
+            return null;
+        }
 
-	return value.toString();
+        return value.toString();
     }
 }
