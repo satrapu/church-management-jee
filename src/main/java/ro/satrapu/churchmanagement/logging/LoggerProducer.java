@@ -15,10 +15,11 @@
  */
 package ro.satrapu.churchmanagement.logging;
 
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.InjectionPoint;
 
 /**
  * Produces {@link org.slf4j.Logger} instances.
@@ -26,7 +27,6 @@ import org.slf4j.LoggerFactory;
  * @author satrapu
  */
 public class LoggerProducer {
-
     /**
      * Creates a new {@link Logger} instance for the given {@link InjectionPoint} instance.
      *
@@ -34,10 +34,10 @@ public class LoggerProducer {
      * @return A new {@link Logger} instance.
      */
     @Produces
-    @LoggerInstance
     public static Logger produce(InjectionPoint injectionPoint) {
-	Class<?> clazz = injectionPoint.getMember().getDeclaringClass();
-	return produce(clazz);
+        Class<?> declaringClass = injectionPoint.getMember().getDeclaringClass();
+        Logger logger = produce(declaringClass);
+        return logger;
     }
 
     /**
@@ -47,6 +47,7 @@ public class LoggerProducer {
      * @return A new {@link Logger} instance.
      */
     public static Logger produce(Class<?> clazz) {
-	return LoggerFactory.getLogger(clazz);
+        Logger logger = LoggerFactory.getLogger(clazz);
+        return logger;
     }
 }
