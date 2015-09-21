@@ -13,52 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.page{
+.page {
     width: 99%;
 }
 
-.page .header{
+.page .header {
     font-size: 150%;
     font-weight: bold;
 }
 
-.page .header a{
+.page .header a {
     text-decoration: none;
 }
 
-.page .footer{
+.page .footer {
     text-align: center;
     font-size: 75%;
     font-style: italic;
 }
 
-.page .title{
+.page .title {
     font-size: 125%;
     font-weight: bold;
 }
 
-.page .menu{
+.page .menu {
 }
 
-.page .messages{
+.page .messages {
 }
 
-.page .content{
+.page .content {
 }
 
-.actions button{
+.actions button {
     margin-right: 5px;
 }
 
-.actions a{
+.actions a {
     margin-right: 5px;
 }
 
 /* home page - start */
-.page .home .welcome{
+.page .home .welcome {
     font-weight: bold;
 }
 
-.page .home .description{
+.page .home .description {
 }
+
 /* home page - end */
