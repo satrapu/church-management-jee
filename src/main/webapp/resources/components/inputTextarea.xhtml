@@ -19,40 +19,40 @@ limitations under the License.
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:my="http://java.sun.com/jsf/composite/components"
       xmlns:p="http://primefaces.org/ui">
-    <composite:interface>
-        <composite:attribute name="componentId" required="true"/>
-        <composite:attribute name="value" required="true"/>
-        <composite:attribute name="label" required="true"/>
-        <composite:attribute name="required" required="false" default="false"/>
-        <composite:attribute name="readonly" required="false" default="false"/>
-        <composite:attribute name="rows" required="false" default="5"/>
-        <composite:attribute name="cols" required="false" default="25"/>
-    </composite:interface>
-    <composite:implementation>
-        <my:editorContainer componentId="#{cc.attrs.componentId}"
-                            value="#{cc.attrs.value}"
-                            label="#{cc.attrs.label}"
-                            required="#{cc.attrs.required}">
-            <c:choose>
-                <c:when test="#{cc.attrs.readonly}">
-                    <p:outputLabel id="#{cc.attrs.componentId}" 
-                                   value="#{cc.attrs.value}"/>
-                </c:when>
-                <c:otherwise>
-                    <p:inputTextarea id="#{cc.attrs.componentId}"
-                                     value="#{cc.attrs.value}"
-                                     required="#{cc.attrs.required}"
-                                     readonly="#{cc.attrs.readonly}"
-                                     requiredMessage="#{msg['global.fields.required']}"
-                                     styleClass="#{not component.valid ? 'invalid' : ''}"
-                                     rows="#{cc.attrs.rows}"
-                                     cols="#{cc.attrs.cols}">
-                        <p:ajax event="blur"
-                                immediate="true"
-                                update="#{cc.attrs.componentId}Editor"/>
-                    </p:inputTextarea>
-                </c:otherwise>
-            </c:choose>
-        </my:editorContainer>
-    </composite:implementation>
+<composite:interface>
+    <composite:attribute name="componentId" required="true"/>
+    <composite:attribute name="value" required="true"/>
+    <composite:attribute name="label" required="true"/>
+    <composite:attribute name="required" required="false" default="false"/>
+    <composite:attribute name="readonly" required="false" default="false"/>
+    <composite:attribute name="rows" required="false" default="5"/>
+    <composite:attribute name="cols" required="false" default="25"/>
+</composite:interface>
+<composite:implementation>
+    <my:editorContainer componentId="#{cc.attrs.componentId}"
+                        value="#{cc.attrs.value}"
+                        label="#{cc.attrs.label}"
+                        required="#{cc.attrs.required}">
+        <c:choose>
+            <c:when test="#{cc.attrs.readonly}">
+                <p:outputLabel id="#{cc.attrs.componentId}"
+                               value="#{cc.attrs.value}"/>
+            </c:when>
+            <c:otherwise>
+                <p:inputTextarea id="#{cc.attrs.componentId}"
+                                 value="#{cc.attrs.value}"
+                                 required="#{cc.attrs.required}"
+                                 readonly="#{cc.attrs.readonly}"
+                                 requiredMessage="#{msg['global.fields.required']}"
+                                 styleClass="#{not component.valid ? 'invalid' : ''}"
+                                 rows="#{cc.attrs.rows}"
+                                 cols="#{cc.attrs.cols}">
+                    <p:ajax event="blur"
+                            immediate="true"
+                            update="#{cc.attrs.componentId}Editor"/>
+                </p:inputTextarea>
+            </c:otherwise>
+        </c:choose>
+    </my:editorContainer>
+</composite:implementation>
 </html>

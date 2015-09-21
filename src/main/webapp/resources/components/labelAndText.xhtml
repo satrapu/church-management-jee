@@ -18,19 +18,19 @@ limitations under the License.
       xmlns:composite="http://java.sun.com/jsf/composite"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
-    <composite:interface>
-        <composite:attribute name="componentId" required="true"/>
-        <composite:attribute name="value" required="true"/>
-        <composite:attribute name="label" required="true"/>
-    </composite:interface>
-    <composite:implementation>
-	<h:panelGrid id="#{cc.attrs.componentId}Display"
-                     columns="2">
-            <p:outputLabel id="#{cc.attrs.componentId}Label"
-                           value="#{cc.attrs.label}: "
-                           for="#{cc.attrs.componentId}"/>
-            <p:outputLabel id="#{cc.attrs.componentId}" 
-			   value="#{cc.attrs.value}"/>
-        </h:panelGrid>
-    </composite:implementation>
+<composite:interface>
+    <composite:attribute name="componentId" required="true"/>
+    <composite:attribute name="value" required="true"/>
+    <composite:attribute name="label" required="true"/>
+</composite:interface>
+<composite:implementation>
+    <h:panelGrid id="#{cc.attrs.componentId}Display"
+                 columns="2">
+        <p:outputLabel id="#{cc.attrs.componentId}Label"
+                       value="#{cc.attrs.label}: "
+                       for="#{cc.attrs.componentId}"/>
+        <p:outputLabel id="#{cc.attrs.componentId}"
+                       value="#{cc.attrs.value}"/>
+    </h:panelGrid>
+</composite:implementation>
 </html>
