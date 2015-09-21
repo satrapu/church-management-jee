@@ -15,29 +15,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <faces-config version="2.2"
-	      xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-	      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	      xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     <application id="churchmanagement">
-	<locale-config>
-	    <default-locale>en_US</default-locale>
-	    <supported-locale>ro_RO</supported-locale>
-	</locale-config>
-	<resource-bundle>
-	    <base-name>ro.satrapu.churchmanagement.ui.messages</base-name>
-	    <var>msg</var>
-	</resource-bundle>
-	<!-- 
-	    The message-bundle XML node is needed in order to localize JSF converters and validators messages.
-	-->
-	<message-bundle>ro.satrapu.churchmanagement.ui.messages</message-bundle>
-	<message-bundle>ValidationMessages</message-bundle>
+        <locale-config>
+            <default-locale>en_US</default-locale>
+            <supported-locale>ro_RO</supported-locale>
+        </locale-config>
+        <resource-bundle>
+            <base-name>ro.satrapu.churchmanagement.ui.messages</base-name>
+            <var>msg</var>
+        </resource-bundle>
+        <!--
+            The message-bundle XML node is needed in order to localize JSF converters and validators messages.
+        -->
+        <message-bundle>ro.satrapu.churchmanagement.ui.messages</message-bundle>
+        <message-bundle>ValidationMessages</message-bundle>
     </application>
     <lifecycle>
-	<!--
-	    The PageNavigationAwareFacesMessages phase listener needed to restore FacesMessage instances when navigating 
-	    from a page to another.
-	-->
-	<phase-listener>ro.satrapu.churchmanagement.ui.messages.PageNavigationAwareFacesMessages</phase-listener>
+        <!--
+            The PageNavigationAwareFacesMessages phase listener needed to restore FacesMessage instances when navigating
+            from a page to another.
+        -->
+        <phase-listener>ro.satrapu.churchmanagement.ui.messages.PageNavigationAwareFacesMessages</phase-listener>
     </lifecycle>
 </faces-config>

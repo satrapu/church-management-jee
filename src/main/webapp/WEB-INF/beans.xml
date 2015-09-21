@@ -20,6 +20,6 @@ limitations under the License.
        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
        bean-discovery-mode="all">
     <alternatives>
-	<class>ro.satrapu.churchmanagement.security.HardCodedUserAuthenticator</class>
+        <class>ro.satrapu.churchmanagement.security.HardCodedUserAuthenticator</class>
     </alternatives>
 </beans>
