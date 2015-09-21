@@ -19,60 +19,60 @@ limitations under the License.
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <meta http-equiv="Content-Type"
-              content="text/html; charset=UTF-8" />
-        <h:outputStylesheet name="main.css" 
-                            library="css"/>
-        <title>#{msg['application.title']}</title>
-    </h:head>
-    <h:body>
-        <f:view>
-            <p:panel styleClass="page">
-                <f:facet name="header">
-                    <p:outputPanel styleClass="header">
-			<a href="#{currentUser.homePageUrl}">
-			    #{msg['application.title']}
-			    #{applicationSettings.titleSuffix}
-			</a>
-                    </p:outputPanel>
-                </f:facet>
-                <f:facet name="footer">
-                    <p:outputPanel styleClass="footer">
-                        #{msg['application.poweredBy']}
-                    </p:outputPanel>
-                </f:facet>
-                <p:outputPanel styleClass="menu">
-                    <ui:include src="menu.xhtml"/>
+<h:head>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=UTF-8"/>
+    <h:outputStylesheet name="main.css"
+                        library="css"/>
+    <title>#{msg['application.title']}</title>
+</h:head>
+<h:body>
+    <f:view>
+        <p:panel styleClass="page">
+            <f:facet name="header">
+                <p:outputPanel styleClass="header">
+                    <a href="#{currentUser.homePageUrl}">
+                        #{msg['application.title']}
+                        #{applicationSettings.titleSuffix}
+                    </a>
                 </p:outputPanel>
-                <p:outputPanel styleClass="title">
-                    <ui:insert name="title"/>
-                    <hr/>
+            </f:facet>
+            <f:facet name="footer">
+                <p:outputPanel styleClass="footer">
+                    #{msg['application.poweredBy']}
                 </p:outputPanel>
-                <p:outputPanel styleClass="content">
-		    <p:outputPanel styleClass="messages">
-			<p:messages id="messages"
-				    globalOnly="true"
-				    showSummary="true"
-				    showDetail="false" />
-		    </p:outputPanel>
-		    <h:form id="form">
-			<ui:insert name="content"/>
-			<p:confirmDialog global="true"
-					 showEffect="fade"
-					 hideEffect="explode">
-			    <p:commandButton value="#{msg['global.actions.yes']}" 
-					     type="button" 
-					     styleClass="ui-confirmdialog-yes" 
-					     icon="ui-icon-check" />
-			    <p:commandButton value="#{msg['global.actions.no']}" 
-					     type="button" 
-					     styleClass="ui-confirmdialog-no" 
-					     icon="ui-icon-close" />
-			</p:confirmDialog>
-		    </h:form>
+            </f:facet>
+            <p:outputPanel styleClass="menu">
+                <ui:include src="menu.xhtml"/>
+            </p:outputPanel>
+            <p:outputPanel styleClass="title">
+                <ui:insert name="title"/>
+                <hr/>
+            </p:outputPanel>
+            <p:outputPanel styleClass="content">
+                <p:outputPanel styleClass="messages">
+                    <p:messages id="messages"
+                                globalOnly="true"
+                                showSummary="true"
+                                showDetail="false"/>
                 </p:outputPanel>
-            </p:panel>
-        </f:view>
-    </h:body>
+                <h:form id="form">
+                    <ui:insert name="content"/>
+                    <p:confirmDialog global="true"
+                                     showEffect="fade"
+                                     hideEffect="explode">
+                        <p:commandButton value="#{msg['global.actions.yes']}"
+                                         type="button"
+                                         styleClass="ui-confirmdialog-yes"
+                                         icon="ui-icon-check"/>
+                        <p:commandButton value="#{msg['global.actions.no']}"
+                                         type="button"
+                                         styleClass="ui-confirmdialog-no"
+                                         icon="ui-icon-close"/>
+                    </p:confirmDialog>
+                </h:form>
+            </p:outputPanel>
+        </p:panel>
+    </f:view>
+</h:body>
 </html>
