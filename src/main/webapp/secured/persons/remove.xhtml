@@ -18,49 +18,50 @@ limitations under the License.
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-		xmlns:my="http://java.sun.com/jsf/composite/components"
+                xmlns:my="http://java.sun.com/jsf/composite/components"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:define name="title">#{msg['pages.persons.remove.title']}</ui:define>
     <ui:define name="content">
         <f:metadata>
-            <f:viewParam name="id" 
+            <f:viewParam name="id"
                          value="#{personHome.id}"
                          converter="personIdConverter"/>
             <f:event type="preRenderView"
-                     listener="#{personHome.beginConversation}" />
+                     listener="#{personHome.beginConversation}"/>
         </f:metadata>
-	<h:panelGrid rendered="#{personHome.managed}"
-		     columns="1">
-	    <my:labelAndText componentId="id"
-			     label="#{msg['entities.person.fields.id']}"
-			     value="#{personHome.instance.id}"/>
-	    <my:labelAndText componentId="firstName"
-			     label="#{msg['entities.person.fields.firstName']}"
-			     value="#{personHome.instance.firstName}"/>
-	    <my:labelAndText componentId="middleName"
-			     label="#{msg['entities.person.fields.middleName']}"
-			     value="#{personHome.instance.middleName}"/>
-	    <my:labelAndText componentId="lastName"
-			     label="#{msg['entities.person.fields.lastName']}"
-			     value="#{personHome.instance.lastName}"/>
-	    <my:labelAndText componentId="emailAddress"
-			     label="#{msg['entities.person.fields.emailAddress']}"
-			     value="#{personHome.instance.emailAddress}"/>
-	</h:panelGrid>
-	<p:separator/>
-	<div class="actions">
-	    <p:commandButton action="#{personHome.remove}"
-			     value="#{msg['global.actions.remove']}"
-			     rendered="#{personHome.managed}">
-		<p:confirm header="#{msg['pages.persons.remove.confirmationDialog.title']}" 
-			   message="#{msg['pages.persons.remove.confirmationDialog.text']}" 
-			   icon="ui-icon-alert" />
-	    </p:commandButton>
-	    <p:commandButton action="#{personHome.cancel}"
-			     value="#{msg['global.actions.cancel']}"
-			     ajax="false"
-			     immediate="true"/>
-	</div>
+        <h:panelGrid rendered="#{personHome.managed}"
+                     columns="1">
+            <my:labelAndText componentId="id"
+                             label="#{msg['entities.person.fields.id']}"
+                             value="#{personHome.instance.id}"/>
+            <my:labelAndText componentId="firstName"
+                             label="#{msg['entities.person.fields.firstName']}"
+                             value="#{personHome.instance.firstName}"/>
+            <my:labelAndText componentId="middleName"
+                             label="#{msg['entities.person.fields.middleName']}"
+                             value="#{personHome.instance.middleName}"/>
+            <my:labelAndText componentId="lastName"
+                             label="#{msg['entities.person.fields.lastName']}"
+                             value="#{personHome.instance.lastName}"/>
+            <my:labelAndText componentId="emailAddress"
+                             label="#{msg['entities.person.fields.emailAddress']}"
+                             value="#{personHome.instance.emailAddress}"/>
+        </h:panelGrid>
+        <p:separator/>
+
+        <div class="actions">
+            <p:commandButton action="#{personHome.remove}"
+                             value="#{msg['global.actions.remove']}"
+                             rendered="#{personHome.managed}">
+                <p:confirm header="#{msg['pages.persons.remove.confirmationDialog.title']}"
+                           message="#{msg['pages.persons.remove.confirmationDialog.text']}"
+                           icon="ui-icon-alert"/>
+            </p:commandButton>
+            <p:commandButton action="#{personHome.cancel}"
+                             value="#{msg['global.actions.cancel']}"
+                             ajax="false"
+                             immediate="true"/>
+        </div>
     </ui:define>
 </ui:composition>
