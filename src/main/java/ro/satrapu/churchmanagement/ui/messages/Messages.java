@@ -26,7 +26,7 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 /**
- * Displays localized {@link FacesMessage} instances.
+ * Adds localized {@link FacesMessage} instances to the current JSF context.
  *
  * @author satrapu
  */
