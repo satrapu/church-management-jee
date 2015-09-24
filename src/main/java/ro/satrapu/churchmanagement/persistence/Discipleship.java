@@ -17,9 +17,7 @@ package ro.satrapu.churchmanagement.persistence;
 
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,8 +37,6 @@ import java.io.Serializable;
  */
 @Entity
 @Data
-@EqualsAndHashCode
-@ToString
 public class Discipleship implements Serializable {
     private static final long serialVersionUID = 1L;
 
