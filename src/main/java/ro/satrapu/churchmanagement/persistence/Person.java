@@ -18,9 +18,7 @@ package ro.satrapu.churchmanagement.persistence;
 
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Setter;
-import lombok.ToString;
 import ro.satrapu.churchmanagement.model.EmailAddress;
 import ro.satrapu.churchmanagement.model.NamePart;
 import ro.satrapu.churchmanagement.validation.Email;
@@ -46,8 +44,6 @@ import java.io.Serializable;
         @UniqueConstraint(columnNames = {"EmailAddress"}, name = "UK_Persons_EmailAddress")
 })
 @Data
-@EqualsAndHashCode
-@ToString
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
