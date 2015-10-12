@@ -10,7 +10,11 @@ import javax.inject.Inject;
 @Startup
 @Singleton
 public class ChurchManagementDatabaseInitializer {
-    private final int MAX_AMOUNT_OF_PERSONS_TO_GENERATE = 117;
+    /**
+     * The magic number {@value ChurchManagementDatabaseInitializer#MAX_AMOUNT_OF_PERSONS_TO_GENERATE} has been picked
+     * in order to have several pages of entities available inside the person search page.
+     */
+    private static final int MAX_AMOUNT_OF_PERSONS_TO_GENERATE = 117;
 
     @Inject
     private PersistenceService persistenceService;
