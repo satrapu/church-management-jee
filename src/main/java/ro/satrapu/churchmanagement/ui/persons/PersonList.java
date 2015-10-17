@@ -17,9 +17,10 @@ package ro.satrapu.churchmanagement.ui.persons;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
-import org.slf4j.Logger;
+import ro.satrapu.churchmanagement.persistence.PaginatedQuerySearchResult;
 import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
+import ro.satrapu.churchmanagement.persistence.queries.PersonQuery;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
@@ -30,39 +31,34 @@ import java.util.Map;
 
 /**
  * Displays a list of {@link Person} instances matching a given criteria.
- *
- * @author satrapu
  */
 @Model
-public class PersonList {
-    private final Class<Person> clazz;
-    private final Logger logger;
+public class PersonList extends LazyDataModel<Person> {
     private final PersistenceService persistenceService;
-    private LazyDataModel<Person> data;
 
     @Inject
-    public PersonList(@NotNull PersistenceService persistenceService, @NotNull Logger logger) {
+    public PersonList(@NotNull PersistenceService persistenceService) {
         this.persistenceService = persistenceService;
-        this.logger = logger;
-        clazz = Person.class;
     }
 
     @PostConstruct
     public void init() {
-        data = new LazyDataModel<Person>() {
-            @Override
-            public List<Person> load(int currentPageIndex, int recordsPerPage, String sortField, SortOrder sortOrder, Map<String, String> filters) {
-                logger.debug("Loading page #{} containing maximum {} instances of type {} ...", currentPageIndex + 1, recordsPerPage, clazz.getName());
-                return persistenceService.fetch(clazz, currentPageIndex, recordsPerPage);
-            }
-        };
+        PersonQuery personQuery = new PersonQuery();
+        long total = persistenceService.count(personQuery);
+        super.setRowCount(Long.valueOf(total).intValue());
+    }
 
-        long count = persistenceService.count(clazz);
-        logger.debug("Found {} records of type {}", count, clazz.getName());
-        data.setRowCount(new Long(count).intValue());
+    @Override
+    public List<Person> load(int firstResult, int maxResults, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+        PersonQuery personQuery = new PersonQuery();
+        PaginatedQuerySearchResult<Person> paginatedQuerySearchResult = persistenceService.fetch(personQuery, firstResult, maxResults);
+        super.setRowCount(Long.valueOf(paginatedQuerySearchResult.getTotalRecords()).intValue());
+
+        List<Person> result = paginatedQuerySearchResult.getRecords();
+        return result;
     }
 
     public LazyDataModel<Person> getData() {
-        return data;
+        return this;
     }
 }

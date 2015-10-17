@@ -20,7 +20,9 @@ limitations under the License.
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <ui:define name="title">#{msg['pages.persons.list.title']}</ui:define>
+    <ui:define name="title">
+        #{msg['pages.persons.list.title']}
+    </ui:define>
     <ui:define name="content">
         <p:outputLabel rendered="#{personList.data.rowCount == 0}"
                        value="#{msg['global.noRecords']}"/>
@@ -30,7 +32,7 @@ limitations under the License.
                      paginator="true"
                      paginatorPosition="top"
                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                     rowsPerPageTemplate="5,10,25,50,100"
+                     rowsPerPageTemplate="10, 25, 50, 100"
                      rows="25"
                      rowKey="#{person.id}"
                      lazy="true">
@@ -68,7 +70,6 @@ limitations under the License.
             </p:column>
         </p:dataTable>
         <p:separator/>
-
         <div class="actions">
             <p:commandButton action="edit"
                              value="#{msg['pages.persons.list.actions.add']}"
