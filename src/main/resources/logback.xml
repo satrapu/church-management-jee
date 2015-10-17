@@ -16,15 +16,15 @@
  * limitations under the License.
  */
 -->
-<configuration scan="true" 
+<configuration scan="true"
                scanPeriod="60 seconds">
-    <appender name="Console" 
+    <appender name="Console"
               class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%-5level %d{HH:mm:ss.SSS} %logger{0} %message%n</pattern>
         </encoder>
     </appender>
-    <appender name="Application" 
+    <appender name="Application"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/church-management/church-management.log</file>
         <append>true</append>
@@ -36,7 +36,7 @@
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
-    <logger name="ro.satrapu" 
+    <logger name="ro.satrapu"
             level="DEBUG"
             additivity="false">
         <appender-ref ref="Application"/>
