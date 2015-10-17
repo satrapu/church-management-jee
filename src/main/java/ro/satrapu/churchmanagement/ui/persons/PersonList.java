@@ -24,6 +24,7 @@ import ro.satrapu.churchmanagement.persistence.Person;
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
@@ -40,15 +41,7 @@ public class PersonList {
     private LazyDataModel<Person> data;
 
     @Inject
-    public PersonList(PersistenceService persistenceService,  Logger logger) {
-        if (persistenceService == null) {
-            throw new IllegalArgumentException("Persistence service is null");
-        }
-
-        if (logger == null) {
-            throw new IllegalArgumentException("Logger is null");
-        }
-
+    public PersonList(@NotNull PersistenceService persistenceService, @NotNull Logger logger) {
         this.persistenceService = persistenceService;
         this.logger = logger;
         clazz = Person.class;
