@@ -21,7 +21,9 @@ limitations under the License.
                 xmlns:my="http://java.sun.com/jsf/composite/components"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:define name="title">#{msg['pages.persons.remove.title']}</ui:define>
+    <ui:define name="title">
+        #{msg['pages.persons.remove.title']}
+    </ui:define>
     <ui:define name="content">
         <f:metadata>
             <f:viewParam name="id"
@@ -49,7 +51,6 @@ limitations under the License.
                              value="#{personHome.instance.emailAddress}"/>
         </h:panelGrid>
         <p:separator/>
-
         <div class="actions">
             <p:commandButton action="#{personHome.remove}"
                              value="#{msg['global.actions.remove']}"
