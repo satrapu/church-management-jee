@@ -90,7 +90,6 @@ public class PersonHome implements Serializable {
      * @return The entity identifier.
      */
     public Serializable getId() {
-
         return id;
     }
 
@@ -144,9 +143,9 @@ public class PersonHome implements Serializable {
         if (!isValid()) {
             messages.addError("global.fields.invalid");
         } else {
-            if (isManaged()) {
-                Person person = getInstance();
+            Person person = getInstance();
 
+            if (isManaged()) {
                 try {
                     logger.debug("Merging instance: {} ...", person);
                     persistenceService.merge(person);
@@ -157,8 +156,6 @@ public class PersonHome implements Serializable {
                     messages.addError("entities.person.actions.update.failure");
                 }
             } else {
-                Person person = getInstance();
-
                 try {
                     logger.debug("Persisting instance: {} ...", person);
                     persistenceService.persist(person);
@@ -173,10 +170,10 @@ public class PersonHome implements Serializable {
 
         if (hasErrors) {
             return null;
-        } else {
-            conversation.end();
-            return Urls.Secured.Persons.LIST;
         }
+
+        conversation.end();
+        return Urls.Secured.Persons.LIST;
     }
 
     /**
@@ -238,12 +235,12 @@ public class PersonHome implements Serializable {
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(getInstance());
 
         if (constraintViolations.size() > 0) {
+            result = false;
             StringBuilder sb = new StringBuilder();
 
             for (ConstraintViolation<Person> constraintViolation : constraintViolations) {
                 sb.append(MessageFormat.format("{0}: {1}{2}",
                         constraintViolation.getPropertyPath(), constraintViolation.getMessage(), System.lineSeparator()));
-                result = false;
             }
 
             logger.error("Encountered an invalid Person instance: {}{}", System.lineSeparator(), sb.toString());
