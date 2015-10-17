@@ -29,32 +29,20 @@ limitations under the License.
                                    immediate="true"/>
                 </p:menuitem>
             </p:submenu>
-	    <p:submenu label="#{msg['menu.persons.title']}"
+            <p:submenu label="#{msg['menu.persons.title']}"
                        rendered="#{currentUser.personsMenuVisible}">
                 <p:menuitem value="#{msg['menu.persons.list.title']}"
                             url="/secured/persons/list.xhtml"
                             rendered="#{currentUser.personListMenuVisible}"/>
-		<p:menuitem value="#{msg['menu.persons.add.title']}"
+                <p:menuitem value="#{msg['menu.persons.add.title']}"
                             url="/secured/persons/edit.xhtml"
                             rendered="#{currentUser.personAddMenuVisible}"/>
             </p:submenu>
-	    <p:submenu label="#{msg['menu.discipleship.title']}"
+            <p:submenu label="#{msg['menu.discipleship.title']}"
                        rendered="#{currentUser.discipleshipMenuVisible}">
-		<p:submenu label="#{msg['menu.discipleship.pairs.title']}"
-			   rendered="#{currentUser.discipleshipPairMenuVisible}">
-		    <p:menuitem value="#{msg['menu.discipleship.pairs.list.title']}"
-				url="/secured/discipleship/pairs/list.xhtml"
-				rendered="#{currentUser.discipleshipPairListMenuVisible}"/>
-		    <p:menuitem value="#{msg['menu.discipleship.pairs.add.title']}"
-				url="/secured/discipleship/pairs/edit.xhtml"
-				rendered="#{currentUser.discipleshipPairAddMenuVisible}"/>
-		</p:submenu>
-		<p:menuitem value="#{msg['menu.discipleship.availabilityAsTeachers.title']}"
-			    url="/secured/discipleship/availabilityAsTeachers.xhtml"
-			    rendered="#{currentUser.discipleshipAvailabilityAsTeachersMenuVisible}"/>
-		<p:menuitem value="#{msg['menu.discipleship.availabilityAsDisciples.title']}"
-			    url="/secured/discipleship/availabilityAsDisciples.xhtml"
-			    rendered="#{currentUser.discipleshipAvailabilityAsDisciplesMenuVisible}"/>
+                <p:menuitem value="#{msg['menu.discipleship.status.title']}"
+                            url="/secured/discipleship/status.xhtml"
+                            rendered="#{currentUser.discipleshipStatusMenuVisible}"/>
             </p:submenu>
         </p:menubar>
     </h:form>
