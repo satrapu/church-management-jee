@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ro.satrapu.churchmanagement.persistence.query;
+package ro.satrapu.churchmanagement.persistence;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
 /**
  * Represents an object used for querying a database.
  *
- * @param <T>
- * @author satrapu
+ * @param <T> The entity type to fetch.
  */
-public interface EntityQuery<T> {
-    List<T> list(EntityManager entityManager, Integer firstResult, Integer maxResults);
+public interface Query<T> {
+    /**
+     * Fetches all entities matching the underlying search criteria.
+     *
+     * @param entityManager
+     * @return
+     */
+    QuerySearchResult<T> getSearchResult(EntityManager entityManager);
 }
