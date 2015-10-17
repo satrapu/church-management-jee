@@ -24,11 +24,11 @@ limitations under the License.
         #{msg['pages.persons.list.title']}
     </ui:define>
     <ui:define name="content">
-        <p:outputLabel rendered="#{personList.data.rowCount == 0}"
+        <p:outputLabel rendered="#{personList.rowCount == 0}"
                        value="#{msg['global.noRecords']}"/>
-        <p:dataTable value="#{personList.data}"
+        <p:dataTable value="#{personList}"
                      var="person"
-                     rendered="#{personList.data.rowCount > 0}"
+                     rendered="#{personList.rowCount > 0}"
                      paginator="true"
                      paginatorPosition="top"
                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -50,22 +50,32 @@ limitations under the License.
                     </h:link>
                 </div>
             </p:column>
-            <p:column headerText="#{msg['entities.person.fields.id']}">
+            <p:column headerText="#{msg['entities.person.fields.id']}"
+                      filterBy="id"
+                      sortBy="id">
                 <h:outputText value="#{person.id}"/>
             </p:column>
             <p:column headerText="#{msg['entities.fields.version']}">
                 <h:outputText value="#{person.version}"/>
             </p:column>
-            <p:column headerText="#{msg['entities.person.fields.firstName']}">
+            <p:column headerText="#{msg['entities.person.fields.firstName']}"
+                      filterBy="firstName"
+                      sortBy="firstName">
                 <h:outputText value="#{person.firstName}"/>
             </p:column>
-            <p:column headerText="#{msg['entities.person.fields.middleName']}">
+            <p:column headerText="#{msg['entities.person.fields.middleName']}"
+                      filterBy="middleName"
+                      sortBy="middleName">
                 <h:outputText value="#{person.middleName}"/>
             </p:column>
-            <p:column headerText="#{msg['entities.person.fields.lastName']}">
+            <p:column headerText="#{msg['entities.person.fields.lastName']}"
+                      filterBy="lastName"
+                      sortBy="lastName">
                 <h:outputText value="#{person.lastName}"/>
             </p:column>
-            <p:column headerText="#{msg['entities.person.fields.emailAddress']}">
+            <p:column headerText="#{msg['entities.person.fields.emailAddress']}"
+                      filterBy="emailAddress"
+                      sortBy="emailAddress">
                 <h:outputText value="#{person.emailAddress}"/>
             </p:column>
         </p:dataTable>
