@@ -24,11 +24,11 @@ limitations under the License.
         #{msg['pages.persons.list.title']}
     </ui:define>
     <ui:define name="content">
-        <p:outputLabel rendered="#{personList.rowCount == 0}"
+        <p:outputLabel rendered="#{personList.dataModel.rowCount == 0}"
                        value="#{msg['global.noRecords']}"/>
-        <p:dataTable value="#{personList}"
+        <p:dataTable value="#{personList.dataModel}"
                      var="person"
-                     rendered="#{personList.rowCount > 0}"
+                     rendered="#{personList.dataModel.rowCount > 0}"
                      paginator="true"
                      paginatorPosition="top"
                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"

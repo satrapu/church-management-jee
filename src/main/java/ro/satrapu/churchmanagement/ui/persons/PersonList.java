@@ -24,9 +24,11 @@ import ro.satrapu.churchmanagement.persistence.Person;
 import ro.satrapu.churchmanagement.persistence.queries.PersonQuery;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Model;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,14 +36,17 @@ import java.util.Map;
 /**
  * Displays a list of {@link Person} instances matching a given criteria.
  */
-@Model
-public class PersonList extends LazyDataModel<Person> {
+@Named
+@ViewScoped
+public class PersonList implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final String KEY_ID = "id";
     private static final String KEY_FIRST_NAME = "firstName";
     private static final String KEY_MIDDLE_NAME = "middleName";
     private static final String KEY_LAST_NAME = "lastName";
     private static final String KEY_EMAIL_ADDRESS = "emailAddress";
     private final PersistenceService persistenceService;
+    private LazyDataModel<Person> dataModel;
 
     @Inject
     public PersonList(@NotNull PersistenceService persistenceService) {
@@ -50,39 +55,52 @@ public class PersonList extends LazyDataModel<Person> {
 
     @PostConstruct
     public void init() {
-        // satrapu - 2015-10-17: ensure the load method will be called
-        super.setRowCount(1);
+        dataModel = new LazyDataModel<Person>() {
+            @Override
+            public List<Person> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+                PersonQuery personQuery = getQuery(sortField, sortOrder, filters);
+                PaginatedQuerySearchResult<Person> paginatedQuerySearchResult = persistenceService.fetch(personQuery, first, pageSize);
+
+                List<Person> result = paginatedQuerySearchResult.getRecords();
+                return result;
+            }
+        };
+
+        PersonQuery personQuery = getQuery(null, null, null);
+        long count = persistenceService.count(personQuery);
+        dataModel.setRowCount(Long.valueOf(count).intValue());
     }
 
-    @Override
-    public List<Person> load(int firstResult, int maxResults, String sortField, SortOrder sortOrder, Map<String, String> filters) {
-        PersonQuery personQuery = getQuery(sortField, sortOrder, filters);
-        PaginatedQuerySearchResult<Person> paginatedQuerySearchResult = persistenceService.fetch(personQuery, firstResult, maxResults);
-        super.setRowCount(Long.valueOf(paginatedQuerySearchResult.getTotalRecords()).intValue());
-
-        List<Person> result = paginatedQuerySearchResult.getRecords();
-        return result;
+    public LazyDataModel<Person> getDataModel() {
+        return dataModel;
     }
 
     private PersonQuery getQuery(String sortField, SortOrder sortOrder, Map<String, String> filters) {
         PersonQuery result = new PersonQuery();
 
         if (!StringExtensions.isNullOrWhitespace(sortField)) {
+            result.setSortAscending(sortOrder == SortOrder.ASCENDING);
+
             switch (sortField) {
                 case KEY_EMAIL_ADDRESS:
+                    result.setSortByField(PersonQuery.Fields.EMAIL_ADDRESS);
                     break;
                 case KEY_ID:
+                    result.setSortByField(PersonQuery.Fields.ID);
                     break;
                 case KEY_FIRST_NAME:
+                    result.setSortByField(PersonQuery.Fields.FIRST_NAME);
                     break;
                 case KEY_LAST_NAME:
+                    result.setSortByField(PersonQuery.Fields.LAST_NAME);
                     break;
                 case KEY_MIDDLE_NAME:
+                    result.setSortByField(PersonQuery.Fields.MIDDLE_NAME);
                     break;
             }
         }
 
-        if (filters != null && filters.size() > 0) {
+        if (filters != null) {
             for (Iterator<Map.Entry<String, String>> iterator = filters.entrySet().iterator(); iterator.hasNext(); ) {
                 Map.Entry<String, String> entry = iterator.next();
 
