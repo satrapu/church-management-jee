@@ -157,7 +157,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <!--
+                    Using v2.5.1 to avoid Java 8 & Hibernate JPA Meta-model related compile error - see http://stackoverflow.com/a/31891307
+                -->
+                <version>2.5.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
