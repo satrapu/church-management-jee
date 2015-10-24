@@ -51,31 +51,31 @@ limitations under the License.
                 </div>
             </p:column>
             <p:column headerText="#{msg['entities.person.fields.id']}"
-                      filterBy="id"
-                      sortBy="id">
+                      filterBy="#{person.id}"
+                      sortBy="#{person.id}">
                 <h:outputText value="#{person.id}"/>
             </p:column>
             <p:column headerText="#{msg['entities.fields.version']}">
                 <h:outputText value="#{person.version}"/>
             </p:column>
             <p:column headerText="#{msg['entities.person.fields.firstName']}"
-                      filterBy="firstName"
-                      sortBy="firstName">
+                      filterBy="#{person.firstName}"
+                      sortBy="#{person.firstName}">
                 <h:outputText value="#{person.firstName}"/>
             </p:column>
             <p:column headerText="#{msg['entities.person.fields.middleName']}"
-                      filterBy="middleName"
-                      sortBy="middleName">
+                      filterBy="#{person.middleName}"
+                      sortBy="#{person.middleName}">
                 <h:outputText value="#{person.middleName}"/>
             </p:column>
             <p:column headerText="#{msg['entities.person.fields.lastName']}"
-                      filterBy="lastName"
-                      sortBy="lastName">
+                      filterBy="#{person.lastName}"
+                      sortBy="#{person.lastName}">
                 <h:outputText value="#{person.lastName}"/>
             </p:column>
             <p:column headerText="#{msg['entities.person.fields.emailAddress']}"
-                      filterBy="emailAddress"
-                      sortBy="emailAddress">
+                      filterBy="#{person.emailAddress}"
+                      sortBy="#{person.emailAddress}">
                 <h:outputText value="#{person.emailAddress}"/>
             </p:column>
         </p:dataTable>

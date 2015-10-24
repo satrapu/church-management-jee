@@ -57,7 +57,7 @@ public class PersonList implements Serializable {
     public void init() {
         dataModel = new LazyDataModel<Person>() {
             @Override
-            public List<Person> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+            public List<Person> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
                 PersonQuery personQuery = getQuery(sortField, sortOrder, filters);
                 PaginatedQuerySearchResult<Person> paginatedQuerySearchResult = persistenceService.fetch(personQuery, first, pageSize);
 
@@ -75,7 +75,7 @@ public class PersonList implements Serializable {
         return dataModel;
     }
 
-    private PersonQuery getQuery(String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    private PersonQuery getQuery(String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         PersonQuery result = new PersonQuery();
 
         if (!StringExtensions.isNullOrWhitespace(sortField)) {
@@ -101,24 +101,24 @@ public class PersonList implements Serializable {
         }
 
         if (filters != null) {
-            for (Iterator<Map.Entry<String, String>> iterator = filters.entrySet().iterator(); iterator.hasNext(); ) {
-                Map.Entry<String, String> entry = iterator.next();
+            for (Iterator<Map.Entry<String, Object>> iterator = filters.entrySet().iterator(); iterator.hasNext(); ) {
+                Map.Entry<String, Object> entry = iterator.next();
 
                 switch (entry.getKey()) {
                     case KEY_EMAIL_ADDRESS:
-                        result.setEmailAddressNamePattern(entry.getValue());
+                        result.setEmailAddressNamePattern(entry.getValue().toString());
                         break;
                     case KEY_ID:
-                        result.setId(Integer.parseInt(entry.getValue()));
+                        result.setId(Integer.parseInt(entry.getValue().toString()));
                         break;
                     case KEY_FIRST_NAME:
-                        result.setFirstNamePattern(entry.getValue());
+                        result.setFirstNamePattern(entry.getValue().toString());
                         break;
                     case KEY_LAST_NAME:
-                        result.setLastNamePattern(entry.getValue());
+                        result.setLastNamePattern(entry.getValue().toString());
                         break;
                     case KEY_MIDDLE_NAME:
-                        result.setMiddleNamePattern(entry.getValue());
+                        result.setMiddleNamePattern(entry.getValue().toString());
                         break;
                 }
             }
