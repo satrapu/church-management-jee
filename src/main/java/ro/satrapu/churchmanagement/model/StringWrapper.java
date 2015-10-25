@@ -26,5 +26,5 @@ public interface StringWrapper {
      *
      * @return
      */
-    public String getValue();
+     String getValue();
 }
