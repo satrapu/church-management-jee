@@ -29,5 +29,5 @@ public interface Query<T> {
      * @param entityManager
      * @return
      */
-    QuerySearchResult<T> getSearchResult(EntityManager entityManager);
+    QuerySearchResult<T> getSearchResult(EntityManager entityManager, Integer firstResult, Integer maxResults);
 }

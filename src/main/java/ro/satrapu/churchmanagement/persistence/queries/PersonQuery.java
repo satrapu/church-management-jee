@@ -3,10 +3,9 @@ package ro.satrapu.churchmanagement.persistence.queries;
 import lombok.Data;
 import ro.satrapu.churchmanagement.model.text.StringExtensions;
 import ro.satrapu.churchmanagement.persistence.CountQuery;
-import ro.satrapu.churchmanagement.persistence.PaginatedQuery;
-import ro.satrapu.churchmanagement.persistence.PaginatedQuerySearchResult;
 import ro.satrapu.churchmanagement.persistence.Person;
 import ro.satrapu.churchmanagement.persistence.Person_;
+import ro.satrapu.churchmanagement.persistence.Query;
 import ro.satrapu.churchmanagement.persistence.QuerySearchResult;
 
 import javax.persistence.EntityManager;
@@ -25,7 +24,7 @@ import java.util.List;
  * Represents an object used for querying a database for entities of type {@link Person}.
  */
 @Data
-public class PersonQuery implements PaginatedQuery<Person>, CountQuery {
+public class PersonQuery implements Query<Person>, CountQuery {
     private Integer id;
     private String firstNamePattern;
     private String middleNamePattern;
@@ -39,24 +38,9 @@ public class PersonQuery implements PaginatedQuery<Person>, CountQuery {
      * @return
      */
     @Override
-    public QuerySearchResult<Person> getSearchResult(EntityManager entityManager) {
-        List<Person> persons = fetchPersons(entityManager, null, null);
+    public QuerySearchResult<Person> getSearchResult(EntityManager entityManager, Integer firstResult, Integer maxResults) {
+        List<Person> persons = fetchPersons(entityManager, firstResult, maxResults);
         QuerySearchResult<Person> result = new QuerySearchResult<>(persons);
-        return result;
-    }
-
-    /**
-     * @param entityManager
-     * @param firstResult
-     * @param maxResults
-     * @return
-     */
-    @Override
-    public PaginatedQuerySearchResult<Person> getSearchResult(EntityManager entityManager, Integer firstResult, Integer maxResults) {
-        List<Person> resultList = fetchPersons(entityManager, firstResult, maxResults);
-        long totalCount = countPersons(entityManager);
-
-        PaginatedQuerySearchResult<Person> result = new PaginatedQuerySearchResult<>(resultList, totalCount);
         return result;
     }
 

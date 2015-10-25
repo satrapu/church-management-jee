@@ -18,9 +18,9 @@ package ro.satrapu.churchmanagement.ui.persons;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 import ro.satrapu.churchmanagement.model.text.StringExtensions;
-import ro.satrapu.churchmanagement.persistence.PaginatedQuerySearchResult;
 import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
+import ro.satrapu.churchmanagement.persistence.QuerySearchResult;
 import ro.satrapu.churchmanagement.persistence.queries.PersonQuery;
 
 import javax.annotation.PostConstruct;
@@ -59,9 +59,9 @@ public class PersonList implements Serializable {
             @Override
             public List<Person> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
                 PersonQuery personQuery = getQuery(sortField, sortOrder, filters);
-                PaginatedQuerySearchResult<Person> paginatedQuerySearchResult = persistenceService.fetch(personQuery, first, pageSize);
+                QuerySearchResult<Person> querySearchResult = persistenceService.fetch(personQuery, first, pageSize);
 
-                List<Person> result = paginatedQuerySearchResult.getRecords();
+                List<Person> result = querySearchResult.getRecords();
                 return result;
             }
         };

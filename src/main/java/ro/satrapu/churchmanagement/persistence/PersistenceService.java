@@ -171,21 +171,12 @@ public class PersistenceService implements Serializable {
         return entity;
     }
 
-    public <T> PaginatedQuerySearchResult<T> fetch(PaginatedQuery<T> entityQuery, Integer firstResult, Integer maxResults) {
+   public <T> QuerySearchResult<T> fetch(Query<T> entityQuery, Integer firsResult, Integer maxResults) {
         if (entityQuery == null) {
             throw new IllegalArgumentException("Cannot fetch entities using null as query");
         }
 
-        PaginatedQuerySearchResult<T> result = entityQuery.getSearchResult(entityManager, firstResult, maxResults);
-        return result;
-    }
-
-    public <T> QuerySearchResult<T> fetch(Query<T> entityQuery) {
-        if (entityQuery == null) {
-            throw new IllegalArgumentException("Cannot fetch entities using null as query");
-        }
-
-        QuerySearchResult<T> result = entityQuery.getSearchResult(entityManager);
+        QuerySearchResult<T> result = entityQuery.getSearchResult(entityManager, firsResult, maxResults);
         return result;
     }
 
