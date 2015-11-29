@@ -40,9 +40,7 @@ import java.io.Serializable;
  * @author satrapu
  */
 @Entity
-@Table(name = "Persons", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"EmailAddress"}, name = "UK_Persons_EmailAddress")
-})
+@Table(name = "Persons")
 @Data
 public class Person implements Serializable {
 
@@ -71,7 +69,7 @@ public class Person implements Serializable {
     private String lastName;
 
     @NotNull
-    @Column(name = "EmailAddress", nullable = false, length = EmailAddress.MAX_LENGTH)
+    @Column(name = "EmailAddress", nullable = false, length = EmailAddress.MAX_LENGTH, unique = true)
     @Email
     private String emailAddress;
 }
