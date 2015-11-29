@@ -16,10 +16,23 @@
 package ro.satrapu.churchmanagement.persistence;
 
 /**
+ * Shows the interest of a person in discipleship.
+ *
  * @author satrapu
  */
 public enum DiscipleshipStatus {
+    /**
+     * Not interested in discipleship.
+     */
     NOT_INTERESTED,
+
+    /**
+     * Interested in serving as a disciple.
+     */
     DISCIPLESHIP_CANDIDATE,
+
+    /**
+     * Interested in serving as a discipleship teacher.
+     */
     TEACHING_CANDIDATE;
 }
