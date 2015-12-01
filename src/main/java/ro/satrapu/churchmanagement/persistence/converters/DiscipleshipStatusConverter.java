@@ -26,14 +26,14 @@ public class DiscipleshipStatusConverter implements AttributeConverter<Disciples
     @Override
     public String convertToDatabaseColumn(DiscipleshipStatus enumValue) {
         switch (enumValue) {
-            case DISCIPLESHIP_CANDIDATE:
+            case DISCIPLE_CANDIDATE:
                 return "D";
             case NOT_INTERESTED:
                 return "N";
             case TEACHING_CANDIDATE:
                 return "T";
             default:
-                throw new IllegalArgumentException("Unknown " + enumValue);
+                throw new IllegalArgumentException(String.format("Encountered an unknown discipleship status enumeration value: %s", enumValue));
         }
     }
 
@@ -41,13 +41,13 @@ public class DiscipleshipStatusConverter implements AttributeConverter<Disciples
     public DiscipleshipStatus convertToEntityAttribute(String databaseValue) {
         switch (databaseValue) {
             case "D":
-                return DiscipleshipStatus.DISCIPLESHIP_CANDIDATE;
+                return DiscipleshipStatus.DISCIPLE_CANDIDATE;
             case "N":
                 return DiscipleshipStatus.NOT_INTERESTED;
             case "T":
                 return DiscipleshipStatus.TEACHING_CANDIDATE;
             default:
-                throw new IllegalArgumentException("Unknown " + databaseValue);
+                throw new IllegalArgumentException(String.format("Encountered an unknown discipleship status value inside database: %s", databaseValue));
         }
     }
 }

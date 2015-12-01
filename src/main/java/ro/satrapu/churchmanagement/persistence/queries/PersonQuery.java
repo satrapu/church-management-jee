@@ -142,6 +142,9 @@ public class PersonQuery implements Query<Person>, CountQuery {
         Expression<?> sortExpression;
 
         switch (sortByField) {
+            case DISCIPLESHIP_STATUS:
+                sortExpression = root.get(Person_.discipleshipStatus);
+                break;
             case EMAIL_ADDRESS:
                 sortExpression = root.get(Person_.emailAddress);
                 break;
@@ -172,6 +175,7 @@ public class PersonQuery implements Query<Person>, CountQuery {
 
     public enum Fields {
         ID("id"),
+        DISCIPLESHIP_STATUS("discipleshipStatus"),
         FIRST_NAME("firstName"),
         MIDDLE_NAME("middleName"),
         LAST_NAME("lastName"),

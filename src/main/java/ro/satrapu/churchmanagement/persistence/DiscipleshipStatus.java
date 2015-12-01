@@ -29,7 +29,7 @@ public enum DiscipleshipStatus {
     /**
      * Interested in serving as a disciple.
      */
-    DISCIPLESHIP_CANDIDATE,
+    DISCIPLE_CANDIDATE,
 
     /**
      * Interested in serving as a discipleship teacher.

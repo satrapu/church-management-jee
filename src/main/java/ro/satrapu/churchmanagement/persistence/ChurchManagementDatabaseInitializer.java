@@ -6,7 +6,14 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
+/**
+ * Initializes the underlying database with a number of entities.
+ */
 @Startup
 @Singleton
 public class ChurchManagementDatabaseInitializer {
@@ -22,15 +29,19 @@ public class ChurchManagementDatabaseInitializer {
     @PostConstruct
     public void initializeDatabase() {
         Fairy fairy = Fairy.create();
-
         generatePersons(fairy, MAX_AMOUNT_OF_PERSONS_TO_GENERATE);
     }
 
     private void generatePersons(Fairy fairy, int maxAmount) {
+        List<DiscipleshipStatus> discipleshipStatuses = Collections.unmodifiableList(Arrays.asList(DiscipleshipStatus.values()));
+        int limit = discipleshipStatuses.size();
+        Random random = new Random();
+
         for (int i = 0; i < maxAmount; i++) {
             io.codearte.jfairy.producer.person.Person generatedPerson = fairy.person();
 
             Person person = new Person();
+            person.setDiscipleshipStatus(discipleshipStatuses.get(random.nextInt(limit) % limit));
             person.setFirstName(generatedPerson.firstName());
             person.setMiddleName(generatedPerson.middleName());
             person.setLastName(generatedPerson.lastName());

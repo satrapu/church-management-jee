@@ -78,6 +78,12 @@ limitations under the License.
                       sortBy="#{person.emailAddress}">
                 <h:outputText value="#{person.emailAddress}"/>
             </p:column>
+            <p:column headerText="#{msg['entities.person.fields.discipleshipStatus']}"
+                      filterBy="#{person.discipleshipStatus}"
+                      sortBy="#{person.discipleshipStatus}">
+                <h:outputText value="#{person.discipleshipStatus}"
+                              converter="#{discipleshipStatusConverter}"/>
+            </p:column>
         </p:dataTable>
         <p:separator/>
         <div class="actions">
