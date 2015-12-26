@@ -12,7 +12,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 
 /**
- * CDI qualifier used for producing {@link EntityManager} instances.
+ * CDI qualifier used for producing {@link EntityManager} instances pointing to the database storing
+ * all entities used by the <b>Church Management</b> application.
  *
  * @author satrapu
  */
