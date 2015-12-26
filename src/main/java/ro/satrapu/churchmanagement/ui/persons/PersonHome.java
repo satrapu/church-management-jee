@@ -16,6 +16,7 @@
 package ro.satrapu.churchmanagement.ui.persons;
 
 import org.slf4j.Logger;
+import ro.satrapu.churchmanagement.persistence.DiscipleshipStatus;
 import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
 import ro.satrapu.churchmanagement.ui.Urls;
@@ -26,11 +27,14 @@ import javax.enterprise.context.ConversationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.MessageFormat;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -46,6 +50,8 @@ import java.util.Set;
 public class PersonHome implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final Class<Person> entityClass = Person.class;
+    private static Map<String, String> discipleshipStatusValues;
     private PersistenceService persistenceService;
     private Conversation conversation;
     private Messages messages;
@@ -55,6 +61,7 @@ public class PersonHome implements Serializable {
     private Person instance;
 
     @Inject
+    @Valid
     public PersonHome(@NotNull PersistenceService persistenceService,
                       @NotNull Conversation conversation,
                       @NotNull Messages messages,
@@ -65,6 +72,11 @@ public class PersonHome implements Serializable {
         this.messages = messages;
         this.logger = logger;
         this.validatorFactory = validatorFactory;
+
+        discipleshipStatusValues = new LinkedHashMap<>();
+        discipleshipStatusValues.put(messages.getMessageFor("enumerations.DiscipleshipStatus.DISCIPLE_CANDIDATE"), DiscipleshipStatus.DISCIPLE_CANDIDATE.toString());
+        discipleshipStatusValues.put(messages.getMessageFor("enumerations.DiscipleshipStatus.NOT_INTERESTED"), DiscipleshipStatus.NOT_INTERESTED.toString());
+        discipleshipStatusValues.put(messages.getMessageFor("enumerations.DiscipleshipStatus.TEACHING_CANDIDATE"), DiscipleshipStatus.TEACHING_CANDIDATE.toString());
     }
 
     /**
@@ -74,7 +86,9 @@ public class PersonHome implements Serializable {
      */
     public Person getInstance() {
         if (instance == null) {
-            if (id != null) {
+            Serializable entityId = getId();
+
+            if (entityId != null) {
                 instance = loadInstance();
             } else {
                 instance = createInstance();
@@ -99,7 +113,19 @@ public class PersonHome implements Serializable {
      * @param id The identifier to set.
      */
     public void setId(Serializable id) {
+        logger.debug("Old entity id: {}", this.id);
         this.id = id;
+        logger.debug("Entity id has been set to: {}", this.id);
+
+    }
+
+    /**
+     * Gets all available {@link DiscipleshipStatus} values a user may choose from when editing a {@link Person} instance.
+     *
+     * @return All available {@link DiscipleshipStatus} enumeration.
+     */
+    public Map<String, String> getDiscipleshipStatusValues() {
+        return discipleshipStatusValues;
     }
 
     /**
@@ -108,9 +134,11 @@ public class PersonHome implements Serializable {
      * @return the {@link Person} entity
      */
     public Person loadInstance() {
-        Class<Person> clazz = Person.class;
-        logger.debug("Loading instance of type {} using id {} ...", clazz.getName(), id);
-        return persistenceService.fetch(clazz, id);
+        logger.debug("Loading entity using id: {} ...", id);
+        Person existingEntity = persistenceService.fetch(entityClass, id);
+        logger.debug("An existing entity with id: {} has been loaded", id);
+
+        return existingEntity;
     }
 
     /**
@@ -119,17 +147,21 @@ public class PersonHome implements Serializable {
      * @return A new entity.
      */
     public Person createInstance() {
-        logger.debug("Creating entity of type {} ...", Person.class.getName());
-        return new Person();
+        logger.debug("Creating a new entity ...");
+        Person newEntity = new Person();
+        logger.debug("A new entity has been created");
+
+        return newEntity;
     }
 
     /**
-     * Gets whether the current entity is managed or not.
+     * Gets whether the current entity has a persistent identity (i.e. represents a new entity) or not.
+     * See more <a href="http://stackoverflow.com/a/2780067">here</a>.
      *
-     * @return True, if the entity is managed; false, otherwise.
+     * @return True, if the entity has a persistent identity; false, otherwise.
      */
-    public boolean isManaged() {
-        return getInstance().getId() != null;
+    public boolean isNew() {
+        return getInstance().getId() == null;
     }
 
     /**
@@ -138,42 +170,46 @@ public class PersonHome implements Serializable {
      * @return The operation outcome, if successful; null, otherwise.
      */
     public String save() {
-        boolean hasErrors = true;
+        logger.debug("Saving entity ...");
+        boolean wasEntitySaved = false;
 
         if (!isValid()) {
+            logger.warn("Encountered an invalid entity, aborting save operation");
             messages.addError("global.fields.invalid");
-        } else {
-            Person person = getInstance();
-
-            if (isManaged()) {
-                try {
-                    logger.debug("Merging instance: {} ...", person);
-                    persistenceService.merge(person);
-                    messages.addInfo("entities.person.actions.update.success");
-                    hasErrors = false;
-                } catch (Exception e) {
-                    logger.error("Could not merge instance", e);
-                    messages.addError("entities.person.actions.update.failure");
-                }
-            } else {
-                try {
-                    logger.debug("Persisting instance: {} ...", person);
-                    persistenceService.persist(person);
-                    messages.addInfo("entities.person.actions.save.success");
-                    hasErrors = false;
-                } catch (Exception e) {
-                    logger.error("Could not persist instance", e);
-                    messages.addError("entities.person.actions.save.failure");
-                }
-            }
-        }
-
-        if (hasErrors) {
             return null;
         }
 
-        conversation.end();
-        return Urls.Secured.Persons.LIST;
+        Person person = getInstance();
+
+        if (isNew()) {
+            try {
+                person = persistenceService.persist(person);
+                messages.addInfo("entities.person.actions.save.success");
+                wasEntitySaved = true;
+            } catch (Exception e) {
+                logger.error("Could not persist entity", e);
+                messages.addError("entities.person.actions.save.failure");
+            }
+        } else {
+            try {
+                person = persistenceService.merge(person);
+                messages.addInfo("entities.person.actions.update.success");
+                wasEntitySaved = true;
+            } catch (Exception e) {
+                logger.error("Could not merge entity", e);
+                messages.addError("entities.person.actions.update.failure");
+            }
+        }
+
+        if (wasEntitySaved) {
+            conversation.end();
+            logger.info("Entity with id: {} was saved", person.getId());
+
+            return Urls.Secured.Persons.LIST;
+        }
+
+        logger.warn("Entity with id: {} was not saved", person.getId());
+        return null;
     }
 
     /**
@@ -182,8 +218,12 @@ public class PersonHome implements Serializable {
      * @return The operation outcome.
      */
     public String cancel() {
-        logger.debug("Cancelling editing instance ...");
+        Serializable entityId = getId();
+        String conversationId = conversation.getId();
+
         conversation.end();
+        logger.info("Editing entity with id: {} has been cancelled and conversation with id: {} has ended", entityId, conversationId);
+
         return Urls.Secured.Persons.LIST;
     }
 
@@ -193,7 +233,7 @@ public class PersonHome implements Serializable {
     public void beginConversation() {
         if (conversation.isTransient()) {
             conversation.begin();
-            logger.debug("Starting conversation with id: {}", conversation.getId());
+            logger.debug("Conversation with id: {} has begun", conversation.getId());
         }
     }
 
@@ -203,24 +243,28 @@ public class PersonHome implements Serializable {
      * @return The operation outcome, if successful; null, otherwise.
      */
     public String remove() {
-        boolean hasErrors = true;
-        Person person = getInstance();
-        logger.debug("Removing instance: {} ...", person);
+        Serializable entityId = getId();
+        logger.debug("Removing entity with id: {} ...", entityId);
+        boolean wasEntityRemoved = false;
 
         try {
+            Person person = getInstance();
             persistenceService.remove(person);
             messages.addInfo("entities.person.actions.remove.success");
-            hasErrors = false;
+            wasEntityRemoved = true;
         } catch (Exception e) {
             logger.error("Could not remove instance", e);
             messages.addError("entities.person.actions.remove.failure");
         }
 
-        if (!hasErrors) {
+        if (wasEntityRemoved) {
             conversation.end();
+            logger.info("Entity with id: {} was removed", entityId);
+
             return Urls.Secured.Persons.LIST;
         }
 
+        logger.warn("Entity with id: {} was not removed", entityId);
         return null;
     }
 
@@ -239,11 +283,11 @@ public class PersonHome implements Serializable {
             StringBuilder sb = new StringBuilder();
 
             for (ConstraintViolation<Person> constraintViolation : constraintViolations) {
-                sb.append(MessageFormat.format("{0}: {1}{2}",
+                sb.append(MessageFormat.format("\t\t{0}: {1}{2}",
                         constraintViolation.getPropertyPath(), constraintViolation.getMessage(), System.lineSeparator()));
             }
 
-            logger.error("Encountered an invalid Person instance: {}{}", System.lineSeparator(), sb.toString());
+            logger.warn("Encountered constraint violations ... {}{}", System.lineSeparator(), sb.toString());
         }
 
         return result;
