@@ -30,24 +30,23 @@ public class LoggerProducer {
     /**
      * Creates a new {@link Logger} instance for the given {@link InjectionPoint} instance.
      *
-     * @param injectionPoint
-     * @return A new {@link Logger} instance.
+     * @param injectionPoint The injection point where to inject a {@link Logger} instance
+     * @return A {@link Logger} instance.
      */
     @Produces
-    public static Logger produce(InjectionPoint injectionPoint) {
+    public static Logger getLoggerFor(InjectionPoint injectionPoint) {
         Class<?> declaringClass = injectionPoint.getMember().getDeclaringClass();
-        Logger logger = produce(declaringClass);
-        return logger;
+        Logger result = getLoggerFor(declaringClass);
+        return result;
     }
 
     /**
      * Creates a new {@link Logger} instance for the given {@link Class} instance.
      *
-     * @param clazz
-     * @return A new {@link Logger} instance.
+     * @param clazz The class for which to produce a {@link Logger} instance
+     * @return A {@link Logger} instance.
      */
-    public static Logger produce(Class<?> clazz) {
-        Logger logger = LoggerFactory.getLogger(clazz);
-        return logger;
+    public static Logger getLoggerFor(Class<?> clazz) {
+        return LoggerFactory.getLogger(clazz);
     }
 }
