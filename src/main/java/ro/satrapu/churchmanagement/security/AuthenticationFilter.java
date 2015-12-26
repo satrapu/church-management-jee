@@ -27,6 +27,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 /**
@@ -40,7 +42,8 @@ public class AuthenticationFilter implements Filter {
     private CurrentUser currentUser;
 
     @Inject
-    public AuthenticationFilter(CurrentUser currentUser) {
+    @Valid
+    public AuthenticationFilter(@NotNull CurrentUser currentUser) {
         this.currentUser = currentUser;
     }
 
@@ -51,7 +54,7 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (currentUser != null && currentUser.isAuthenticated()) {
+        if (currentUser.isAuthenticated()) {
             chain.doFilter(request, response);
             return;
         }

@@ -17,6 +17,7 @@ package ro.satrapu.churchmanagement.ui;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -31,6 +32,7 @@ public class Urls implements Serializable {
     private FacesContext facesContext;
 
     @Inject
+    @Valid
     public Urls(@NotNull FacesContext facesContext) {
         this.facesContext = facesContext;
     }

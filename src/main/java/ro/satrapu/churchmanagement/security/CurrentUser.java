@@ -25,6 +25,7 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -51,6 +52,7 @@ public class CurrentUser implements Serializable {
     }
 
     @Inject
+    @Valid
     public CurrentUser(@NotNull Urls urls) {
         this.urls = urls;
     }

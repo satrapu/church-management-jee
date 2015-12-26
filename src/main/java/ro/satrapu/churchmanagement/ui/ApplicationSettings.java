@@ -21,6 +21,7 @@ import javax.faces.application.ProjectStage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -38,6 +39,7 @@ public class ApplicationSettings implements Serializable {
     private String titleSuffix;
 
     @Inject
+    @Valid
     public ApplicationSettings(@NotNull FacesContext facesContext) {
         this.facesContext = facesContext;
     }
