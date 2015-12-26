@@ -32,7 +32,7 @@ limitations under the License.
             <f:event type="preRenderView"
                      listener="#{personHome.beginConversation}"/>
         </f:metadata>
-        <h:panelGrid rendered="#{personHome.managed}"
+        <h:panelGrid rendered="#{not personHome.new}"
                      columns="1">
             <my:labelAndText componentId="id"
                              label="#{msg['entities.person.fields.id']}"
@@ -54,7 +54,7 @@ limitations under the License.
         <div class="actions">
             <p:commandButton action="#{personHome.remove}"
                              value="#{msg['global.actions.remove']}"
-                             rendered="#{personHome.managed}">
+                             rendered="#{not personHome.new}">
                 <p:confirm header="#{msg['pages.persons.remove.confirmationDialog.title']}"
                            message="#{msg['pages.persons.remove.confirmationDialog.text']}"
                            icon="ui-icon-alert"/>
