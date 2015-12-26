@@ -1,0 +1,1 @@
+# this file is needed in order to allow git add the META-INF folder to the repo - see more here: http://alvinalexander.com/git/git-empty-directories-how-add-empty-directory-repository
