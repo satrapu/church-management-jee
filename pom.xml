@@ -75,16 +75,6 @@
             <version>1.1.3</version>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <version>1.1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.12</version>
-        </dependency>
-        <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
             <version>5.3</version>
@@ -174,7 +164,15 @@
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <webResources>
-                        <!-- copy application server specific configuration files -->
+                        <!-- copy application server specific configuration files to META-INF folder -->
+                        <resource>
+                            <directory>
+                                ${project.basedir}/application-servers-config/${appserver.discriminator}/META-INF
+                            </directory>
+                            <targetPath>META-INF</targetPath>
+                        </resource>
+
+                        <!-- copy application server specific configuration files to WEB-INF folder -->
                         <resource>
                             <directory>
                                 ${project.basedir}/application-servers-config/${appserver.discriminator}/WEB-INF
