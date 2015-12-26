@@ -16,33 +16,56 @@
  * limitations under the License.
  */
 -->
-<configuration scan="true"
-               scanPeriod="60 seconds">
+<configuration scan="false"
+               scanPeriod="60 seconds"
+               debug="true">
+
+    <contextName>church-management</contextName>
+
+    <variable name="application-name"
+              value="${CONTEXT_NAME}"/>
+    <variable name="logs-home-folder"
+              value="logs/${application-name}"/>
+
     <appender name="Console"
               class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%-5level %d{HH:mm:ss.SSS} %logger{0} %message%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %message%n</pattern>
         </encoder>
     </appender>
+
     <appender name="Application"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/church-management/church-management.log</file>
+        <file>${logs-home-folder}/${application-name}.log</file>
         <append>true</append>
         <encoder>
-            <pattern>%-5level %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger - %message%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [${HOSTNAME}] [${CONTEXT_NAME}] [%thread] %logger{36} - %message%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/church-management/old/church-management-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
+            <fileNamePattern>${logs-home-folder}/old/${application-name}-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>31</maxHistory>
         </rollingPolicy>
     </appender>
-    <logger name="ro.satrapu"
-            level="DEBUG"
-            additivity="false">
-        <appender-ref ref="Application"/>
-    </logger>
-    <root level="WARN">
+
+    <!-- Application log -->
+    <logger name="ro.satrapu.churchmanagement"
+            level="TRACE"/>
+
+    <!-- Localized text to be displayed inside UI -->
+    <logger name="ro.satrapu.churchmanagement.ui.messages"
+            level="OFF"/>
+
+    <!-- Hibernate JDBC statements -->
+    <logger name="org.hibernate.SQL"
+            level="TRACE"/>
+
+    <!-- JDBC parameter values bound by Hibernate -->
+    <logger name="org.hibernate.type.descriptor.sql"
+            level="TRACE"/>
+
+    <root level="ALL">
         <appender-ref ref="Console"/>
         <appender-ref ref="Application"/>
     </root>
+
 </configuration>
