@@ -5,8 +5,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * Produces {@link EntityManager} instances belonging to the persistence unit named "{@value EntityManagerProducer#CHURCH_MANAGEMENT_PERSISTENCE_UNIT_NAME}".
- * <br />
+ * Produces {@link EntityManager} instances belonging to the persistence unit named <b>{@value EntityManagerProducer#CHURCH_MANAGEMENT_PERSISTENCE_UNIT_NAME}</b>.
+ * <br>
  * Code inspired by Antonio Goncalves' post:
  * <a href="http://antoniogoncalves.org/2011/09/25/injection-with-cdi-part-iii">Injection with CDI (Part III)</a>.
  *
