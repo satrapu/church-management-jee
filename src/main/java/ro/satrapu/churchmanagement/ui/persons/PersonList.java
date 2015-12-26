@@ -17,6 +17,7 @@ package ro.satrapu.churchmanagement.ui.persons;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.slf4j.Logger;
 import ro.satrapu.churchmanagement.model.text.StringExtensions;
 import ro.satrapu.churchmanagement.persistence.PersistenceService;
 import ro.satrapu.churchmanagement.persistence.Person;
@@ -27,9 +28,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -46,15 +47,20 @@ public class PersonList implements Serializable {
     private static final String KEY_LAST_NAME = "lastName";
     private static final String KEY_EMAIL_ADDRESS = "emailAddress";
     private final PersistenceService persistenceService;
+    private Logger logger;
     private LazyDataModel<Person> dataModel;
 
     @Inject
-    public PersonList(@NotNull PersistenceService persistenceService) {
+    @Valid
+    public PersonList(@NotNull PersistenceService persistenceService,
+                      @NotNull Logger logger) {
         this.persistenceService = persistenceService;
+        this.logger = logger;
     }
 
     @PostConstruct
     public void init() {
+        logger.debug("Fetching the first page of entities ...");
         dataModel = new LazyDataModel<Person>() {
             @Override
             public List<Person> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
@@ -62,12 +68,18 @@ public class PersonList implements Serializable {
                 QuerySearchResult<Person> querySearchResult = persistenceService.fetch(personQuery, first, pageSize);
 
                 List<Person> result = querySearchResult.getRecords();
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Fetched {} entities", result.size());
+                }
+
                 return result;
             }
         };
 
         PersonQuery personQuery = getQuery(null, null, null);
         long count = persistenceService.count(personQuery);
+        logger.debug("Found a total of {} entities", count);
         dataModel.setRowCount(Long.valueOf(count).intValue());
     }
 
@@ -76,7 +88,32 @@ public class PersonList implements Serializable {
     }
 
     private PersonQuery getQuery(String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+        logger.debug("Building the query used for fetching entities ...");
         PersonQuery result = new PersonQuery();
+
+        if (filters != null) {
+            for (Map.Entry<String, Object> entry : filters.entrySet()) {
+                logger.debug("Filtering entities by key: {} and value: {}", entry.getKey(), entry.getValue());
+
+                switch (entry.getKey()) {
+                    case KEY_EMAIL_ADDRESS:
+                        result.setEmailAddressNamePattern(entry.getValue().toString());
+                        break;
+                    case KEY_ID:
+                        result.setId(Integer.parseInt(entry.getValue().toString()));
+                        break;
+                    case KEY_FIRST_NAME:
+                        result.setFirstNamePattern(entry.getValue().toString());
+                        break;
+                    case KEY_LAST_NAME:
+                        result.setLastNamePattern(entry.getValue().toString());
+                        break;
+                    case KEY_MIDDLE_NAME:
+                        result.setMiddleNamePattern(entry.getValue().toString());
+                        break;
+                }
+            }
+        }
 
         if (!StringExtensions.isNullOrWhitespace(sortField)) {
             result.setSortAscending(sortOrder == SortOrder.ASCENDING);
@@ -98,30 +135,8 @@ public class PersonList implements Serializable {
                     result.setSortByField(PersonQuery.Fields.MIDDLE_NAME);
                     break;
             }
-        }
 
-        if (filters != null) {
-            for (Iterator<Map.Entry<String, Object>> iterator = filters.entrySet().iterator(); iterator.hasNext(); ) {
-                Map.Entry<String, Object> entry = iterator.next();
-
-                switch (entry.getKey()) {
-                    case KEY_EMAIL_ADDRESS:
-                        result.setEmailAddressNamePattern(entry.getValue().toString());
-                        break;
-                    case KEY_ID:
-                        result.setId(Integer.parseInt(entry.getValue().toString()));
-                        break;
-                    case KEY_FIRST_NAME:
-                        result.setFirstNamePattern(entry.getValue().toString());
-                        break;
-                    case KEY_LAST_NAME:
-                        result.setLastNamePattern(entry.getValue().toString());
-                        break;
-                    case KEY_MIDDLE_NAME:
-                        result.setMiddleNamePattern(entry.getValue().toString());
-                        break;
-                }
-            }
+            logger.debug("Entities will be sorted by field: {}, using order: {}", sortField, sortOrder);
         }
 
         return result;
