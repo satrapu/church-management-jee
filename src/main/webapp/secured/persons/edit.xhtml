@@ -21,7 +21,7 @@ limitations under the License.
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:define name="title">
-        #{personHome.managed ? msg['pages.persons.edit.title']: msg['pages.persons.add.title']}
+        #{personHome.new ? msg['pages.persons.add.title']: msg['pages.persons.edit.title']}
     </ui:define>
     <ui:define name="content">
         <f:metadata>
@@ -50,6 +50,12 @@ limitations under the License.
                       required="true"
                       label="#{msg['entities.person.fields.emailAddress']}"
                       value="#{personHome.instance.emailAddress}"/>
+        <my:select componentId="discipleshipStatus"
+                   required="true"
+                   label="#{msg['entities.person.fields.discipleshipStatus']}"
+                   value="#{personHome.instance.discipleshipStatus}">
+            <f:selectItems value="#{personHome.discipleshipStatusValues}"/>
+        </my:select>
         <p:separator/>
         <div class="actions">
             <p:commandButton action="#{personHome.save}"
