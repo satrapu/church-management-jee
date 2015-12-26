@@ -34,7 +34,7 @@ public class FacesContextProducer {
      */
     @Produces
     @RequestScoped
-    public FacesContext produceFacesContext() {
+    public FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
     }
 }
