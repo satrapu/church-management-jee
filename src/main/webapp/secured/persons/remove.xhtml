@@ -51,10 +51,12 @@ limitations under the License.
                              value="#{personHome.instance.emailAddress}"/>
         </h:panelGrid>
         <p:separator/>
+
         <div class="actions">
             <p:commandButton action="#{personHome.remove}"
                              value="#{msg['global.actions.remove']}"
-                             rendered="#{not personHome.new}">
+                             rendered="#{not personHome.new}"
+                             update=":messages">
                 <p:confirm header="#{msg['pages.persons.remove.confirmationDialog.title']}"
                            message="#{msg['pages.persons.remove.confirmationDialog.text']}"
                            icon="ui-icon-alert"/>
