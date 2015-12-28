@@ -96,7 +96,6 @@ public class PersistenceService implements Serializable {
         return persistedEntities;
     }
 
-    @Valid
     public <T extends Serializable> void remove(@NotNull T entity) {
         boolean isInfoEnabled = logger.isInfoEnabled();
         Object entityId = null;
