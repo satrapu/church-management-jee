@@ -182,7 +182,7 @@
                             <targetPath>WEB-INF</targetPath>
                         </resource>
 
-                        <!-- copy property file used by the UI -->
+                        <!-- copy property files used by the UI -->
                         <resource>
                             <directory>src/main/resources/ro/satrapu/churchmanagement/ui</directory>
                             <targetPath>WEB-INF/classes/ro/satrapu/churchmanagement/ui</targetPath>
